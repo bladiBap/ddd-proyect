@@ -1,0 +1,27 @@
+{
+	"name": "proyecto",
+	"version": "1.0.0",
+	"description": "La carpeta `domain/` contiene los siguientes aggregados y entidades:",
+	"main": "index.js",
+	"scripts": {
+		"dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+		"build": "tsc",
+		"start": "node dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^5.1.0",
+		"pg": "^8.16.3",
+		"reflect-metadata": "^0.2.2",
+		"typeorm": "^0.3.27"
+	},
+	"devDependencies": {
+		"@types/express": "^5.0.3",
+		"@types/node": "^24.7.2",
+		"ts-node-dev": "^2.0.0",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.9.3"
+	}
+}

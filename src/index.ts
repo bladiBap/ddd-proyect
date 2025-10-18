@@ -2,13 +2,14 @@ import express from "express";
 import "reflect-metadata";
 import "@infrastructure/container";
 
-import { AppDataSource } from "@infrastructure/Persistence/DomainModel/data-source";
+import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
 import { OrderController } from "@presentation/controllers/OrderController";
 
 const app = express();
 const controller = new OrderController();
 
 app.get("/order-today/details", (req, res) => controller.getOrderDetails(req, res));
+app.post("/order-today/generate", (req, res) => controller.generateOrderReport(req, res));
 
 AppDataSource.initialize().then(() => {
     console.log("Database connected successfully!");

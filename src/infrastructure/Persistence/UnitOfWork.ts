@@ -1,36 +1,33 @@
-import { injectable } from "tsyringe";
-import { EntityManager } from "typeorm";
-import { AppDataSource } from "./DomainModel/data-source";
+import { injectable, inject } from "tsyringe";
+import { AppDataSource } from "./PersistenceModel/data-source";
+import { EntityManager, QueryRunner } from "typeorm";
 import { Mediator } from "@application/Mediator/Mediator";
 import { DomainEvent } from "@domain/core/abstractions/DomainEvent";
-import { Entity } from "@domain/core/abstractions/Entity";
+import { IUnitOfWork } from "@domain/core/abstractions/IUnitOfWork";
 
 @injectable()
-export class UnitOfWork {
-    private queryRunner = AppDataSource.createQueryRunner();
-    private manager: EntityManager;
-    private mediator = new Mediator();
+export class UnitOfWork implements IUnitOfWork {
+    private queryRunner!: QueryRunner;
+    private manager!: EntityManager;
 
-    constructor() {
-        this.manager = this.queryRunner.manager;
-    }
+    constructor(
+        @inject(Mediator) private readonly mediator: Mediator  // 💡 inyección, no new
+    ) {}
 
-    async start(): Promise<void> {
+    async startTransaction(): Promise<void> {
+        this.queryRunner = AppDataSource.createQueryRunner();
         await this.queryRunner.connect();
         await this.queryRunner.startTransaction();
+        this.manager = this.queryRunner.manager;
     }
 
     async commit(): Promise<void> {
         try {
-            // 1️⃣ Obtén los eventos de dominio (equivalente al ChangeTracker)
             const domainEvents = this.extractDomainEvents();
-
-            // 2️⃣ Publica los eventos antes del commit (como Mediator.Publish en C#)
             for (const event of domainEvents) {
-                await this.mediator.send(event); // o publish(event)
+                await this.mediator.send(event);
             }
 
-            // 3️⃣ Confirma la transacción
             await this.queryRunner.commitTransaction();
         } catch (err) {
             await this.queryRunner.rollbackTransaction();
@@ -49,12 +46,11 @@ export class UnitOfWork {
     }
 
     private extractDomainEvents(): DomainEvent[] {
-        const events: DomainEvent[] = [];
+        return [];
+    }
 
-        // 🔸 En C#, se usa ChangeTracker; en TS debemos guardar las entidades modificadas manualmente.
-        // Por simplicidad, podrías mantener una lista en memoria si tu app emite eventos a través de tus entidades.
-        // Ejemplo futuro: global DomainEventStore.
-
-        return events;
+    getRepository<T extends { new (manager: EntityManager): any }>(repo: T): InstanceType<T> {
+        if (!this.manager) throw new Error("Transaction not started. Call start() first.");
+        return new repo(this.manager);
     }
 }

@@ -4,7 +4,7 @@ import { GetOrderByDayQuery } from "./GerOrderByDayQuery";
 import { OrderDTOMapper } from "../mappers/OrderDTOMapper";
 import { OrderDTO } from "../dto/OrderDTO";
 
-import { AppDataSource } from "@infrastructure/Persistence/DomainModel/data-source";
+import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
 import { Order } from "@infrastructure/Persistence/PersistenceModel/Entities/Order";
 
 import { Between } from "typeorm";

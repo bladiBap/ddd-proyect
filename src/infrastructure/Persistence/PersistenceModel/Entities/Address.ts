@@ -9,9 +9,9 @@ import { Package } from "./Package";
 export class Address{
     @PrimaryGeneratedColumn()
     id!: number;
-
+    
     @Column()
-    date!: string;
+    date!: Date;
 
     @Column()
     address!: string;
@@ -19,15 +19,18 @@ export class Address{
     @Column()
     reference!: string;
 
-    @Column()
+    @Column({ type: "float" })
     latitude!: number;
 
-    @Column()
+    @Column({ type: "float" })
     longitude!: number;
 
     @ManyToOne(() => Calendar, (calendar) => calendar.addresses)
     @JoinColumn({ name: "calendarId" })
     calendar!: Calendar;
+
+    @Column()
+    calendarId!: number;
 
     @OneToOne(() => Package, (packag) => packag.address)
     package!: Package;

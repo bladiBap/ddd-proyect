@@ -17,14 +17,6 @@ export class Order extends AggregateRoot {
 
     constructor( id: number, dateOrdered: Date, dateCreatedOn: Date, status: StatusOrder, listOrderItems: OrderItem[] = []) {
         super(id);
-
-        if (dateCreatedOn > dateOrdered) {
-            throw new DomainException( OrderError.dateCreatedOnMustBeBeforeDateOrdered(dateCreatedOn, dateOrdered) );
-        }
-        if (dateCreatedOn > new Date()) {
-            throw new DomainException( OrderError.dateCreatedOnMustBeBeforeCurrentDate(dateCreatedOn) );
-        }
-
         this.dateOrdered = dateOrdered;
         this.dateCreatedOn = dateCreatedOn;
         this.status = status;

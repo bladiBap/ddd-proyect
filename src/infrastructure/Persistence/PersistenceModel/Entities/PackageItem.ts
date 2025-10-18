@@ -15,5 +15,11 @@ export class PackageItem {
     @ManyToOne(() => Recipe, recipe => recipe.packageItems)
     @JoinColumn({ name: "recipeId" })
     recipe!: Recipe;
+
+    @Column()
+    recipeId!: number;
+
+    @Column()
+    packageId!: number;
     
 }

@@ -4,12 +4,16 @@ import "@infrastructure/container";
 
 import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
 import { OrderController } from "@presentation/controllers/OrderController";
+import { ClientController } from "@presentation/controllers/ClientController";
 
 const app = express();
-const controller = new OrderController();
+const orderController = new OrderController();
+const clientController = new ClientController();
 
-app.get("/order-today/details", (req, res) => controller.getOrderDetails(req, res));
-app.post("/order-today/generate", (req, res) => controller.generateOrderReport(req, res));
+app.get("/order-today/details", (req, res) => orderController.getOrderDetails(req, res));
+app.post("/order-today/generate", (req, res) => orderController.generateOrderReport(req, res));
+app.post("/order-item/:orderItemId/complete", (req, res) => orderController.markOrderItemComplete(req, res));
+app.get("/clients/delivery-info", (req, res) => clientController.getClientsForDeliveredInformation(req, res));
 
 AppDataSource.initialize().then(() => {
     console.log("Database connected successfully!");

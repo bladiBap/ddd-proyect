@@ -4,4 +4,5 @@ import { Address } from "./Address";
 export interface IAddressRepository extends IRepository<Address> {
     deleteAsync(id: number): Promise<void>;
     getRecipesToPrepare(date: Date): Promise<{ recipeId: number; quantity: number }[]>;
+    getClientsForDeliveredInformation(date: Date): Promise<any[]>;
 }

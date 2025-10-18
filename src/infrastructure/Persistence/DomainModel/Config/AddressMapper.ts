@@ -1,5 +1,5 @@
-import { Address as AddressDomain } from '@domain/Address/Address';
-import { Coordinates } from '@domain/Address/valuesObjects/Coordinates';
+import { Address as AddressDomain } from '@domain/aggregates/address/Address';
+import { Coordinates } from '@domain/aggregates/address/valuesObjects/Coordinates';
 import { Address as AddressEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/Address';
 
 export class AddressMapper {

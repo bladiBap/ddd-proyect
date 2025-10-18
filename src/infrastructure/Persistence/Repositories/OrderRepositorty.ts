@@ -1,6 +1,7 @@
 import { IOrderRepository } from "@domain/aggregates/order/IOrderRepository";
 import { Order } from "@domain/aggregates/order/Order";
 import { Order as OrderEntity } from "../PersistenceModel/Entities/Order";
+import { OrderItem } from "../PersistenceModel/Entities/OrderItem";
 
 import { AppDataSource } from "../PersistenceModel/data-source";
 import { OrderMapper } from "../DomainModel/Config/OrderMapper";

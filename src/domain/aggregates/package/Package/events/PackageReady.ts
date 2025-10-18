@@ -1,4 +1,4 @@
-import { DomainEvent } from "../../core/abstractions/DomainEvent";
+import { DomainEvent } from "../../../../core/abstractions/DomainEvent";
 import { Package } from '../Package';
 
 export class PackageCompleted extends DomainEvent {

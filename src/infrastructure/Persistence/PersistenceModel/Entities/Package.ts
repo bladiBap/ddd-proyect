@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, OneToOne, JoinColumn } from "typeorm";
-import { StatusPackage } from "@domain/Package/StatusPackage";
+import { StatusPackage } from "@domain/aggregates/package/Package/StatusPackage";
 
 import { PackageItem } from "./PackageItem";
 import { Client } from "./Client";
@@ -9,6 +9,9 @@ import { Address } from "./Address";
 export class Package {
     @PrimaryGeneratedColumn()
     id!: number;
+
+    @Column()
+    code!: string;
 
     @Column()
     datePackage!: Date;
@@ -26,4 +29,10 @@ export class Package {
     @OneToOne(() => Address, (address) => address.package, { cascade: true, eager: true })
     @JoinColumn({ name: "addressId" })
     address!: Address;
+
+    @Column()
+    clientId!: number;
+
+    @Column()
+    addressId!: number;
 }

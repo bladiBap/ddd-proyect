@@ -6,22 +6,30 @@
 	"scripts": {
 		"dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
 		"build": "tsc",
-		"start": "node dist/index.js"
+		"start": "node dist/index.js",
+		"typeorm": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/infrastructure/Persistence/DomainModel/data-source.ts",
+		"migration:generate": "npm run typeorm migration:generate ./src/infrastructure/Persistence/Migrations/InitialMigration",
+		"migration:run": "npm run typeorm migration:run",
+		"migration:revert": "npm run typeorm migration:revert",
+		"seed": "ts-node -r tsconfig-paths/register src/infrastructure/Persistence/seed.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"dotenv": "^17.2.3",
 		"express": "^5.1.0",
 		"pg": "^8.16.3",
 		"reflect-metadata": "^0.2.2",
-		"typeorm": "^0.3.27"
+		"tsyringe": "^4.10.0"
 	},
 	"devDependencies": {
 		"@types/express": "^5.0.3",
-		"@types/node": "^24.7.2",
+		"@types/node": "^24.8.1",
+		"ts-node": "^10.9.2",
 		"ts-node-dev": "^2.0.0",
 		"tsconfig-paths": "^4.2.0",
+		"typeorm": "^0.3.27",
 		"typescript": "^5.9.3"
 	}
 }

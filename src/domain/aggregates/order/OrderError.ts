@@ -6,10 +6,6 @@ export class OrderError {
         return new Error(`Cannot change order status from ${currentStatus} to ${newStatus}.`);
     }
 
-    public static listOfOrderItemsCannotBeEmpty(): Error {
-        return new Error(`The list of order items cannot be empty.`);
-    }
-
     public static dateCreatedOnMustBeBeforeCurrentDate(dateCreatedOn: Date): Error {
         return new Error(`The creation date (${dateCreatedOn.toISOString()}) must be before the current date.`);
     }

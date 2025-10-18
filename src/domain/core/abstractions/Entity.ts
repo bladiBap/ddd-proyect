@@ -22,8 +22,6 @@ export abstract class Entity {
         this._domainEvents = [];
     }
 
-    
-
     public addDomainEvent(domainEvent: DomainEvent): void {
         this._domainEvents.push(domainEvent);
     }
@@ -32,9 +30,7 @@ export abstract class Entity {
         this._domainEvents = [];
     }
 
-
-
-    public get domainEvents(): DomainEvent[] {
+    public getDomainEvents(): DomainEvent[] {
         return this._domainEvents;
     }
 

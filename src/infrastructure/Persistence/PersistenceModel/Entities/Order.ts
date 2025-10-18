@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { StatusOrder } from "@domain/Order/StatusOrderEnum";
+import { StatusOrder } from "@domain/aggregates/order/StatusOrderEnum";
 
 import { OrderItem } from "./OrderItem";
 
@@ -17,7 +17,7 @@ export class Order {
     @Column({
         type: "enum",
         enum: StatusOrder,
-        default: StatusOrder.PENDING
+        default: StatusOrder.CREATED
     })
     status!: StatusOrder;
 

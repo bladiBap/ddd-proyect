@@ -14,7 +14,7 @@ export class Client {
     @Column()
     name!: string;
 
-    @OneToMany(() => MealPlan, (mealPlan) => mealPlan.client, { cascade: true, eager: true })
+    @OneToMany(() => MealPlan, (mealPlan) => mealPlan.client, { cascade: true })
     mealPlans!: MealPlan[];
 
     @OneToMany(() => Package, (packag) => packag.client, { cascade: true, eager: true })

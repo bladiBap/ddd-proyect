@@ -1,4 +1,4 @@
-import { IRepository } from '../shared/abstractions/IRepository';
+import { IRepository } from '../core/abstractions/IRepository';
 import { Package } from './Package';
 
 export interface IPackageRepository extends IRepository<Package> {

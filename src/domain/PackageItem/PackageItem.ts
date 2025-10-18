@@ -1,5 +1,5 @@
-import { Entity } from "../shared/abstractions/Entity";
-import { DomainException } from "../shared/results/DomainExeption";
+import { Entity } from "../core/abstractions/Entity";
+import { DomainException } from "../core/results/DomainExeption";
 import { PackageItemError } from "./PackageItemError";
 
 export class PackageItem extends Entity {

@@ -6,6 +6,7 @@ import {
 import { RecipeIngredient } from "./RecipeIngredient";
 import { DayliDiet } from "./DayliDiet";
 import { PackageItem } from "./PackageItem";
+import { OrderItem } from "./OrderItem";
 
 @Entity()
 export class Recipe {
@@ -21,9 +22,13 @@ export class Recipe {
     @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.recipe, { cascade: true, eager: true })
     ingredients!: RecipeIngredient[];
 
+    @OneToMany(() => PackageItem, (packageItem) => packageItem.recipe)
+    packageItems!: PackageItem[];
+
+    @OneToMany(() => OrderItem, (orderItem) => orderItem.recipe)
+    orderItems!: OrderItem[];
+
     @ManyToMany(() => DayliDiet, (dayliDiet) => dayliDiet.recipes)
     dayliDiets!: DayliDiet[];
 
-    @OneToMany(() => PackageItem, (packageItem) => packageItem.recipe)
-    packageItems!: PackageItem[];
 }

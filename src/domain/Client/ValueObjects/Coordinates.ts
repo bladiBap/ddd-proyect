@@ -1,4 +1,4 @@
-import { ValueObject } from "../../shared/abstractions/ValueObject";
+import { ValueObject } from "../../core/abstractions/ValueObject";
 
 export class Coordinates extends ValueObject {
     private latitude: number;

@@ -1,4 +1,4 @@
-import { IRepository } from "@domain/core/abstractions/IRepository";
+import { IRepository } from "core/abstractions/IRepository";
 import { Client } from "./Client";
 
 export interface IClientRepository extends IRepository<Client> {

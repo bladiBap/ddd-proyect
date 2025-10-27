@@ -1,18 +1,21 @@
 import { injectable } from "tsyringe";
-import { QueryHandler } from "../../Mediator/decorators";
-import { GetOrderByDayQuery } from "./GerOrderByDayQuery";
-import { OrderDTOMapper } from "../mappers/OrderDTOMapper";
-import { OrderDTO } from "../dto/OrderDTO";
+import { QueryHandler } from "../../application/Mediator/decorators";
+import { GetOrderByDay } from "../../application/Order/GetOrderByDay/GerOrderByDay";
+import { OrderDTOMapper } from "../../application/Order/GetOrderByDay/OrderDTOMapper";
+import { OrderDTO } from "../../application/Order/dto/OrderDTO";
+import { ResultWithValue } from "@core/results/Result";
 
 import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
 import { Order } from "@infrastructure/Persistence/PersistenceModel/Entities/Order";
 
 import { Between } from "typeorm";
 
-@QueryHandler(GetOrderByDayQuery)
+@QueryHandler(GetOrderByDay)
 @injectable()
-export class GetOrderDetailsQueryHandler {
-    async execute(query: GetOrderByDayQuery): Promise<OrderDTO | null> {
+export class GetOrderDetailsHandler {
+
+    async execute(query: GetOrderByDay): Promise< ResultWithValue<OrderDTO>> {
+        
         const orderRepo = AppDataSource.getRepository(Order);
 
         const startOfDay = new Date(query.date);
@@ -32,8 +35,8 @@ export class GetOrderDetailsQueryHandler {
             ]
         });
 
-        if (!order) return null;
+        if (!order) return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);
 
-        return OrderDTOMapper.fromEntity(order);
+        return ResultWithValue.fromValue<OrderDTO>(OrderDTOMapper.toDTO(order));
     }
 }

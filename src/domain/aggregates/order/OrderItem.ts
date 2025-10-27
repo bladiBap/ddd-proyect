@@ -1,8 +1,8 @@
 import { OrderItemError } from './OrderItemError';
 import { StatusOrder } from './StatusOrderEnum';
 
-import { Entity } from '@domain/core/abstractions/Entity';
-import { DomainException } from '@domain/core/results/DomainExeption';
+import { Entity } from 'core/abstractions/Entity';
+import { DomainException } from 'core/results/DomainExeption';
 
 export class OrderItem extends Entity{
 

@@ -2,8 +2,8 @@ import { OrderItem } from './OrderItem';
 import { OrderError } from './OrderError';
 import { StatusOrder } from './StatusOrderEnum';
 
-import { AggregateRoot } from '@domain/core/abstractions/AgregateRoot';
-import { DomainException } from '@domain/core/results/DomainExeption';
+import { AggregateRoot } from 'core/abstractions/AgregateRoot';
+import { DomainException } from 'core/results/DomainExeption';
 
 //Eventos
 import { OrderCompletedEvent } from './events/OrderCreatedEvent';

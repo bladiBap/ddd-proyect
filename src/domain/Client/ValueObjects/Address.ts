@@ -1,4 +1,4 @@
-import { ValueObject } from "../../core/abstractions/ValueObject";
+import { ValueObject } from "../../../core/abstractions/ValueObject";
 import { Coordinates } from "../../Address/valuesObjects/Coordinates";
 
 export class Address extends ValueObject {

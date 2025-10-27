@@ -2,6 +2,7 @@ import { Client as ClientDomain } from '@domain/Client/Client';
 import { Client as ClientEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/Client';
 
 export class ClientMapper {
+    
     static toPersistenceList(items: ClientDomain[]): ClientEntity[] {
         return items.map(item => this.toPersistence(item));
     }

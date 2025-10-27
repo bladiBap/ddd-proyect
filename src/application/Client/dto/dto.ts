@@ -11,7 +11,7 @@ export interface IAddressDTO {
     longitude: number;
 }
 
-export interface IClientRecipesTodayDTO {
+export interface IClientDeliveredDTO {
     id: number;
     clientName: string;
     address: IAddressDTO;

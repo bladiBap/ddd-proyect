@@ -1,13 +1,13 @@
 import { injectable, inject } from "tsyringe";
 import { CommandHandler } from "@application/Mediator/decorators";
 import { GenerateOrderCommand } from "./GenerateOrderCommand";
-import { IUnitOfWork } from "@domain/core/abstractions/IUnitOfWork";
+import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 import { Order } from "@domain/aggregates/order/Order";
 import { StatusOrder } from "@domain/aggregates/order/StatusOrderEnum";
 import { OrderRepository } from "@infrastructure/Persistence/Repositories/OrderRepositorty";
 import { AddressRepository } from "@infrastructure/Persistence/Repositories/AddressRepository";
-import { Result } from "@domain/core/results/Result";
-import { ErrorCustom } from "@domain/core/results/ErrorCustom";
+import { Result } from "core/results/Result";
+import { ErrorCustom } from "core/results/ErrorCustom";
 
 @CommandHandler(GenerateOrderCommand)
 @injectable()
@@ -44,6 +44,7 @@ export class GenerateOrderCommandHandler {
             }
             
             await orderRepo.addAsync(newOrder);
+            throw new Error("Simulated failure");
             await this.unitOfWork.commit();
 
             return Result.success();

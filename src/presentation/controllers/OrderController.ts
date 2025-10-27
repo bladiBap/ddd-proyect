@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
 import { Mediator } from "@application/Mediator/Mediator";
-import { GetOrderByDayQuery } from "@application/Order/GetOrderByDay/GerOrderByDayQuery";
+import { GetOrderByDay } from "@application/Order/GetOrderByDay/GerOrderByDay";
 import { GenerateOrderCommand } from "@application/Order/GenerateOrder/GenerateOrderCommand";
 import { CompleteOrderItemCommand } from "@application/Order/CompleteOrderItem/CompleteOrderItemCommand";
 
 export class OrderController {
 
-    async getOrderDetails(req: Request, res: Response) {
+    async getOrderOfTheDay(req: Request, res: Response) {
         
         const mediator = new Mediator();
         const todayDate = new Date();
         try {
-            const order = await mediator.send(new GetOrderByDayQuery(todayDate));
+            const order = await mediator.send(new GetOrderByDay(todayDate));
 
             if (!order) {
-                return res.status(404).json({ message: "Order not found" });
+                return res.status(404).json(order);
             }
 
             return res.status(200).json(order);
@@ -25,7 +25,6 @@ export class OrderController {
 
     async generateOrderReport(req: Request, res: Response) {
         const mediator = new Mediator();
-        console.log("Received request to generate order report");
         try {
             const result = await mediator.send(new GenerateOrderCommand());
 

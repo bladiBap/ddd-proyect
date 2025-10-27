@@ -1,49 +1,56 @@
 import { injectable, inject } from "tsyringe";
 import { CommandHandler } from "@application/Mediator/decorators";
 import { CreatePackageCommand } from "./CreatePackageCommand";
-import { IUnitOfWork } from "@domain/core/abstractions/IUnitOfWork";
+import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 import { Package } from "@infrastructure/Persistence/PersistenceModel/Entities/Package";
 import { PackageItem } from "@infrastructure/Persistence/PersistenceModel/Entities/PackageItem";
 import { StatusPackage } from "@domain/aggregates/package/Package/StatusPackage";
-import { Result } from "@domain/core/results/Result";
-import { ErrorCustom } from "@domain/core/results/ErrorCustom";
-
-//Repositories
-
+import { Result } from "core/results/Result";
+import { ErrorCustom } from "core/results/ErrorCustom";
+import { IPackageRepository } from "@domain/aggregates/package/Package/IPackageRepository";
+import { IClientRepository } from "@domain/Client/IClientRepository";
+import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
+import { IRecipeRepository } from "@domain/aggregates/Recipe/IRecipeRepository";
 
 @CommandHandler(CreatePackageCommand)
 @injectable()
 export class CreatePackageCommandHandler {
+
+    private readonly unitOfWork: IUnitOfWork;
+    
+    private packageRepository: IPackageRepository;
+    private clientRepository: IClientRepository;
+    private addressRepository: IAddressRepository;
+    private recipeRepository: IRecipeRepository;
+
     constructor(
-        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork
-    ) {}
+        @inject("IUnitOfWork") unitOfWork: IUnitOfWork,
+        @inject("IClientRepository") clientRepository: IClientRepository,
+        @inject("IAddressRepository") addressRepository: IAddressRepository,
+        @inject("IPackageRepository") packageRepository: IPackageRepository,
+        @inject("IRecipeRepository") recipeRepository: IRecipeRepository
+    ) {
+        this.unitOfWork = unitOfWork;
+        this.addressRepository = addressRepository;
+        this.clientRepository = clientRepository;
+        this.packageRepository = packageRepository;
+        this.recipeRepository = recipeRepository;
+    }
 
     async execute(command: CreatePackageCommand): Promise<Result> {
         const { clientId, addressId, recipeIds } = command;
 
         await this.unitOfWork.startTransaction();
         try {
-            const packageRepo = this.unitOfWork.getRepository(
-                require("@infrastructure/Persistence/Repositories/PackageRepository").PackageRepository
-            );
-            const clientRepo = this.unitOfWork.getRepository(
-                require("@infrastructure/Persistence/Repositories/ClientRepository").ClientRepository
-            );
-            const addressRepo = this.unitOfWork.getRepository(
-                require("@infrastructure/Persistence/Repositories/AddressRepository").AddressRepository
-            );
-            const recipeRepo = this.unitOfWork.getRepository(
-                require("@infrastructure/Persistence/Repositories/RecipeRepository").RecipeRepository
-            );
 
-            const client = await clientRepo.findByIdAsync(clientId);
-            const address = await addressRepo.findByIdAsync(addressId);
+            const client = await this.clientRepository.getByIdAsync(clientId);
+            const address = await this.addressRepository.getByIdAsync(addressId);
             if (!client || !address)
                 return Result.failure(
                     ErrorCustom.NotFound("Package.Creation", "Client or Address not found")
                 );
 
-            const recipes = await recipeRepo.findByIdsAsync(recipeIds);
+            const recipes = await this.recipeRepository.getByIdsAsync(recipeIds);
             if (recipes.length === 0)
                 return Result.failure(
                     ErrorCustom.NotFound("Package.Creation", "Recipes not found")

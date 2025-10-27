@@ -2,8 +2,8 @@ import { injectable, inject } from "tsyringe";
 import { AppDataSource } from "./PersistenceModel/data-source";
 import { EntityManager, QueryRunner } from "typeorm";
 import { Mediator } from "@application/Mediator/Mediator";
-import { DomainEvent } from "@domain/core/abstractions/DomainEvent";
-import { IUnitOfWork } from "@domain/core/abstractions/IUnitOfWork";
+import { DomainEvent } from "core/abstractions/DomainEvent";
+import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 
 @injectable()
 export class UnitOfWork implements IUnitOfWork {
@@ -11,7 +11,7 @@ export class UnitOfWork implements IUnitOfWork {
     private manager!: EntityManager;
 
     constructor(
-        @inject(Mediator) private readonly mediator: Mediator  // 💡 inyección, no new
+        @inject(Mediator) private readonly mediator: Mediator
     ) {}
 
     async startTransaction(): Promise<void> {

@@ -1,6 +1,6 @@
 import { MeasurementUnit } from "../MeasurementUnit/MeasurementUnit";
-import { Entity } from "../core/abstractions/Entity";
-import { DomainException } from "../core/results/DomainExeption";
+import { Entity } from "../../core/abstractions/Entity";
+import { DomainException } from "../../core/results/DomainExeption";
 import { IngredientError } from "./IngredientError";
 
 export class Ingredient extends Entity {

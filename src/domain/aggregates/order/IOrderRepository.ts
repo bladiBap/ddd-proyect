@@ -1,4 +1,4 @@
-import { IRepository } from "@domain/core/abstractions/IRepository";
+import { IRepository } from "core/abstractions/IRepository";
 import { Order } from './Order';
 import { OrderItem } from "./OrderItem";
 

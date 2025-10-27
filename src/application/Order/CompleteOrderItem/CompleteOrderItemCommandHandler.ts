@@ -1,9 +1,9 @@
 import { injectable, inject } from "tsyringe";
 import { CommandHandler } from "@application/Mediator/decorators";
 import { CompleteOrderItemCommand } from "./CompleteOrderItemCommand";
-import { IUnitOfWork } from "@domain/core/abstractions/IUnitOfWork";
-import { Result } from "@domain/core/results/Result";
-import { ErrorCustom } from "@domain/core/results/ErrorCustom";
+import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
+import { Result } from "core/results/Result";
+import { ErrorCustom } from "core/results/ErrorCustom";
 import { OrderItemRepository } from "@infrastructure/Persistence/Repositories/OrderItemRepository";
 
 @CommandHandler(CompleteOrderItemCommand)

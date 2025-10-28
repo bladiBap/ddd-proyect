@@ -6,4 +6,6 @@ export interface IUnitOfWork {
     getRepository<T extends { new (manager: EntityManager): any }>(
         repo: T
     ): InstanceType<T>;
+    getManager(): EntityManager;
+    getRequiredManager(): EntityManager;
 }

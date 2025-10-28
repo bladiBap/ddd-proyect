@@ -3,5 +3,5 @@ import { OrderItem } from './OrderItem';
 
 export interface IOrderItemRepository extends IRepository<OrderItem> {
     deleteAsync(id: number): Promise<void>;
-    updateAsync(entity: OrderItem): Promise<void>;
+    updateAsync(entity: OrderItem): Promise<OrderItem>;
 }

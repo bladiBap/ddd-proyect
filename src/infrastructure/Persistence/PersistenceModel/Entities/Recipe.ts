@@ -7,6 +7,7 @@ import { RecipeIngredient } from "./RecipeIngredient";
 import { DayliDiet } from "./DayliDiet";
 import { PackageItem } from "./PackageItem";
 import { OrderItem } from "./OrderItem";
+import { AllocationLine } from "./AllocationLine";
 
 @Entity()
 export class Recipe {
@@ -27,6 +28,9 @@ export class Recipe {
 
     @OneToMany(() => OrderItem, (orderItem) => orderItem.recipe)
     orderItems!: OrderItem[];
+    
+    @OneToMany(() => AllocationLine, (allocationLine) => allocationLine.recipe)
+    allocationLines!: AllocationLine[];
 
     @ManyToMany(() => DayliDiet, (dayliDiet) => dayliDiet.recipes)
     dayliDiets!: DayliDiet[];

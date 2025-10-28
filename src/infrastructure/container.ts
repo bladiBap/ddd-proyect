@@ -1,8 +1,9 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
+import { DataSource } from "typeorm";
 
 // Importar tus servicios, repositorios y handlers
-// import { AppDataSource } from "./Persistence/PersistenceModel/data-source";
+import { AppDataSource } from "./Persistence/PersistenceModel/data-source";
 import { UnitOfWork } from "./Persistence/UnitOfWork";
 import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 import { Mediator } from "@application/Mediator/Mediator";
@@ -20,6 +21,7 @@ import { AddressRepository } from "./Persistence/Repositories/AddressRepository"
 import { OrderItemRepository } from "./Persistence/Repositories/OrderItemRepository";
 import { ClientRepository } from "./Persistence/Repositories/ClientRepository";
 import { PackageRepository } from "./Persistence/Repositories/PackageRepository";
+import { DailyAllocationRepository } from "./Persistence/Repositories/DailyAllocationRepository";
 //import { OrderItemRepository } from "./Persistence/Repositories/OrderItemRepository";
 
 // Interfaces del dominio (pueden vivir en domain/)
@@ -28,11 +30,12 @@ import { IAddressRepository } from "@domain/aggregates/address/IAddressRepositor
 import { IOrderItemRepository } from "@domain/aggregates/order/IOrderItemRepository";
 import { IClientRepository } from "@domain/Client/IClientRepository";
 import { IPackageRepository } from "@domain/aggregates/package/Package/IPackageRepository";
+import { IDailyAllocationRepository } from "@domain/aggregates/dailyAllocation/IDailyAllocationRepository";
 //import { IOrderItemRepository } from "@domain/repositories/IOrderItemRepository";
 
 container.registerSingleton(Mediator, Mediator);
 
-// Registro de UnitOfWork
+container.register<DataSource>("DataSource", { useValue: AppDataSource });
 container.register<IUnitOfWork>("IUnitOfWork", {
     useClass: UnitOfWork,
 });
@@ -43,6 +46,8 @@ container.registerSingleton<IAddressRepository>("IAddressRepository", AddressRep
 container.registerSingleton<IOrderItemRepository>("IOrderItemRepository", OrderItemRepository);
 container.registerSingleton<IClientRepository>("IClientRepository", ClientRepository);
 container.registerSingleton<IPackageRepository>("IPackageRepository", PackageRepository);
+container.registerSingleton<IDailyAllocationRepository>("IDailyAllocationRepository", DailyAllocationRepository);
+
 // Registrar Handlers (para Mediator)
 container.registerSingleton(GetOrderDetailsHandler, GetOrderDetailsHandler);
 container.registerSingleton(GenerateOrderCommandHandler, GenerateOrderCommandHandler);

@@ -23,20 +23,28 @@ export class Order extends AggregateRoot {
         this.listOrderItems = listOrderItems;
     }
 
-    public updateStatusToCompleted() {
-        if (this.status !== StatusOrder.CREATED) {
+    public tryMarkCompleted() {
+        if (this.status === StatusOrder.COMPLETED) return;
+
+        if (this.status !== StatusOrder.CREATED && this.status !== StatusOrder.COMPLETED) {
             throw new DomainException( 
                 OrderError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) 
             );
         }
+        if (!this.isItemsCompleted()) {
+            return;
+        }
         this.status = StatusOrder.COMPLETED;
-        this.addDomainEvent(new OrderCompletedEvent(this.id));
     }
 
-    public addItem(recipeId: number, quantity: number, status: StatusOrder) : void {
-        const newItem = new OrderItem(0, this.id, quantity, recipeId, status);
+    public addItem(recipeId: number, quantityPlanned: number, quantityPrepared: number, quantityDelivered: number, status: StatusOrder) : void {
+        const newItem = new OrderItem(0, this.id, quantityPlanned, quantityPrepared, quantityDelivered, recipeId, status);
         this.listOrderItems.push(newItem);
     }
+
+    public isItemsCompleted (): boolean {
+        return this.listOrderItems.every(item => item.getStatus() === StatusOrder.COMPLETED);
+    } 
 
     public getIdOrder(): number {
         return this.id;

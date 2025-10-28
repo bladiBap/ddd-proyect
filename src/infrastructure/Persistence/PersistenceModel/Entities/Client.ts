@@ -5,6 +5,7 @@ import {
 
 import { MealPlan } from "./MealPlan";
 import { Package } from "./Package";
+import { AllocationLine } from "./AllocationLine";
 
 @Entity()
 export class Client {
@@ -19,4 +20,7 @@ export class Client {
 
     @OneToMany(() => Package, (packag) => packag.client, { cascade: true, eager: true })
     packages!: Package[];
+
+    @OneToMany(() => AllocationLine, (allocationLine) => allocationLine.client)
+    allocationLines!: AllocationLine[];
 }

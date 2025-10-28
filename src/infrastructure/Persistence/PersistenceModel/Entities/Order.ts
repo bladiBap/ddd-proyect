@@ -21,6 +21,6 @@ export class Order {
     })
     status!: StatusOrder;
 
-    @OneToMany(() => OrderItem, orderItem => orderItem.order, { cascade: true })
+    @OneToMany(() => OrderItem, orderItem => orderItem.order, { cascade: true, eager: true })
     orderItems!: OrderItem[];
 }

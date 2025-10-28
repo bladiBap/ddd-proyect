@@ -10,32 +10,33 @@ import { OrderItemRepository } from "@infrastructure/Persistence/Repositories/Or
 @injectable()
 export class CompleteOrderItemCommandHandler {
     constructor(
-        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork
+        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
+        @inject("IOrderItemRepository") private readonly orderItemRepository: OrderItemRepository
     ) {}
 
     async execute(command: CompleteOrderItemCommand): Promise<Result> {
         await this.unitOfWork.startTransaction();
 
         try {
-            const orderItemRepo = this.unitOfWork.getRepository(OrderItemRepository);
+            const orderItem = await this.orderItemRepository.getByIdAsync(command.orderItemId);
 
-            const orderItem = await orderItemRepo.getByIdAsync(command.orderItemId);
             if (!orderItem) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
                     ErrorCustom.NotFound("OrderItem.NotFound", "Order item not found")
                 );
             }
-
-            orderItem.changeStatusToCompleted();
-            await orderItemRepo.updateAsync(orderItem);
-
+            const quantityPrepared = command.quantity ?? orderItem.getQuantityPlanned();
+            orderItem.increaseQuantityPrepared(quantityPrepared);
+            
+            const item = await this.orderItemRepository.updateAsync(orderItem);
+            
             await this.unitOfWork.commit();
             return Result.success();
         } catch (error : any) {
             await this.unitOfWork.rollback();
             return Result.failure(
-                ErrorCustom.Problem("OrderItem.CompleteFailed", error.message)
+                ErrorCustom.Problem("OrderItem.CompleteFailed", error)
             );
         }
     }

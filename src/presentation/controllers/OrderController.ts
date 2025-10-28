@@ -40,13 +40,18 @@ export class OrderController {
     async markOrderItemComplete(req: Request, res: Response) {
         const mediator = new Mediator();
         const { orderItemId } = req.params;
+        const quantity = req?.body?.quantity;
 
         if (!orderItemId || isNaN(parseInt(orderItemId))) {
             return res.status(400).json({ message: "Invalid order item ID" });
         }
-        
+
+        if (quantity !== undefined && (isNaN(parseInt(quantity)))) {
+            return res.status(400).json({ message: "Invalid quantity" });
+        }
+
         try {
-            const result = await mediator.send(new CompleteOrderItemCommand(parseInt(orderItemId)));
+            const result = await mediator.send(new CompleteOrderItemCommand(parseInt(orderItemId), quantity ? parseInt(quantity) : undefined));
             if (result.isFailure) {
                 return res.status(400).json({ ...result });
             }

@@ -1,4 +1,4 @@
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { QueryHandler } from "../../application/Mediator/decorators";
 import { GetOrderByDay } from "../../application/Order/GetOrderByDay/GerOrderByDay";
 import { OrderDTOMapper } from "../../application/Order/GetOrderByDay/OrderDTOMapper";
@@ -8,15 +8,19 @@ import { ResultWithValue } from "@core/results/Result";
 import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
 import { Order } from "@infrastructure/Persistence/PersistenceModel/Entities/Order";
 
-import { Between } from "typeorm";
+import { Between, DataSource } from "typeorm";
 
 @QueryHandler(GetOrderByDay)
 @injectable()
 export class GetOrderDetailsHandler {
 
+    constructor(
+        @inject("DataSource") private readonly dataSource: DataSource
+    ) {}
+
     async execute(query: GetOrderByDay): Promise< ResultWithValue<OrderDTO>> {
         
-        const orderRepo = AppDataSource.getRepository(Order);
+        const orderTable = this.dataSource.getRepository(Order);
 
         const startOfDay = new Date(query.date);
         startOfDay.setHours(0, 0, 0, 0);
@@ -24,7 +28,7 @@ export class GetOrderDetailsHandler {
         const endOfDay = new Date(query.date);
         endOfDay.setHours(23, 59, 59, 999);
 
-        const order = await orderRepo.findOne({
+        const order = await orderTable.findOne({
             where: { dateOrdered: Between(startOfDay, endOfDay) },
             relations: [
                 "orderItems",

@@ -16,6 +16,8 @@ import { Package } from "./Entities/Package";
 import { PackageItem } from "./Entities/PackageItem";
 import { Recipe } from "./Entities/Recipe";
 import { RecipeIngredient } from "./Entities/RecipeIngredient";
+import { AllocationLine } from "./Entities/AllocationLine";
+import { DailyAllocation } from "./Entities/DailyAllocation";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -33,6 +35,8 @@ export const AppDataSource = new DataSource({
         DayliDiet,
         Order,
         OrderItem,
+        DailyAllocation,
+        AllocationLine,
         Recipe,
         Ingredient,
         MeasurementUnit,

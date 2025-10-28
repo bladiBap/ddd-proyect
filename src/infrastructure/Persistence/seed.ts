@@ -149,19 +149,25 @@ async function seed() {
         orderItemRepo.create({
         order,
         recipe: recipe1,
-        quantity: 2,
+        quantityPlanned: 2,
+        quantityPrepared: 0,
+        quantityDelivered: 0,
         status: StatusOrder.CREATED,
         }),
         orderItemRepo.create({
         order,
         recipe: recipe2,
-        quantity: 3,
+        quantityPlanned: 3,
+        quantityPrepared: 0,
+        quantityDelivered: 0,
         status: StatusOrder.CREATED,
         }),
         orderItemRepo.create({
         order,
         recipe: recipe2,
-        quantity: 1,
+        quantityPlanned: 1,
+        quantityPrepared: 0,
+        quantityDelivered: 0,
         status: StatusOrder.CREATED,
         }),
     ]);

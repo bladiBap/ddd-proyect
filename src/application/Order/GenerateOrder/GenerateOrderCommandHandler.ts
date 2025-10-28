@@ -1,38 +1,46 @@
+import "reflect-metadata";
 import { injectable, inject } from "tsyringe";
 import { CommandHandler } from "@application/Mediator/decorators";
 import { GenerateOrderCommand } from "./GenerateOrderCommand";
 import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 import { Order } from "@domain/aggregates/order/Order";
 import { StatusOrder } from "@domain/aggregates/order/StatusOrderEnum";
-import { OrderRepository } from "@infrastructure/Persistence/Repositories/OrderRepositorty";
-import { AddressRepository } from "@infrastructure/Persistence/Repositories/AddressRepository";
 import { Result } from "core/results/Result";
 import { ErrorCustom } from "core/results/ErrorCustom";
+
+import { IOrderRepository } from "@domain/aggregates/order/IOrderRepository";
+import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
+import { IDailyAllocationRepository } from "@domain/aggregates/dailyAllocation/IDailyAllocationRepository";
+import { DailyAllocation } from "@domain/aggregates/dailyAllocation/DailyAllocation";
+import { AllocationLine } from "@domain/aggregates/dailyAllocation/AllocationLine";
 
 @CommandHandler(GenerateOrderCommand)
 @injectable()
 export class GenerateOrderCommandHandler {
     constructor(
-        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork
+        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
+        @inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
+        @inject("IAddressRepository") private readonly addressRepository: IAddressRepository,
+        @inject("IDailyAllocationRepository") private readonly dailyAllocationRepository: IDailyAllocationRepository
     ) {}
 
     async execute(_: GenerateOrderCommand): Promise<Result> {
         await this.unitOfWork.startTransaction();
-
+        const manager = this.unitOfWork.getManager();
         try {
-            const orderRepo = this.unitOfWork.getRepository(OrderRepository);
-            const addressRepo = this.unitOfWork.getRepository(AddressRepository);
             const today = new Date();
 
-            const existing = await orderRepo.findByDateAsync(today);
+            const existing = await this.orderRepository.findByDateAsync(today);
             if (existing.length > 0) {
                 await this.unitOfWork.rollback();
                 return Result.failure(ErrorCustom.Conflict("Order.AlreadyExists", "An order for today already exists"));
             }
 
             const newOrder = new Order(0, today, today, StatusOrder.CREATED);
+            const dailyAllocations = new DailyAllocation(0, today);
 
-            const recipesToOrder = await addressRepo.getRecipesToPrepare(today);
+            const recipesToOrder = await this.addressRepository.getRecipesToPrepare(today);
+            const recipesPerClient = await this.addressRepository.getPerClientNeeds(today);
 
             if (recipesToOrder.length === 0) {
                 await this.unitOfWork.rollback();
@@ -40,11 +48,17 @@ export class GenerateOrderCommandHandler {
             }
 
             for (const item of recipesToOrder) {
-                newOrder.addItem(item.recipeId, item.quantity, StatusOrder.CREATED);
+                newOrder.addItem(item.recipeId, item.quantity, 0, 0, StatusOrder.CREATED);
+            }
+
+            for (const clientNeed of recipesPerClient) {
+                const line = new AllocationLine(0, clientNeed.clientId, clientNeed.recipeId, clientNeed.quantity);
+                dailyAllocations.addLine(line);
             }
             
-            await orderRepo.addAsync(newOrder);
-            throw new Error("Simulated failure");
+            await this.orderRepository.addAsync(newOrder, manager);
+            await this.dailyAllocationRepository.addAsync(dailyAllocations, manager);
+            //throw new Error("Simulated failure");
             await this.unitOfWork.commit();
 
             return Result.success();

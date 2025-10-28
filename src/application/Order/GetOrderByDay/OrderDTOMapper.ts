@@ -10,7 +10,7 @@ export class OrderDTOMapper {
             status: order.status,
             orderItems: order.orderItems.map(item => ({
                 id: item.id,
-                quantity: item.quantity,
+                quantity: item.quantityPlanned,
                 status: item.status,
                 recipe: {
                     id: item.recipe.id,

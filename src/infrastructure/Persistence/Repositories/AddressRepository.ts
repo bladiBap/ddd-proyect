@@ -4,17 +4,18 @@ import { AppDataSource } from "../PersistenceModel/data-source";
 import { Address } from "@domain/aggregates/address/Address";
 import { Address as AddressPersis } from "../PersistenceModel/Entities/Address";
 import { AddressMapper } from "../DomainModel/Config/AddressMapper";
+import { OrderRawDTO } from "@application/Order/dto/OrderRawDTO";
+import { OrderByClientRawDTO } from "@application/Order/dto/OrderByClientRawDTO";
 
 export class AddressRepository implements IAddressRepository {
 
     private readonly repo = AppDataSource.getRepository(AddressPersis);
 
-    async getRecipesToPrepare(date: Date): Promise<{ recipeId: number; quantity: number; }[]> {
+    async getRecipesToPrepare(date: Date): Promise<OrderRawDTO[]> {
         
         const formattedDate = date.toISOString().split("T")[0];
         
-        const result = await this.repo.query(
-            `
+        const result = await this.repo.query(`
             SELECT 
                 ddr."recipeId" AS "recipeId",
                 COUNT(ddr."recipeId") AS "quantity"
@@ -26,15 +27,52 @@ export class AddressRepository implements IAddressRepository {
             WHERE a."date" = $1
                 AND mp."startDate" <= $1::date
                 AND mp."endDate" >= $1::date
-            GROUP BY ddr."recipeId";
-            `,
+            GROUP BY ddr."recipeId"; `,
             [formattedDate]
         );
 
-        return result.map((row: any) => ({
-            recipeId: Number(row.recipeId),
-            quantity: Number(row.quantity),
+        if (result.length === 0) {
+            return [];
+        }
+
+        const recipesToPrepare: OrderRawDTO[] = result.map((row: any) => ({
+            recipeId: parseInt(row.recipeId, 10),
+            quantity: parseInt(row.quantity, 10),
         }));
+
+        return recipesToPrepare;
+    }
+
+    async getPerClientNeeds(date: Date): Promise<OrderByClientRawDTO[]> {
+        const formattedDate = date.toISOString().split("T")[0];
+
+        const result = await this.repo.query(`
+            SELECT 
+                c."id" AS "clientId",
+                c."name" AS "clientName",
+                ddr."recipeId" AS "recipeId",
+                COUNT(ddr."recipeId") AS "quantity"
+            FROM "address" a
+            INNER JOIN "calendar" cal ON cal."id" = a."calendarId"
+            INNER JOIN "meal_plan" mp ON mp."calendarId" = cal."id"
+            INNER JOIN "client" c ON c."id" = mp."clientId"
+            INNER JOIN "dayli_diet" dd ON dd."mealPlanId" = mp."id"
+            INNER JOIN "dayli_diet_recipes" ddr ON ddr."dayliDietId" = dd."id"
+            WHERE a."date" = $1
+                AND mp."startDate" <= $1::date
+                AND mp."endDate" >= $1::date
+            GROUP BY c."id", c."name", ddr."recipeId"; `,
+            [formattedDate]
+        );
+        if (result.length === 0) {
+            return [];
+        }
+        const clientNeeds: OrderByClientRawDTO[] = result.map((row: any) => ({
+            clientId: parseInt(row.clientId, 10),
+            recipeId: parseInt(row.recipeId, 10),
+            quantity: parseInt(row.quantity, 10),
+        }));
+        return clientNeeds;
     }
 
     async getClientsForDeliveredInformation(date: Date): Promise<any[]> {

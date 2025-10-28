@@ -19,7 +19,9 @@ export class OrderMapper {
             if (item.getOrderId() !== 0) {
                 itemEntity.orderId = item.getOrderId();
             }
-            itemEntity.quantity = item.getQuantity();
+            itemEntity.quantityPlanned = item.getQuantityPlanned();
+            itemEntity.quantityPrepared = item.getQuantityPrepared();
+            itemEntity.quantityDelivered = item.getQuantityDelivered();
             itemEntity.status = item.getStatus();
             itemEntity.recipeId = item.getRecipeId();
             return itemEntity;
@@ -54,7 +56,9 @@ export class OrderMapper {
         const orderItems: OrderItemDomain[] = data.orderItems?.map(item => {
             return new OrderItemDomain(
                 item.id,
-                item.quantity,
+                item.quantityPlanned,
+                item.quantityPrepared,
+                item.quantityDelivered,
                 item.status,
                 item.recipeId,
                 item.orderId

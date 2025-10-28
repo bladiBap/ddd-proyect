@@ -14,7 +14,9 @@ export class OrderItemMapper {
         if (item.getOrderId() !== 0) {
             itemEntity.orderId = item.getOrderId();
         }
-        itemEntity.quantity = item.getQuantity();
+        itemEntity.quantityPlanned = item.getQuantityPlanned();
+        itemEntity.quantityPrepared = item.getQuantityPrepared();
+        itemEntity.quantityDelivered = item.getQuantityDelivered();
         itemEntity.status = item.getStatus();
         itemEntity.recipeId = item.getRecipeId();
         return itemEntity;
@@ -28,7 +30,9 @@ export class OrderItemMapper {
         return new OrderItemDomain(
             data.id,
             data.orderId,
-            data.quantity,
+            data.quantityPlanned,
+            data.quantityPrepared,
+            data.quantityDelivered,
             data.recipeId,
             data.status
         );

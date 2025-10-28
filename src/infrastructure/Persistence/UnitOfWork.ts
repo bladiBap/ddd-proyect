@@ -1,56 +1,96 @@
 import { injectable, inject } from "tsyringe";
-import { AppDataSource } from "./PersistenceModel/data-source";
-import { EntityManager, QueryRunner } from "typeorm";
+import { EntityManager, QueryRunner, DataSource } from "typeorm";
 import { Mediator } from "@application/Mediator/Mediator";
+import { DomainEventsCollector } from "@application/DomainEventsCollector";
 import { DomainEvent } from "core/abstractions/DomainEvent";
 import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 
 @injectable()
 export class UnitOfWork implements IUnitOfWork {
-    private queryRunner!: QueryRunner;
-    private manager!: EntityManager;
+    private queryRunner?: QueryRunner;
+    private manager?: EntityManager;
+    private isActive = false;
 
     constructor(
-        @inject(Mediator) private readonly mediator: Mediator
+        @inject(Mediator) private readonly mediator: Mediator,
+        @inject("DataSource") private readonly dataSource: DataSource
     ) {}
 
     async startTransaction(): Promise<void> {
-        this.queryRunner = AppDataSource.createQueryRunner();
-        await this.queryRunner.connect();
-        await this.queryRunner.startTransaction();
-        this.manager = this.queryRunner.manager;
+        if (this.isActive) {
+            throw new Error("UnitOfWork: the transaction is already active.");
+        }
+
+        const qr = this.dataSource.createQueryRunner();
+        await qr.connect();
+        await qr.startTransaction();
+
+        this.queryRunner = qr;
+        this.manager = qr.manager;
+        this.isActive = true;
     }
 
     async commit(): Promise<void> {
-        try {
-            const domainEvents = this.extractDomainEvents();
-            for (const event of domainEvents) {
-                await this.mediator.send(event);
-            }
+        if (!this.isActive || !this.queryRunner) {
+            throw new Error("UnitOfWork: no active transaction to commit.");
+        }
 
+        const domainEvents = this.extractDomainEvents();
+
+        try {
             await this.queryRunner.commitTransaction();
         } catch (err) {
-            await this.queryRunner.rollbackTransaction();
+            try { await this.queryRunner.rollbackTransaction(); } catch {}
             throw err;
         } finally {
-            await this.queryRunner.release();
+            await this.safeRelease();
+        }
+
+        for (const event of domainEvents) {
+            await this.mediator.send(event);
         }
     }
 
     async rollback(): Promise<void> {
+        if (!this.isActive || !this.queryRunner) {
+            return;
+        }
         try {
             await this.queryRunner.rollbackTransaction();
         } finally {
-            await this.queryRunner.release();
+            await this.safeRelease();
         }
-    }
-
-    private extractDomainEvents(): DomainEvent[] {
-        return [];
     }
 
     getRepository<T extends { new (manager: EntityManager): any }>(repo: T): InstanceType<T> {
         if (!this.manager) throw new Error("Transaction not started. Call start() first.");
         return new repo(this.manager);
+    }
+
+    private extractDomainEvents(): DomainEvent[] {
+        return DomainEventsCollector.pullAll();
+    }
+
+    private async safeRelease(): Promise<void> {
+        try {
+            if (this.queryRunner && !this.queryRunner.isReleased) {
+                await this.queryRunner.release();
+            }
+        } finally {
+            this.queryRunner = undefined;
+            this.manager = undefined;
+            this.isActive = false;
+        }
+    }
+
+    getManager(): EntityManager {
+        return this.manager ?? this.dataSource.manager;
+    }
+    
+    getRequiredManager(): EntityManager {
+        if (!this.isActive || !this.manager) {
+        throw new Error("UnitOfWork: se requiere transacción activa.");
+        }
+        return this.manager;
     }
 }

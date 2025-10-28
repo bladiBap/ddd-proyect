@@ -10,6 +10,8 @@ const app = express();
 const orderController = new OrderController();
 const clientController = new ClientController();
 
+app.use(express.json());
+
 app.get("/order-today/details", (req, res) => orderController.getOrderOfTheDay(req, res));
 app.post("/order-today/generate", (req, res) => orderController.generateOrderReport(req, res));
 app.post("/order-item/:orderItemId/complete", (req, res) => orderController.markOrderItemComplete(req, res));

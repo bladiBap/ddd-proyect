@@ -18,7 +18,7 @@ async function seed() {
     await AppDataSource.initialize();
     console.log("📦 Connected to database");
 
-    // 🔥 Elimina y recrea todas las tablas
+    
     await AppDataSource.synchronize(true);
     console.log("🧹 Schema recreated");
 
@@ -35,26 +35,22 @@ async function seed() {
     const mealPlanRepo = AppDataSource.getRepository(MealPlan);
     const dayliDietRepo = AppDataSource.getRepository(DayliDiet);
 
-    // 🧂 Unidades de medida
     const [gram, piece] = await unitRepo.save([
         unitRepo.create({ name: "Gram", simbol: "g" }),
         unitRepo.create({ name: "Piece", simbol: "pc" }),
     ]);
 
-    // 🧑‍💼 Clientes
     const [client1, client2] = await clientRepo.save([
         clientRepo.create({ name: "John Doe" }),
         clientRepo.create({ name: "Jane Smith" }),
     ]);
 
-    // 🥕 Ingredientes
     const [rice, chicken, egg] = await ingredientRepo.save([
         ingredientRepo.create({ name: "Rice", measurementUnit: gram }),
         ingredientRepo.create({ name: "Chicken Breast", measurementUnit: gram }),
         ingredientRepo.create({ name: "Egg", measurementUnit: piece }),
     ]);
 
-    // 🍛 Recetas
     const [recipe1, recipe2] = await recipeRepo.save([
         recipeRepo.create({
         name: "Chicken Rice Bowl",
@@ -66,19 +62,16 @@ async function seed() {
         }),
     ]);
 
-    // ⚗️ Relación receta - ingredientes
     await recipeIngRepo.save([
         recipeIngRepo.create({ recipe: recipe1, ingredient: rice, quantity: 200 }),
         recipeIngRepo.create({ recipe: recipe1, ingredient: chicken, quantity: 150 }),
         recipeIngRepo.create({ recipe: recipe2, ingredient: egg, quantity: 1 }),
     ]);
 
-    // 🗓️ Calendarios
     const calendar1 = calendarRepo.create({});
     const calendar2 = calendarRepo.create({});
     await calendarRepo.save([calendar1, calendar2]);
 
-    // 📍 Direcciones
     const today = new Date();
     const address1 = addressRepo.create({
         date: today.toISOString().split("T")[0],
@@ -98,7 +91,6 @@ async function seed() {
     });
     await addressRepo.save([address1, address2]);
 
-    // 🧩 Planes alimenticios
     const startDate = new Date(today);
     startDate.setDate(today.getDate() - 2);
     const endDate = new Date(today);
@@ -121,7 +113,6 @@ async function seed() {
         }),
     ]);
 
-    // 🍎 Dietas diarias (cada cliente tiene recetas distintas)
     const diet1 = dayliDietRepo.create({
         date: today,
         nDayPlan: 3,
@@ -136,7 +127,6 @@ async function seed() {
     });
     await dayliDietRepo.save([diet1, diet2]);
 
-    // 🧾 Orden
     const order = orderRepo.create({
         dateOrdered: today,
         dateCreatedOn: new Date(),
@@ -144,7 +134,6 @@ async function seed() {
     });
     await orderRepo.save(order);
 
-    // 🧾 Items de la orden
     const [item1, item2, item3] = await orderItemRepo.save([
         orderItemRepo.create({
         order,
@@ -172,11 +161,11 @@ async function seed() {
         }),
     ]);
 
-    console.log("✅ Database seeded successfully!");
+    console.log("Database seeded successfully!");
     process.exit(0);
     }
 
     seed().catch((err) => {
-    console.error("❌ Error seeding database:", err);
+    console.error("Error seeding database:", err);
     process.exit(1);
 });

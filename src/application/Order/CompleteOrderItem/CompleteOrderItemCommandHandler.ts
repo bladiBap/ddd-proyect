@@ -6,8 +6,8 @@ import { Result } from "core/results/Result";
 import { ErrorCustom } from "core/results/ErrorCustom";
 import { OrderItemRepository } from "@infrastructure/Persistence/Repositories/OrderItemRepository";
 
-@CommandHandler(CompleteOrderItemCommand)
 @injectable()
+@CommandHandler(CompleteOrderItemCommand)
 export class CompleteOrderItemCommandHandler {
     constructor(
         @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
@@ -16,7 +16,7 @@ export class CompleteOrderItemCommandHandler {
 
     async execute(command: CompleteOrderItemCommand): Promise<Result> {
         await this.unitOfWork.startTransaction();
-
+        const manager = this.unitOfWork.getManager();
         try {
             const orderItem = await this.orderItemRepository.getByIdAsync(command.orderItemId);
 
@@ -28,9 +28,9 @@ export class CompleteOrderItemCommandHandler {
             }
             const quantityPrepared = command.quantity ?? orderItem.getQuantityPlanned();
             orderItem.increaseQuantityPrepared(quantityPrepared);
-            
-            const item = await this.orderItemRepository.updateAsync(orderItem);
-            
+
+            await this.orderItemRepository.updateAsync(orderItem, manager);
+
             await this.unitOfWork.commit();
             return Result.success();
         } catch (error : any) {

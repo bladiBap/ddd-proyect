@@ -35,6 +35,7 @@ export class DailyAllocationMapper {
         const lines = data.lines.map((lineEntity: AllocationLineEntity) => {
             return new AllocationLineDomain(
                 lineEntity.id,
+                lineEntity.allocationId,
                 lineEntity.clientId,
                 lineEntity.recipeId,
                 lineEntity.quantityNeeded,

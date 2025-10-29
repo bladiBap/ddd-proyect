@@ -1,23 +1,26 @@
-import { injectable } from "tsyringe";
-import { ResultWithValue } from "core/results/Result";
-
-import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
+import { DataSource } from "typeorm";
+import { injectable, inject } from "tsyringe";
+import { ResultWithValue } from "@core/results/Result";
 
 import { QueryHandler } from "@application/Mediator/decorators";
 import { IClientDeliveredDTO } from "@application/Client/dto/dto";
 import { GetClientsForDelivered } from "@application/Client/GetClientsForDelivery/GetClientsForDelivered";
 import { ClientDeliveredDTOMapper } from "@application/Client/GetClientsForDelivery/ClientDeliveredDTOMapper";
 
-@QueryHandler(GetClientsForDelivered)
 @injectable()
+@QueryHandler(GetClientsForDelivered)
 export class GetClientsForDeliveredHandler {
+
+    constructor(
+        @inject("DataSource") private readonly dataSource: DataSource
+    ) {}
 
     async execute(query: GetClientsForDelivered): Promise<ResultWithValue<IClientDeliveredDTO[]>> {
 
         const today = new Date();
         const formattedDate = today.toISOString().split("T")[0];
 
-        const flatData = await AppDataSource.manager.query(`
+        const flatData = await this.dataSource.query(`
             SELECT 
                 c."name" AS "clientName",
                 c."id" AS "clientId",

@@ -8,6 +8,9 @@ export class PackageItem {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Column()
+    quantity!: number;
+
     @ManyToOne(() => Package, packag => packag.packageItems)
     @JoinColumn({ name: "packageId" })
     package!: Package;

@@ -6,16 +6,25 @@ import { Address as AddressPersis } from "../PersistenceModel/Entities/Address";
 import { AddressMapper } from "../DomainModel/Config/AddressMapper";
 import { OrderRawDTO } from "@application/Order/dto/OrderRawDTO";
 import { OrderByClientRawDTO } from "@application/Order/dto/OrderByClientRawDTO";
+import { inject, injectable } from "tsyringe";
+import { DataSource, EntityManager } from "typeorm";
 
+@injectable()
 export class AddressRepository implements IAddressRepository {
 
-    private readonly repo = AppDataSource.getRepository(AddressPersis);
+    constructor(
+        @inject("DataSource") private readonly dataSource: DataSource
+    ) {}
 
+    private getManager(): EntityManager {
+        return this.dataSource.manager;
+    }
+    
     async getRecipesToPrepare(date: Date): Promise<OrderRawDTO[]> {
         
         const formattedDate = date.toISOString().split("T")[0];
-        
-        const result = await this.repo.query(`
+
+        const result = await this.getManager().query(`
             SELECT 
                 ddr."recipeId" AS "recipeId",
                 COUNT(ddr."recipeId") AS "quantity"
@@ -45,8 +54,7 @@ export class AddressRepository implements IAddressRepository {
 
     async getPerClientNeeds(date: Date): Promise<OrderByClientRawDTO[]> {
         const formattedDate = date.toISOString().split("T")[0];
-
-        const result = await this.repo.query(`
+        const result = await this.getManager().query(`
             SELECT 
                 c."id" AS "clientId",
                 c."name" AS "clientName",
@@ -76,10 +84,9 @@ export class AddressRepository implements IAddressRepository {
     }
 
     async getClientsForDeliveredInformation(date: Date): Promise<any[]> {
-
         const formattedDate = date.toISOString().split("T")[0];
 
-        return await this.repo.query(
+        return await this.getManager().query(
             `
             SELECT 
                 c."name" AS "clientName",
@@ -108,18 +115,44 @@ export class AddressRepository implements IAddressRepository {
     }
     
     async deleteAsync(id: number): Promise<void> {
-        await this.repo.delete(id);
+        await this.getManager().getRepository(AddressPersis).delete({ id });
     }
 
     async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
-        const address = await this.repo.findOne({ where: { id: id }, relations: ["client"] });
+        const address = await this.getManager().getRepository(AddressPersis).findOne(
+            { where: { id: id }, relations: ["client"] }
+        );
         if (!address) return null;
         return AddressMapper.toDomain(address);
     }
 
-    async addAsync(entity: Address): Promise<void> {
+    async addAsync(entity: Address, em?: EntityManager): Promise<void> {
+        const manager = em ?? this.getManager();
         const addressEntity = AddressMapper.toPersistence(entity);
-        await this.repo.save(addressEntity);
+        await manager.getRepository(AddressPersis).save(addressEntity);
+    }
+
+    async getAddressForTodayByClientId(clientId: number): Promise<Address | null> {
+        
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+
+        const addressRaw = await this.getManager()
+            .getRepository(AddressPersis)
+            .createQueryBuilder("a")
+            .innerJoin("a.calendar", "cal")
+            .innerJoin("cal.mealPlan", "mp")
+            .where("mp.clientId = :clientId", { clientId })
+            .andWhere("a.date >= :start AND a.date < :end", { start, end })
+            .orderBy("a.date", "DESC")
+            .getOne();
+
+        if (addressRaw === null) return null;
+
+        return AddressMapper.toDomain(addressRaw);
     }
     
 }

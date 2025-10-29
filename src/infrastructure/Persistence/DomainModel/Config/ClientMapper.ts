@@ -1,4 +1,4 @@
-import { Client as ClientDomain } from '@domain/Client/Client';
+import { Client as ClientDomain } from '@domain/aggregates/client/Client';
 import { Client as ClientEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/Client';
 
 export class ClientMapper {

@@ -15,6 +15,15 @@ export class DailyAllocation extends AggregateRoot {
         this.lines.push(line);
     }
 
+    public clientHasAllRecipes(clientId: number, recipesIds: number[]): boolean {
+        const clientRecipeIds = new Set(
+            this.lines
+                .filter(line => line.getClientId() === clientId)
+                .map(line => line.getRecipeId())
+        );
+        return recipesIds.every(recipeId => clientRecipeIds.has(recipeId));
+    }
+
     public getLines(): AllocationLine[] {
         return this.lines;
     }

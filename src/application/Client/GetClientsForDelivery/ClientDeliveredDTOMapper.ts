@@ -1,4 +1,3 @@
-import { Client } from '../../../domain/Client/Client';
 import { IClientDeliveredDTO } from '../dto/dto';
 
 export class ClientDeliveredDTOMapper {

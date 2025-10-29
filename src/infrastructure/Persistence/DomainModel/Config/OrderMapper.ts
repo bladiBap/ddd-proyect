@@ -1,5 +1,6 @@
 import { Order as OrderDomain } from '@domain/aggregates/order/Order';
-import { Order as OrderEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/Order'; 
+import { Order as OrderEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/Order';
+
 import { OrderItem as OrderItemDomain } from '@domain/aggregates/order/OrderItem';
 import { OrderItem as OrderItemEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/OrderItem';
 
@@ -56,12 +57,12 @@ export class OrderMapper {
         const orderItems: OrderItemDomain[] = data.orderItems?.map(item => {
             return new OrderItemDomain(
                 item.id,
+                item.orderId,
                 item.quantityPlanned,
                 item.quantityPrepared,
                 item.quantityDelivered,
-                item.status,
                 item.recipeId,
-                item.orderId
+                item.status
             );
         }); 
 

@@ -6,20 +6,29 @@ import { OrderItemMapper } from "../DomainModel/Config/OrderItemMapper";
 import { OrderItem as DomainOrderItem } from "@domain/aggregates/order/OrderItem";
 
 import { DomainEventsCollector } from "@application/DomainEventsCollector";
+import { inject, injectable } from "tsyringe";
+import { DataSource, EntityManager } from "typeorm";
 
+@injectable()
 export class OrderItemRepository implements IOrderItemRepository {
-    private readonly repo = AppDataSource.getRepository(OrderItem);
+
+    constructor(
+        @inject("DataSource") private readonly dataSource: DataSource
+    ) {}
 
     private getManager(): EntityManager {
         return this.dataSource.manager;
     }
 
-    async deleteAsync(id: number): Promise<void> {
-        await this.repo.delete(id);
+    async deleteAsync(id: number, em?: EntityManager): Promise<void> {
+        const manager = em ?? this.getManager();
+        await manager.getRepository(OrderItem).delete(id);
+        return;
     }
 
     async getByIdAsync(id: number, readOnly = true): Promise<DomainOrderItem | null> {
-        const item = await this.repo.findOne({
+        const manager = this.getManager();
+        const item = await manager.getRepository(OrderItem).findOne({
             where: { id },
             relations: ["order"],
         });
@@ -30,14 +39,16 @@ export class OrderItemRepository implements IOrderItemRepository {
         return domainItem;
     }
 
-    async addAsync(entity: DomainOrderItem): Promise<void> {
+    async addAsync(entity: DomainOrderItem, em?: EntityManager): Promise<void> {
+        const manager = em ?? this.getManager();
         const itemEntity = OrderItemMapper.toPersistence(entity);
-        await this.repo.save(itemEntity);
+        await manager.getRepository(OrderItem).save(itemEntity);
     }
-
-    async updateAsync(entity: DomainOrderItem): Promise<DomainOrderItem> {
+    
+    async updateAsync(entity: DomainOrderItem, em?: EntityManager): Promise<DomainOrderItem> {
+        const manager = em ?? this.getManager();
         const itemEntity = OrderItemMapper.toPersistence(entity);
-        const updatedItem = await this.repo.save(itemEntity);
+        const updatedItem = await manager.getRepository(OrderItem).save(itemEntity);
         DomainEventsCollector.collect(entity.getDomainEvents());
         return OrderItemMapper.toDomain(updatedItem);
     }

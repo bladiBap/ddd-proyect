@@ -1,9 +1,11 @@
 import { injectable, inject } from "tsyringe";
 import { EntityManager, QueryRunner, DataSource } from "typeorm";
+
+import { DomainEvent } from "@core/abstractions/DomainEvent";
+import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
+
 import { Mediator } from "@application/Mediator/Mediator";
 import { DomainEventsCollector } from "@application/DomainEventsCollector";
-import { DomainEvent } from "core/abstractions/DomainEvent";
-import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 
 @injectable()
 export class UnitOfWork implements IUnitOfWork {
@@ -36,7 +38,7 @@ export class UnitOfWork implements IUnitOfWork {
         }
 
         const domainEvents = this.extractDomainEvents();
-
+        
         try {
             await this.queryRunner.commitTransaction();
         } catch (err) {
@@ -47,8 +49,9 @@ export class UnitOfWork implements IUnitOfWork {
         }
 
         for (const event of domainEvents) {
-            await this.mediator.send(event);
+            await this.mediator.publish(event);
         }
+        
     }
 
     async rollback(): Promise<void> {

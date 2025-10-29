@@ -42,7 +42,8 @@ export class PackageMapper {
             return new PackageItemDomain(
                 item.id,
                 item.recipeId,
-                item.packageId
+                item.packageId,
+                item.quantity
             );
         }); 
 

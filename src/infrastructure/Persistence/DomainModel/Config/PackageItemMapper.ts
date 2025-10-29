@@ -14,7 +14,7 @@ export class PackageItemMapper {
         
         itemEntity.recipeId = item.getRecipeId();
         itemEntity.packageId = item.getPackageId();
-        
+        itemEntity.quantity = item.getQuantity();
         return itemEntity;
     }
 
@@ -26,7 +26,8 @@ export class PackageItemMapper {
         return new PackageItemDomain(
             data.id,
             data.recipeId,
-            data.packageId
+            data.packageId,
+            data.quantity
         );
     }
 }

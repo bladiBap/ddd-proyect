@@ -1,9 +1,9 @@
-import { AggregateRoot } from "../../../../core/abstractions/AgregateRoot";
-import { Client } from '../../../Client/Client';
-import { PackageItem } from "../PackageItem/PackageItem";
+import { DomainException } from "@core/results/DomainExeption";
+import { AggregateRoot } from "@core/abstractions/AgregateRoot";
+
 import { StatusPackage } from "./StatusPackage";
-import { DomainException } from "../../../../core/results/DomainExeption";
 import { PackageError } from "./PackageError";
+import { PackageItem } from "../PackageItem/PackageItem";
 
 export class Package extends AggregateRoot {
     

@@ -8,4 +8,5 @@ export interface IAddressRepository extends IRepository<Address> {
     getRecipesToPrepare(date: Date): Promise<OrderRawDTO[]>;
     getPerClientNeeds(date: Date): Promise<OrderByClientRawDTO[]>;
     getClientsForDeliveredInformation(date: Date): Promise<any[]>;
+    getAddressForTodayByClientId(clientId: number): Promise<Address | null>;
 }

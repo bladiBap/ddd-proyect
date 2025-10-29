@@ -54,7 +54,7 @@ export class OrderItem extends Entity{
             throw new DomainException( OrderItemError.quantityPreparedExceedsPlanned(newQuantityPrepared, this.quantityPlanned) );
         }
 
-        if (newQuantityPrepared === this.quantityPrepared) {
+        if (newQuantityPrepared === this.quantityPlanned) {
             this.changeStatusToCompleted()
         };
 

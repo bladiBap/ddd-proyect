@@ -1,13 +1,15 @@
 import { Entity } from '@core/abstractions/Entity';
 import { AllocationLineError } from './AllocationLineError';
 export class AllocationLine extends Entity {
+    private allocationId : number;
     private clientId : number;
     private recipeId : number;
     private quantityNeeded : number;
     private quantityPackaged : number;
 
-    constructor(id: number, clientId: number, recipeId: number,  quantityNeeded: number, quantityPackaged: number = 0) {
+    constructor(id: number, allocationId: number, clientId: number, recipeId: number,  quantityNeeded: number, quantityPackaged: number = 0) {
         super(id);
+        this.allocationId = allocationId;
         this.clientId = clientId;
         this.recipeId = recipeId;
         if (quantityNeeded <= 0) {
@@ -46,5 +48,9 @@ export class AllocationLine extends Entity {
 
     public getQuantityPackaged() : number {
         return this.quantityPackaged;
+    }
+
+    public getAllocationId() : number {
+        return this.allocationId;
     }
 }

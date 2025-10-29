@@ -1,17 +1,16 @@
 import { inject, injectable } from "tsyringe";
-import { QueryHandler } from "../../application/Mediator/decorators";
-import { GetOrderByDay } from "../../application/Order/GetOrderByDay/GerOrderByDay";
-import { OrderDTOMapper } from "../../application/Order/GetOrderByDay/OrderDTOMapper";
-import { OrderDTO } from "../../application/Order/dto/OrderDTO";
+import { Between, DataSource } from "typeorm";
 import { ResultWithValue } from "@core/results/Result";
 
-import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
+import { QueryHandler } from "@application/Mediator/decorators";
+import { GetOrderByDay } from "@application/Order/GetOrderByDay/GerOrderByDay";
+
+import { OrderDTOMapper } from "@application/Order/GetOrderByDay/OrderDTOMapper";
+import { OrderDTO } from "@application/Order/dto/OrderDTO";
 import { Order } from "@infrastructure/Persistence/PersistenceModel/Entities/Order";
 
-import { Between, DataSource } from "typeorm";
-
-@QueryHandler(GetOrderByDay)
 @injectable()
+@QueryHandler(GetOrderByDay)
 export class GetOrderDetailsHandler {
 
     constructor(

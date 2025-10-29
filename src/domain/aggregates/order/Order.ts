@@ -5,9 +5,6 @@ import { StatusOrder } from './StatusOrderEnum';
 import { AggregateRoot } from 'core/abstractions/AgregateRoot';
 import { DomainException } from 'core/results/DomainExeption';
 
-//Eventos
-import { OrderCompletedEvent } from './events/OrderCreatedEvent';
-
 export class Order extends AggregateRoot {
 
     private dateOrdered : Date;
@@ -44,7 +41,11 @@ export class Order extends AggregateRoot {
 
     public isItemsCompleted (): boolean {
         return this.listOrderItems.every(item => item.getStatus() === StatusOrder.COMPLETED);
-    } 
+    }
+    
+    public isStatusCompleted (): boolean{
+        return this.status === StatusOrder.COMPLETED;
+    }
 
     public getIdOrder(): number {
         return this.id;

@@ -14,8 +14,8 @@ import { IDailyAllocationRepository } from "@domain/aggregates/dailyAllocation/I
 import { DailyAllocation } from "@domain/aggregates/dailyAllocation/DailyAllocation";
 import { AllocationLine } from "@domain/aggregates/dailyAllocation/AllocationLine";
 
-@CommandHandler(GenerateOrderCommand)
 @injectable()
+@CommandHandler(GenerateOrderCommand)
 export class GenerateOrderCommandHandler {
     constructor(
         @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
@@ -52,7 +52,7 @@ export class GenerateOrderCommandHandler {
             }
 
             for (const clientNeed of recipesPerClient) {
-                const line = new AllocationLine(0, clientNeed.clientId, clientNeed.recipeId, clientNeed.quantity);
+                const line = new AllocationLine(0, dailyAllocations.getId(), clientNeed.clientId, clientNeed.recipeId, clientNeed.quantity);
                 dailyAllocations.addLine(line);
             }
             

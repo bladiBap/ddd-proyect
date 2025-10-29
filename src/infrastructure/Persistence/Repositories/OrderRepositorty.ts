@@ -53,4 +53,10 @@ export class OrderRepository implements IOrderRepository {
         const orderEntity = OrderMapper.toPersistence(entity);
         const res = await manager.getRepository(OrderEntity).save(orderEntity);
     }
+
+    async updatedAsync(order: Order): Promise<Order> {
+        const orderEntity = OrderMapper.toPersistence(order);
+        await this.getManager().getRepository(OrderEntity).save(orderEntity);
+        return order;
+    }
 }

@@ -51,7 +51,6 @@ export class UnitOfWork implements IUnitOfWork {
         for (const event of domainEvents) {
             await this.mediator.publish(event);
         }
-        
     }
 
     async rollback(): Promise<void> {

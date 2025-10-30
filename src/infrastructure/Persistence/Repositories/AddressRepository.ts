@@ -22,7 +22,12 @@ export class AddressRepository implements IAddressRepository {
     
     async getRecipesToPrepare(date: Date): Promise<OrderRawDTO[]> {
         
-        const formattedDate = date.toISOString().split("T")[0];
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+
 
         const result = await this.getManager().query(`
             SELECT 
@@ -35,9 +40,9 @@ export class AddressRepository implements IAddressRepository {
             INNER JOIN "dayli_diet_recipes" ddr ON ddr."dayliDietId" = dd."id"
             WHERE a."date" = $1
                 AND mp."startDate" <= $1::date
-                AND mp."endDate" >= $1::date
+                AND mp."endDate" >= $2::date
             GROUP BY ddr."recipeId"; `,
-            [formattedDate]
+            [start, end]
         );
 
         if (result.length === 0) {

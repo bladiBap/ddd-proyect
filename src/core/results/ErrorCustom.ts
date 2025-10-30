@@ -30,7 +30,6 @@ export class ErrorCustom {
         return structuredMessage;
         }
 
-        // Busca placeholders {algo}
         const placeholders = structuredMessage.match(/\{(\w+)\}/g);
         if (!placeholders) {
         return structuredMessage;
@@ -38,7 +37,7 @@ export class ErrorCustom {
 
         let result = structuredMessage;
         placeholders.forEach((placeholder, index) => {
-        if (index >= args.length) return; // evita overflow
+        if (index >= args.length) return;
         const value = args[index]?.toString() ?? "";
         result = result.replace(placeholder, value);
         });
@@ -60,5 +59,9 @@ export class ErrorCustom {
 
     static Conflict(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
         return new ErrorCustom(code, structuredMessage, ErrorType.Conflict, ...args);
+    }
+
+    static InvalidOperation(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
+        return new ErrorCustom(code, structuredMessage, ErrorType.InvalidOperation, ...args);
     }
 }

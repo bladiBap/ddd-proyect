@@ -3,4 +3,5 @@ export enum ErrorType {
   NotFound,   // 1
   Problem,    // 2
   Conflict,   // 3
+  InvalidOperation // 4
 }

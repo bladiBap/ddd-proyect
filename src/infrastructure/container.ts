@@ -2,9 +2,7 @@ import "reflect-metadata";
 import "@application/Order/events/OrderItemCompletedEventHandler";
 
 import { container } from "tsyringe";
-import { DataSource } from "typeorm";
 
-import { AppDataSource } from "./Persistence/PersistenceModel/data-source";
 import { UnitOfWork } from "./Persistence/UnitOfWork";
 import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 import { Mediator } from "@application/Mediator/Mediator";
@@ -32,7 +30,6 @@ import { IDailyAllocationRepository } from "@domain/aggregates/dailyAllocation/I
 
 container.registerSingleton(Mediator, Mediator);
 
-container.register<DataSource>("DataSource", { useValue: AppDataSource });
 container.register<IUnitOfWork>("IUnitOfWork", {
     useClass: UnitOfWork,
 });

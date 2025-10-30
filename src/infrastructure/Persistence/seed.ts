@@ -14,26 +14,23 @@ import { Calendar } from "../Persistence/PersistenceModel/Entities/Calendar";
 import { MealPlan } from "../Persistence/PersistenceModel/Entities/MealPlan";
 import { DayliDiet } from "../Persistence/PersistenceModel/Entities/DayliDiet";
 
-async function seed() {
+async function seed() {     
     await AppDataSource.initialize();
-    console.log("📦 Connected to database");
+    const appConection = AppDataSource.getInstance();
 
-    
-    await AppDataSource.synchronize(true);
-    console.log("🧹 Schema recreated");
 
     // 🔹 Repositorios
-    const unitRepo = AppDataSource.getRepository(MeasurementUnit);
-    const clientRepo = AppDataSource.getRepository(Client);
-    const ingredientRepo = AppDataSource.getRepository(Ingredient);
-    const recipeRepo = AppDataSource.getRepository(Recipe);
-    const recipeIngRepo = AppDataSource.getRepository(RecipeIngredient);
-    const orderRepo = AppDataSource.getRepository(Order);
-    const orderItemRepo = AppDataSource.getRepository(OrderItem);
-    const addressRepo = AppDataSource.getRepository(Address);
-    const calendarRepo = AppDataSource.getRepository(Calendar);
-    const mealPlanRepo = AppDataSource.getRepository(MealPlan);
-    const dayliDietRepo = AppDataSource.getRepository(DayliDiet);
+    const unitRepo = appConection.getRepository(MeasurementUnit);
+    const clientRepo = appConection.getRepository(Client);
+    const ingredientRepo = appConection.getRepository(Ingredient);
+    const recipeRepo = appConection.getRepository(Recipe);
+    const recipeIngRepo = appConection.getRepository(RecipeIngredient);
+    const orderRepo = appConection.getRepository(Order);
+    const orderItemRepo = appConection.getRepository(OrderItem);
+    const addressRepo = appConection.getRepository(Address);
+    const calendarRepo = appConection.getRepository(Calendar);
+    const mealPlanRepo = appConection.getRepository(MealPlan);
+    const dayliDietRepo = appConection.getRepository(DayliDiet);
 
     const [gram, piece] = await unitRepo.save([
         unitRepo.create({ name: "Gram", simbol: "g" }),
@@ -160,12 +157,12 @@ async function seed() {
         status: StatusOrder.CREATED,
         }),
     ]);
-
+    
     console.log("Database seeded successfully!");
     process.exit(0);
-    }
+}
 
-    seed().catch((err) => {
+seed().catch((err) => {
     console.error("Error seeding database:", err);
     process.exit(1);
 });

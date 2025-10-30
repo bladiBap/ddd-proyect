@@ -1,17 +1,20 @@
 import { injectable, inject } from "tsyringe";
 import { CommandHandler } from "@application/Mediator/decorators";
 import { CompleteOrderItemCommand } from "./CompleteOrderItemCommand";
-import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
-import { Result } from "core/results/Result";
-import { ErrorCustom } from "core/results/ErrorCustom";
-import { OrderItemRepository } from "@infrastructure/Persistence/Repositories/OrderItemRepository";
+import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
+import { Result } from "@core/results/Result";
+import { ErrorCustom } from "@core/results/ErrorCustom";
+import { IOrderItemRepository } from "@domain/aggregates/order/IOrderItemRepository";
+import { IOrderRepository } from "@domain/aggregates/order/IOrderRepository";
 
 @injectable()
 @CommandHandler(CompleteOrderItemCommand)
 export class CompleteOrderItemCommandHandler {
+
     constructor(
         @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
-        @inject("IOrderItemRepository") private readonly orderItemRepository: OrderItemRepository
+        @inject("IOrderItemRepository") private readonly orderItemRepository: IOrderItemRepository,
+        @inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
     ) {}
 
     async execute(command: CompleteOrderItemCommand): Promise<Result> {
@@ -24,6 +27,21 @@ export class CompleteOrderItemCommandHandler {
                 await this.unitOfWork.rollback();
                 return Result.failure(
                     ErrorCustom.NotFound("OrderItem.NotFound", "Order item not found")
+                );
+            }
+
+            const order = await this.orderRepository.getByIdAsync(orderItem.getOrderId());
+            
+            if (!order) {
+                await this.unitOfWork.rollback();
+                return Result.failure(
+                    ErrorCustom.NotFound("Order.NotFound", "Order not found")
+                );
+            }
+            if (order.isStatusCompleted()) {
+                await this.unitOfWork.rollback();
+                return Result.failure(
+                    ErrorCustom.InvalidOperation("OrderItem.CompleteFailed", "Cannot complete item of a completed order")
                 );
             }
             const quantityPrepared = command.quantity ?? orderItem.getQuantityPlanned();

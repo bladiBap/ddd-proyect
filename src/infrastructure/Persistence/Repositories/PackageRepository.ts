@@ -1,11 +1,9 @@
-import { AppDataSource } from "../PersistenceModel/data-source";
 import { IPackageRepository } from "@domain/aggregates/package/Package/IPackageRepository";
 import { Package } from "../PersistenceModel/Entities/Package";
 import { Package as DomainPackage } from "@domain/aggregates/package/Package/Package";
 import { PackageMapper } from "../DomainModel/Config/PackageMapper";
 
 import { inject, injectable } from "tsyringe";
-import { DataSource, EntityManager } from "typeorm";
 import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
 @injectable()

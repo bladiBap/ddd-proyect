@@ -6,7 +6,6 @@ import { AllocationLine } from "@domain/aggregates/dailyAllocation/AllocationLin
 import { DailyAllocationMapper } from "../DomainModel/Config/DailyAllocationMapper";
 import { DailyAllocation as DailyAllocationEntity } from "../PersistenceModel/Entities/DailyAllocation";
 import { AllocationLine as AllocationLineEntity } from "../PersistenceModel/Entities/AllocationLine";
-import { DataSource, EntityManager } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { AllocationLineMapper } from "../DomainModel/Config/AllocationLineMapper";
 import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";

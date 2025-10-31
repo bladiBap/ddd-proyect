@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { DataSource, EntityManager } from "typeorm";
 
 import { IClientRepository } from "@domain/aggregates/client/IClientRepository";
 

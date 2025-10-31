@@ -1,15 +1,12 @@
 import { IOrderItemRepository } from "@domain/aggregates/order/IOrderItemRepository";
 import { OrderItem } from "../PersistenceModel/Entities/OrderItem";
 
-import { AppDataSource } from "../PersistenceModel/data-source";
 import { OrderItemMapper } from "../DomainModel/Config/OrderItemMapper";
 import { OrderItem as DomainOrderItem } from "@domain/aggregates/order/OrderItem";
 
 import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 import { DomainEventsCollector } from "@application/DomainEventsCollector";
 import { inject, injectable } from "tsyringe";
-import { DataSource, EntityManager } from "typeorm";
-
 @injectable()
 export class OrderItemRepository implements IOrderItemRepository {
 

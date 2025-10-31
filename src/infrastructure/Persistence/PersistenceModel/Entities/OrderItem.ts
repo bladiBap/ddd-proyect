@@ -37,13 +37,13 @@ export class OrderItem {
     @JoinColumn({ name: "recipeId" })
     recipe!: Recipe;
 
-    @Column({ name: "recipeId" })
-    recipeId!: number;
-
     @ManyToOne(() => Order, order => order.orderItems)
     @JoinColumn({ name: "orderId" })
     order!: Order;
 
-    @Column({ name: "orderId" })
+    @Column()
+    recipeId!: number;
+
+    @Column()
     orderId!: number;
 }

@@ -11,32 +11,25 @@ import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
 export class OrderItemCompletedEventHandler {
 
     constructor(
-        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
-        @inject("IOrderRepository") private readonly orderItemRepository: IOrderRepository
+        @inject("IOrderRepository") private readonly orderRepository: IOrderRepository
     ) {}
 
     async handle(event: OrderItemCompletedEvent): Promise<void> {
         const orderId = event.orderId;
 
-        await this.unitOfWork.startTransaction();
-        const order = await this.orderItemRepository.getByIdAsync(orderId);
+        const order = await this.orderRepository.getByIdAsync(orderId);
         
         if (!order) {
-            await this.unitOfWork.rollback();
-            return;
+            throw new Error(`Order with id ${orderId} not found.`);
         }
 
         if (order.isStatusCompleted()) {
-            await this.unitOfWork.rollback();
-            return;
+            throw new Error("Order is already completed.");
         }
 
         order.tryMarkCompleted();
         if (order.isStatusCompleted()) {
-            await this.orderItemRepository.updatedAsync(order);
-            await this.unitOfWork.commit();
-        }else {
-            await this.unitOfWork.rollback();
+            await this.orderRepository.updatedAsync(order);
         }
     }
 }

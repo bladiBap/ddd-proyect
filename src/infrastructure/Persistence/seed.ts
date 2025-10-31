@@ -18,8 +18,10 @@ async function seed() {
     await AppDataSource.initialize();
     const appConection = AppDataSource.getInstance();
 
+    await appConection.query('TRUNCATE TABLE "order_item", "order", "dayli_diet", "meal_plan", "calendar", "address", "recipe_ingredient", "recipe", "ingredient", "client", "measurement_unit", "daily_allocation", "allocation_line" RESTART IDENTITY CASCADE;');
+    console.log("Database cleaned!");
 
-    // 🔹 Repositorios
+    //Repositorios
     const unitRepo = appConection.getRepository(MeasurementUnit);
     const clientRepo = appConection.getRepository(Client);
     const ingredientRepo = appConection.getRepository(Ingredient);

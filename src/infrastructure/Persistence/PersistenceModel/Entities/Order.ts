@@ -8,10 +8,10 @@ export class Order {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ type: "date" })
     dateOrdered!: Date;
 
-    @Column()
+    @Column({ type: "date" })
     dateCreatedOn!: Date;
 
     @Column({

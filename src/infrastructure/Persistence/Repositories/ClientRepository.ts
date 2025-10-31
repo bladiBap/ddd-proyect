@@ -6,40 +6,39 @@ import { IClientRepository } from "@domain/aggregates/client/IClientRepository";
 import { Client as ClientEntity } from "../PersistenceModel/Entities/Client";
 import { Client as ClientDomain } from "@domain/aggregates/client/Client";
 import { ClientMapper } from "../DomainModel/Config/ClientMapper";
+import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
 
 @injectable()
 export class ClientRepository implements IClientRepository {
 
     constructor(
-        @inject("DataSource") private readonly dataSource: DataSource
+        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
     ) {}
-
-    private getManager(): EntityManager {
-        return this.dataSource.manager;
-    }
-
-    async deleteAsync(id: number, em?: EntityManager): Promise<void> {
-        const manager = em ?? this.getManager();
+        
+    async deleteAsync(id: number): Promise<void> {
+        const manager = this.emProvider.getManager();
         const repo = manager.getRepository(ClientEntity);
         await repo.delete({ id });
     }
 
     async getByIdAsync(id: number, readOnly?: boolean): Promise<ClientDomain | null> {
-        const entity = await this.getManager().getRepository(ClientEntity).findOne({
+        const manager = this.emProvider.getManager();
+        const entity = await manager.getRepository(ClientEntity).findOne({
             where: { id },
         });
         if (!entity) return null;
         return ClientMapper.toDomain(entity);
     }
 
-    async addAsync(entity: ClientDomain, em?: EntityManager): Promise<void> {
-        const manager = em ?? this.getManager();
+    async addAsync(entity: ClientDomain): Promise<void> {
+        const manager = this.emProvider.getManager();
         await manager.getRepository(ClientEntity).save(ClientMapper.toPersistence(entity));
     }
 
     async getAddressToday( clientId: number): Promise<number | null> {
-        const client = await this.getManager().getRepository(ClientEntity).findOne({
+        const manager = this.emProvider.getManager();
+        const client = await manager.getRepository(ClientEntity).findOne({
             where: { id: clientId },
             relations: ["addresses"],
         });

@@ -5,8 +5,8 @@ export class OrderDTOMapper {
     static toDTO(order: Order): OrderDTO {
         return {
             id: order.id,
-            dateOrdered: order.dateOrdered.toISOString(),
-            dateCreatedOn: order.dateCreatedOn.toISOString(),
+            dateOrdered: new Date(order.dateOrdered).toISOString().split('T')[0],
+            dateCreatedOn: new Date(order.dateCreatedOn).toISOString().split('T')[0],
             status: order.status,
             orderItems: order.orderItems.map(item => ({
                 id: item.id,

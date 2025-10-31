@@ -19,7 +19,6 @@ export class CompleteOrderItemCommandHandler {
 
     async execute(command: CompleteOrderItemCommand): Promise<Result> {
         await this.unitOfWork.startTransaction();
-        const manager = this.unitOfWork.getManager();
         try {
             const orderItem = await this.orderItemRepository.getByIdAsync(command.orderItemId);
 
@@ -30,14 +29,15 @@ export class CompleteOrderItemCommandHandler {
                 );
             }
 
-            const order = await this.orderRepository.getByIdAsync(orderItem.getOrderId());
+            const order = await this.orderRepository.getByIdTodayAsync(orderItem.getOrderId());
             
             if (!order) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
-                    ErrorCustom.NotFound("Order.NotFound", "Order not found")
+                    ErrorCustom.NotFound("Order.NotFound", "Order not found for today")
                 );
             }
+
             if (order.isStatusCompleted()) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
@@ -47,7 +47,7 @@ export class CompleteOrderItemCommandHandler {
             const quantityPrepared = command.quantity ?? orderItem.getQuantityPlanned();
             orderItem.increaseQuantityPrepared(quantityPrepared);
 
-            await this.orderItemRepository.updateAsync(orderItem, manager);
+            await this.orderItemRepository.updateAsync(orderItem);
 
             await this.unitOfWork.commit();
             return Result.success();

@@ -55,7 +55,7 @@ export class OrderController {
             if (result.isFailure) {
                 return res.status(400).json({ ...result });
             }
-            return res.status(200).json({ message: "Order item marked as complete" });
+            return res.status(200).json({ message: "Order item updated" });
         } catch (error: any) {
             return res.status(500).json({ message: error.message });
         }

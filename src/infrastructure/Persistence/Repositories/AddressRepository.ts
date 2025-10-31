@@ -1,26 +1,22 @@
 import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
 
-import { AppDataSource } from "../PersistenceModel/data-source";
 import { Address } from "@domain/aggregates/address/Address";
 import { Address as AddressPersis } from "../PersistenceModel/Entities/Address";
 import { AddressMapper } from "../DomainModel/Config/AddressMapper";
 import { OrderRawDTO } from "@application/Order/dto/OrderRawDTO";
 import { OrderByClientRawDTO } from "@application/Order/dto/OrderByClientRawDTO";
 import { inject, injectable } from "tsyringe";
-import { DataSource, EntityManager } from "typeorm";
+import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
 @injectable()
 export class AddressRepository implements IAddressRepository {
 
     constructor(
-        @inject("DataSource") private readonly dataSource: DataSource
+        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
     ) {}
-
-    private getManager(): EntityManager {
-        return this.dataSource.manager;
-    }
     
     async getRecipesToPrepare(date: Date): Promise<OrderRawDTO[]> {
+        const manager = this.emProvider.getManager();
         
         const start = new Date();
         start.setHours(0, 0, 0, 0);
@@ -29,7 +25,7 @@ export class AddressRepository implements IAddressRepository {
         end.setHours(23, 59, 59, 999);
 
 
-        const result = await this.getManager().query(`
+        const result = await manager.query(`
             SELECT 
                 ddr."recipeId" AS "recipeId",
                 COUNT(ddr."recipeId") AS "quantity"
@@ -58,8 +54,9 @@ export class AddressRepository implements IAddressRepository {
     }
 
     async getPerClientNeeds(date: Date): Promise<OrderByClientRawDTO[]> {
+        const manager = this.emProvider.getManager();
         const formattedDate = date.toISOString().split("T")[0];
-        const result = await this.getManager().query(`
+        const result = await manager.query(`
             SELECT 
                 c."id" AS "clientId",
                 c."name" AS "clientName",
@@ -89,9 +86,10 @@ export class AddressRepository implements IAddressRepository {
     }
 
     async getClientsForDeliveredInformation(date: Date): Promise<any[]> {
+        const manager = this.emProvider.getManager();
         const formattedDate = date.toISOString().split("T")[0];
 
-        return await this.getManager().query(
+        return await manager.query(
             `
             SELECT 
                 c."name" AS "clientName",
@@ -120,20 +118,23 @@ export class AddressRepository implements IAddressRepository {
     }
     
     async deleteAsync(id: number): Promise<void> {
-        await this.getManager().getRepository(AddressPersis).delete({ id });
+        const manager = this.emProvider.getManager();
+        await manager.getRepository(AddressPersis).delete({ id });
     }
 
     async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
-        const address = await this.getManager().getRepository(AddressPersis).findOne(
+        const manager = this.emProvider.getManager();
+        const address = await manager.getRepository(AddressPersis).findOne(
             { where: { id: id }, relations: ["client"] }
         );
         if (!address) return null;
         return AddressMapper.toDomain(address);
     }
 
-    async addAsync(entity: Address, em?: EntityManager): Promise<void> {
-        const manager = em ?? this.getManager();
+    async addAsync(entity: Address): Promise<void> {
+        const manager = this.emProvider.getManager();
         const addressEntity = AddressMapper.toPersistence(entity);
+
         await manager.getRepository(AddressPersis).save(addressEntity);
     }
 
@@ -145,13 +146,15 @@ export class AddressRepository implements IAddressRepository {
         const end = new Date();
         end.setHours(23, 59, 59, 999);
 
-        const addressRaw = await this.getManager()
+        const manager = this.emProvider.getManager();
+
+        const addressRaw = await manager
             .getRepository(AddressPersis)
             .createQueryBuilder("a")
             .innerJoin("a.calendar", "cal")
             .innerJoin("cal.mealPlan", "mp")
             .where("mp.clientId = :clientId", { clientId })
-            .andWhere("a.date >= :start AND a.date < :end", { start, end })
+            .andWhere("a.date::date >= :start AND a.date::date < :end", { start: start.toISOString(), end: end.toISOString() })
             .orderBy("a.date", "DESC")
             .getOne();
 

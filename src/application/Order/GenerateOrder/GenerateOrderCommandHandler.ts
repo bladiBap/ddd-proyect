@@ -26,7 +26,6 @@ export class GenerateOrderCommandHandler {
 
     async execute(_: GenerateOrderCommand): Promise<Result> {
         await this.unitOfWork.startTransaction();
-        const manager = this.unitOfWork.getManager();
         try {
             const today = new Date();
 
@@ -56,9 +55,9 @@ export class GenerateOrderCommandHandler {
                 dailyAllocations.addLine(line);
             }
             
-            await this.orderRepository.addAsync(newOrder, manager);
-            await this.dailyAllocationRepository.addAsync(dailyAllocations, manager);
-            //throw new Error("Simulated failure");
+            await this.orderRepository.addAsync(newOrder);
+            await this.dailyAllocationRepository.addAsync(dailyAllocations);
+            
             await this.unitOfWork.commit();
 
             return Result.success();

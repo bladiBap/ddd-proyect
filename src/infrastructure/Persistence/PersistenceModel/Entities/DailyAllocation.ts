@@ -6,7 +6,7 @@ export class DailyAllocation {
     @PrimaryGeneratedColumn() 
     id!: number;
 
-    @Column() 
+    @Column({ type: "date" }) 
     date!: Date;
 
     @OneToMany(() => AllocationLine, l => l.allocation, { cascade: true, eager: true }) 

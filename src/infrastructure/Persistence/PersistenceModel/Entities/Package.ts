@@ -13,7 +13,7 @@ export class Package {
     @Column()
     code!: string;
 
-    @Column()
+    @Column({ type: "date" })
     datePackage!: Date;
 
     @Column({ type: "enum", enum: StatusPackage, default: StatusPackage.PACKAGING })

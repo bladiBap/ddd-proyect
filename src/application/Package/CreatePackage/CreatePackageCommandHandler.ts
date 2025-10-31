@@ -29,29 +29,32 @@ export class CreatePackageCommandHandler {
         const { clientId, recipeIds } = command;
 
         await this.unitOfWork.startTransaction();
+
         try {
+
             const client =  await this.clientRepository.getByIdAsync(clientId);
             if (!client) {
-                await this.unitOfWork.rollback();
-                return Result.failure(ErrorCustom.NotFound("Client.NotFound", `Client with id ${clientId} not found`));
+                throw new Error(`Client with id ${clientId} not found`);
             }
 
             const address = await this.addressRepository.getAddressForTodayByClientId(clientId);
             if (!address) {
-                await this.unitOfWork.rollback();
-                return Result.failure(ErrorCustom.NotFound("Address.NotFound", `No address found for client id ${clientId} today`));
+                throw new Error(`No address found for client id ${clientId} today`);
+            }
+
+            const packageExists = await this.packageRepository.getPackageByAddressClientIdAsync(address.getId(), clientId);
+            if (packageExists) {
+                throw new Error(`Package already exists for client id ${clientId} at address id ${address.getId()} today`);
             }
 
             const dailyAllocation = await this.dailyAllocationRepository.getDailyAllocationToday(clientId);
             if (!dailyAllocation) {
-                await this.unitOfWork.rollback();
-                return Result.failure(ErrorCustom.NotFound("DailyAllocation.NotFound", `No daily allocation found for client id ${clientId} today`));
+                throw new Error(`No daily allocation found for client id ${clientId} today`);
             }
 
             const clientHasAllRecipes = dailyAllocation.clientHasAllRecipes(clientId, recipeIds);
             if (!clientHasAllRecipes) {
-                await this.unitOfWork.rollback();
-                return Result.failure(ErrorCustom.NotFound("DailyAllocation.NotFound", `Client with id ${clientId} does not have all recipes for today`));
+                throw new Error(`Client with id ${clientId} does not have all recipes for today`);
             }
 
             const newPackage = new Package(0, `PKG-${Date.now()}`, StatusPackage.PACKAGING, clientId, address.getId(), new Date());
@@ -60,8 +63,8 @@ export class CreatePackageCommandHandler {
                 line.updateQuantityPackaged(line.getQuantityNeeded());
             }
             
-            await this.packageRepository.addAsync(newPackage, this.unitOfWork.getManager());
-            await this.dailyAllocationRepository.updatedLines(dailyAllocation.getLines(), this.unitOfWork.getManager());
+            await this.packageRepository.addAsync(newPackage);
+            await this.dailyAllocationRepository.updatedLines(dailyAllocation.getLines());
             await this.unitOfWork.commit();
 
             return Result.success();

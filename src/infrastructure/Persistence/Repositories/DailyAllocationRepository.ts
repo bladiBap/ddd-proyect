@@ -9,17 +9,14 @@ import { AllocationLine as AllocationLineEntity } from "../PersistenceModel/Enti
 import { DataSource, EntityManager } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { AllocationLineMapper } from "../DomainModel/Config/AllocationLineMapper";
+import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
 @injectable()
 export class DailyAllocationRepository implements IDailyAllocationRepository {
 
     constructor(
-        @inject("DataSource") private dataSource: DataSource
+        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
     ) {}
-
-    private getManager(): EntityManager {
-        return this.dataSource.manager;
-    }
 
     async findByDateAsync(date: Date): Promise<DailyAllocation> {
         throw new Error("Method not implemented.");
@@ -28,9 +25,8 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
         throw new Error("Method not implemented.");
     }
 
-
-    async addAsync(entity: DailyAllocation, em?: EntityManager): Promise<void> {
-        const manager = em || this.getManager();
+    async addAsync(entity: DailyAllocation): Promise<void> {
+        const manager = this.emProvider.getManager();
         const persistenceEntity = DailyAllocationMapper.toPersistence(entity);
         await manager.getRepository(DailyAllocationEntity).save(persistenceEntity);
         return;
@@ -44,11 +40,11 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
         const end = new Date(today);
         end.setHours(23, 59, 59, 999);
 
-        const manager = this.getManager();
+        const manager = this.emProvider.getManager();
         const dailyAllocationEntity = await manager.getRepository(DailyAllocationEntity)
             .createQueryBuilder("dailyAllocation")
             .leftJoinAndSelect("dailyAllocation.lines", "lines")
-            .where("dailyAllocation.date BETWEEN :start AND :end", { start, end })
+            .where("dailyAllocation.date BETWEEN :start AND :end", { start: start.toISOString(), end: end.toISOString() })
             .andWhere("lines.clientId = :clientId", { clientId })
             .getOne();
         if (!dailyAllocationEntity) {
@@ -56,10 +52,10 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
         }
         return DailyAllocationMapper.toDomain(dailyAllocationEntity);
     }
-
-    async updatedLines(lines: AllocationLine[], em?: EntityManager): Promise<void> {
+    
+    async updatedLines(lines: AllocationLine[]): Promise<void> {
         const allocationLineEntities = lines.map(line => AllocationLineMapper.toPersistence(line));
-        const manager = em || this.getManager();
+        const manager = this.emProvider.getManager();
         const res = await manager.getRepository(AllocationLineEntity).save(allocationLineEntities);
         return;
     }

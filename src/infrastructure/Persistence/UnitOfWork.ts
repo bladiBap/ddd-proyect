@@ -3,15 +3,17 @@ import { EntityManager, QueryRunner, DataSource } from "typeorm";
 
 import { DomainEvent } from "@core/abstractions/DomainEvent";
 import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
+import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
 import { Mediator } from "@application/Mediator/Mediator";
 import { DomainEventsCollector } from "@application/DomainEventsCollector";
 
 @injectable()
-export class UnitOfWork implements IUnitOfWork {
+export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
     private queryRunner?: QueryRunner;
     private manager?: EntityManager;
     private isActive = false;
+    private count = 0;
 
     constructor(
         @inject(Mediator) private readonly mediator: Mediator,
@@ -22,7 +24,7 @@ export class UnitOfWork implements IUnitOfWork {
         if (this.isActive) {
             throw new Error("UnitOfWork: the transaction is already active.");
         }
-
+        this.count += 1;
         const qr = this.dataSource.createQueryRunner();
         await qr.connect();
         await qr.startTransaction();
@@ -38,6 +40,10 @@ export class UnitOfWork implements IUnitOfWork {
         }
 
         const domainEvents = this.extractDomainEvents();
+
+        for (const event of domainEvents) {
+            await this.mediator.publish(event);
+        }
         
         try {
             await this.queryRunner.commitTransaction();
@@ -46,10 +52,6 @@ export class UnitOfWork implements IUnitOfWork {
             throw err;
         } finally {
             await this.safeRelease();
-        }
-
-        for (const event of domainEvents) {
-            await this.mediator.publish(event);
         }
     }
 

@@ -33,7 +33,7 @@ export class Mediator {
 
         results.forEach((r, i) => {
             if (r.status === "rejected") {
-                console.error(`Event handler ${handlerTypes[i].name} failed:`, r.reason);
+                throw new Error(`Error in event handler ${handlerTypes[i].name}: ${r.reason}`);
             }
         });
         

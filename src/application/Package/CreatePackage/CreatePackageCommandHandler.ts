@@ -11,6 +11,7 @@ import { IPackageRepository } from "@domain/aggregates/package/Package/IPackageR
 import { IClientRepository } from "@domain/aggregates/client/IClientRepository";
 import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
 import { IDailyAllocationRepository } from "@domain/aggregates/dailyAllocation/IDailyAllocationRepository";
+import { CodeGenerator } from "utils/Code";
 
 @injectable()
 @CommandHandler(CreatePackageCommand)
@@ -57,7 +58,7 @@ export class CreatePackageCommandHandler {
                 throw new Error(`Client with id ${clientId} does not have all recipes for today`);
             }
 
-            const newPackage = new Package(0, `PKG-${Date.now()}`, StatusPackage.PACKAGING, clientId, address.getId(), new Date());
+            const newPackage = new Package(0, CodeGenerator.generateCode(), StatusPackage.PACKAGING, clientId, address.getId(), new Date());
             for (const line of dailyAllocation.getLines()) {
                 newPackage.addPackageItem(new PackageItem(0, line.getRecipeId(), newPackage.getId(), line.getQuantityNeeded()));
                 line.updateQuantityPackaged(line.getQuantityNeeded());

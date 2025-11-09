@@ -57,7 +57,6 @@ export class OrderRepository implements IOrderRepository {
         return OrderMapper.toDomain(orderEntity);
     }
 
-    //async addAsync(entity: Order, em?: EntityManager): Promise<void> {
     async addAsync(entity: Order): Promise<void> {
         const manager = this.emProvider.getManager();
         const orderEntity = OrderMapper.toPersistence(entity);

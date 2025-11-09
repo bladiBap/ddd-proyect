@@ -7,18 +7,10 @@ export abstract class Entity {
 
     public constructor(id?: number) {
         if (id !== undefined) {
-            this.publicContructor(id);
+            this.id = id;
         }else {
-            this.protectedContructor();
+            this.id = 0;
         }
-    }
-
-    private publicContructor(id: number): void {
-        this.id = id;
-        this._domainEvents = [];
-    }
-
-    private protectedContructor(): void {
         this._domainEvents = [];
     }
 

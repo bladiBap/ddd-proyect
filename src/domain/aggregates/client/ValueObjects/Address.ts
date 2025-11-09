@@ -1,5 +1,5 @@
 import { ValueObject } from "../../../../core/abstractions/ValueObject";
-import { Coordinates } from "../../Address/valuesObjects/Coordinates";
+import { Coordinates } from "../../address/valuesObjects/Coordinates";
 
 export class Address extends ValueObject {
     private street: string;

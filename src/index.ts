@@ -8,6 +8,7 @@ import { DataSource } from "typeorm";
 import { OrderController } from "@presentation/controllers/OrderController";
 import { ClientController } from "@presentation/controllers/ClientController";
 import { PackageController } from "@presentation/controllers/PackageController";
+import { HelloWorldController } from "@presentation/controllers/HelloWorldController";
 
 async function bootstrap() {
     const ds = await AppDataSource.initialize();
@@ -21,6 +22,9 @@ async function bootstrap() {
     const orderController = new OrderController();
     const clientController = new ClientController();
     const packageController = new PackageController();
+    const helloWorldController = new HelloWorldController();
+
+    app.get("/hello-world", (req, res) => helloWorldController.getHelloWorld(req, res));
 
     app.get("/order-today/details", (req, res) => orderController.getOrderOfTheDay(req, res));
     app.post("/order-today/generate", (req, res) => orderController.generateOrderReport(req, res));

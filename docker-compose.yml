@@ -1,11 +1,11 @@
 services:
-  postgres-db-kitchen:
+  ms_kitchen_db:
     image: postgres:15
-    container_name: postgres-db-kitchen
+    container_name: ms_kitchen_db
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${MS_KITCHEN_DB_NAME}
+      - POSTGRES_USER=${MS_KITCHEN_DB_USER}
+      - POSTGRES_PASSWORD=${MS_KITCHEN_DB_PASSWORD}
     ports:
       - "5433:5432"
     volumes:
@@ -15,21 +15,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  app-kitchen:
+  ms_kitchen_api:
     image: bladibap/catering_produccion:1.0.1
-    container_name: app-kitchen
+    container_name: ms_kitchen_api
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
+      - DB_HOST=${MS_KITCHEN_DB_HOST}
+      - DB_PORT=${MS_KITCHEN_DB_PORT}
+      - DB_USER=${MS_KITCHEN_DB_USER}
+      - DB_PASSWORD=${MS_KITCHEN_DB_PASSWORD}
+      - DB_NAME=${MS_KITCHEN_DB_NAME}
     ports:
       - "3000:3000"
     volumes:
       - code-kitchen:/src
     depends_on:
-      postgres-db-kitchen:
+      ms_kitchen_db:
         condition: service_healthy
 
 volumes:

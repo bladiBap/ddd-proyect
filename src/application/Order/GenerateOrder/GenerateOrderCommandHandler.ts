@@ -6,7 +6,7 @@ import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
 import { Order } from "@domain/aggregates/order/Order";
 import { StatusOrder } from "@domain/aggregates/order/StatusOrderEnum";
 import { Result } from "core/results/Result";
-import { ErrorCustom } from "core/results/ErrorCustom";
+import { Exception } from "core/results/ErrorCustom";
 
 import { IOrderRepository } from "@domain/aggregates/order/IOrderRepository";
 import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
@@ -32,7 +32,7 @@ export class GenerateOrderCommandHandler {
             const existing = await this.orderRepository.findByDateAsync(today);
             if (existing.length > 0) {
                 await this.unitOfWork.rollback();
-                return Result.failure(ErrorCustom.Conflict("Order.AlreadyExists", "An order for today already exists"));
+                return Result.failure(Exception.Conflict("Order.AlreadyExists", "An order for today already exists"));
             }
 
             const newOrder = new Order(0, today, today, StatusOrder.CREATED);
@@ -43,7 +43,7 @@ export class GenerateOrderCommandHandler {
 
             if (recipesToOrder.length === 0) {
                 await this.unitOfWork.rollback();
-                return Result.failure(ErrorCustom.NotFound("Order.NoRecipes", "No recipes found to generate an order"));
+                return Result.failure(Exception.NotFound("Order.NoRecipes", "No recipes found to generate an order"));
             }
 
             for (const item of recipesToOrder) {
@@ -63,7 +63,7 @@ export class GenerateOrderCommandHandler {
             return Result.success();
         } catch (error) {
             await this.unitOfWork.rollback();
-            return Result.failure(ErrorCustom.Problem("Order.CreationFailed", "Failed to create order due to an internal error"));
+            return Result.failure(Exception.Problem("Order.CreationFailed", "Failed to create order due to an internal error"));
         }
     }
 }

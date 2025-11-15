@@ -9,6 +9,7 @@ import { AllocationLine as AllocationLineEntity } from "../PersistenceModel/Enti
 import { inject, injectable } from "tsyringe";
 import { AllocationLineMapper } from "../DomainModel/Config/AllocationLineMapper";
 import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
+import { DateUtils } from "@utils/Date";
 
 @injectable()
 export class DailyAllocationRepository implements IDailyAllocationRepository {
@@ -33,19 +34,20 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
 
     async getDailyAllocationToday(clientId: number): Promise<DailyAllocation | null> {
         const today = new Date();
-        
-        const start = new Date(today);
-        start.setHours(0, 0, 0, 0);
-        const end = new Date(today);
-        end.setHours(23, 59, 59, 999);
+        const formattedDate = DateUtils.formatDate(today);
 
         const manager = this.emProvider.getManager();
-        const dailyAllocationEntity = await manager.getRepository(DailyAllocationEntity)
-            .createQueryBuilder("dailyAllocation")
-            .leftJoinAndSelect("dailyAllocation.lines", "lines")
-            .where("dailyAllocation.date BETWEEN :start AND :end", { start: start.toISOString(), end: end.toISOString() })
-            .andWhere("lines.clientId = :clientId", { clientId })
-            .getOne();
+
+        const dailyAllocationEntity = await manager.getRepository(DailyAllocationEntity).findOne({
+            where: { 
+                date: formattedDate,
+                lines: { 
+                    clientId: clientId
+                }
+            },
+            relations: ["lines"],
+        });
+        
         if (!dailyAllocationEntity) {
             return null;
         }

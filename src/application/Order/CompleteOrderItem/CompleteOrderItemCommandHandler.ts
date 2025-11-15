@@ -3,7 +3,7 @@ import { CommandHandler } from "@application/Mediator/decorators";
 import { CompleteOrderItemCommand } from "./CompleteOrderItemCommand";
 import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
 import { Result } from "@core/results/Result";
-import { ErrorCustom } from "@core/results/ErrorCustom";
+import { Exception } from "@core/results/ErrorCustom";
 import { IOrderItemRepository } from "@domain/aggregates/order/IOrderItemRepository";
 import { IOrderRepository } from "@domain/aggregates/order/IOrderRepository";
 
@@ -25,7 +25,7 @@ export class CompleteOrderItemCommandHandler {
             if (!orderItem) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
-                    ErrorCustom.NotFound("OrderItem.NotFound", "Order item not found")
+                    Exception.NotFound("OrderItem.NotFound", "Order item not found")
                 );
             }
 
@@ -34,14 +34,14 @@ export class CompleteOrderItemCommandHandler {
             if (!order) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
-                    ErrorCustom.NotFound("Order.NotFound", "Order not found for today")
+                    Exception.NotFound("Order.NotFound", "Order not found for today")
                 );
             }
 
             if (order.isStatusCompleted()) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
-                    ErrorCustom.InvalidOperation("OrderItem.CompleteFailed", "Cannot complete item of a completed order")
+                    Exception.InvalidOperation("OrderItem.CompleteFailed", "Cannot complete item of a completed order")
                 );
             }
             const quantityPrepared = command.quantity ?? orderItem.getQuantityPlanned();
@@ -54,7 +54,7 @@ export class CompleteOrderItemCommandHandler {
         } catch (error : any) {
             await this.unitOfWork.rollback();
             return Result.failure(
-                ErrorCustom.Problem("OrderItem.CompleteFailed", error)
+                Exception.Problem("OrderItem.CompleteFailed", error)
             );
         }
     }

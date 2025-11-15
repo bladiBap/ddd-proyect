@@ -1,11 +1,11 @@
-import { ErrorCustom } from "./ErrorCustom";
+import { Exception } from "./ErrorCustom";
 
 export class Result {
     readonly isSuccess: boolean;
-    readonly error: ErrorCustom;
+    readonly error: Exception;
 
-    protected constructor(isSuccess: boolean, error: ErrorCustom) {
-        if ((isSuccess && error !== ErrorCustom.None) || (!isSuccess && error === ErrorCustom.None)) {
+    protected constructor(isSuccess: boolean, error: Exception) {
+        if ((isSuccess && error !== Exception.None) || (!isSuccess && error === Exception.None)) {
             throw new Error('Invalid error state in Result.');
         }
         this.isSuccess = isSuccess;
@@ -17,18 +17,18 @@ export class Result {
     }
 
     static success(): Result {
-        return new Result(true, ErrorCustom.None);
+        return new Result(true, Exception.None);
     }
 
     static successWith<T>(value: T): ResultWithValue<T> {
-        return new ResultWithValue<T>(value, true, ErrorCustom.None);
+        return new ResultWithValue<T>(value, true, Exception.None);
     }
 
-    static failure(error: ErrorCustom): Result {
+    static failure(error: Exception): Result {
         return new Result(false, error);
     }
 
-    static failureWith<T>(error: ErrorCustom): ResultWithValue<T> {
+    static failureWith<T>(error: Exception): ResultWithValue<T> {
         return new ResultWithValue<T>(undefined, false, error);
     }
 }
@@ -36,7 +36,7 @@ export class Result {
 export class ResultWithValue<T> extends Result {
     private readonly _value?: T;
 
-    constructor(value: T | undefined, isSuccess: boolean, error: ErrorCustom) {
+    constructor(value: T | undefined, isSuccess: boolean, error: Exception) {
         super(isSuccess, error);
         this._value = value;
     }
@@ -48,13 +48,13 @@ export class ResultWithValue<T> extends Result {
         return this._value as T;
     }
 
-    static validationFailure<T>(error: ErrorCustom): ResultWithValue<T> {
+    static validationFailure<T>(error: Exception): ResultWithValue<T> {
         return new ResultWithValue<T>(undefined, false, error);
     }
 
     static fromValue<T>(value: T | null | undefined): ResultWithValue<T> {
         return value != null
         ? Result.successWith(value)
-        : Result.failureWith<T>(ErrorCustom.NullValue);
+        : Result.failureWith<T>(Exception.NullValue);
     }
 }

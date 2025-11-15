@@ -8,7 +8,8 @@
 			"@infrastructure/*": ["infrastructure/*"],
 			"@presentation/*": ["presentation/*"],
 			"@shared/*": ["shared/*"],
-			"@core/*": ["core/*"]
+			"@core/*": ["core/*"],
+			"@utils/*": ["utils/*"]
 		},
 		"target": "ES2020",
 		"module": "commonjs",

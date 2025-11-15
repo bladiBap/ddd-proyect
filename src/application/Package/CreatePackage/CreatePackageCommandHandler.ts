@@ -6,7 +6,7 @@ import { Package } from "@domain/aggregates/package/Package/Package";
 import { PackageItem } from "@domain/aggregates/package/PackageItem/PackageItem";
 import { StatusPackage } from "@domain/aggregates/package/Package/StatusPackage";
 import { Result } from "core/results/Result";
-import { ErrorCustom } from "core/results/ErrorCustom";
+import { Exception } from "core/results/ErrorCustom";
 import { IPackageRepository } from "@domain/aggregates/package/Package/IPackageRepository";
 import { IClientRepository } from "@domain/aggregates/client/IClientRepository";
 import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
@@ -69,10 +69,10 @@ export class CreatePackageCommandHandler {
             await this.unitOfWork.commit();
 
             return Result.success();
-        } catch (error) {
+        } catch (error)   {
             await this.unitOfWork.rollback();
             return Result.failure(
-                ErrorCustom.Problem(
+                Exception.Problem(
                 "Package.CreationFailed",
                 "Error creating package: " + (error as Error).message
                 )

@@ -1,8 +1,8 @@
 import { ErrorType } from "./ErrorType";
 
-export class ErrorCustom {
-    static readonly None = new ErrorCustom("", "", ErrorType.Failure);
-    static readonly NullValue = new ErrorCustom(
+export class Exception {
+    static readonly None = new Exception("", "", ErrorType.Failure);
+    static readonly NullValue = new Exception(
         "General.Null",
         "Null value was provided",
         ErrorType.Failure
@@ -13,7 +13,7 @@ export class ErrorCustom {
     readonly structuredMessage: string;
     readonly type: ErrorType;
 
-    constructor(
+    protected constructor(
         code: string,
         structuredMessage: string,
         type: ErrorType,
@@ -45,23 +45,23 @@ export class ErrorCustom {
         return result;
     }
 
-    static Failure(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
-        return new ErrorCustom(code, structuredMessage, ErrorType.Failure, ...args);
+    static Failure(code: string, structuredMessage: string, ...args: any[]): Exception {
+        return new Exception(code, structuredMessage, ErrorType.Failure, ...args);
     }
 
-    static NotFound(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
-        return new ErrorCustom(code, structuredMessage, ErrorType.NotFound, ...args);
+    static NotFound(code: string, structuredMessage: string, ...args: any[]): Exception {
+        return new Exception(code, structuredMessage, ErrorType.NotFound, ...args);
     }
 
-    static Problem(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
-        return new ErrorCustom(code, structuredMessage, ErrorType.Problem, ...args);
+    static Problem(code: string, structuredMessage: string, ...args: any[]): Exception {
+        return new Exception(code, structuredMessage, ErrorType.Problem, ...args);
     }
 
-    static Conflict(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
-        return new ErrorCustom(code, structuredMessage, ErrorType.Conflict, ...args);
+    static Conflict(code: string, structuredMessage: string, ...args: any[]): Exception {
+        return new Exception(code, structuredMessage, ErrorType.Conflict, ...args);
     }
 
-    static InvalidOperation(code: string, structuredMessage: string, ...args: any[]): ErrorCustom {
-        return new ErrorCustom(code, structuredMessage, ErrorType.InvalidOperation, ...args);
+    static InvalidOperation(code: string, structuredMessage: string, ...args: any[]): Exception {
+        return new Exception(code, structuredMessage, ErrorType.InvalidOperation, ...args);
     }
 }

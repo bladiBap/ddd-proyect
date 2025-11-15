@@ -1,0 +1,37 @@
+services:
+  postgres-db-kitchen:
+    image: postgres:15
+    container_name: postgres-db-kitchen
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data-kitchen:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bbg -d ddd_database"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app-kitchen:
+    image: bladibap/catering_produccion:1.0.1
+    container_name: app-kitchen
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "3000:3000"
+    volumes:
+      - code-kitchen:/src
+    depends_on:
+      postgres-db-kitchen:
+        condition: service_healthy
+
+volumes:
+  postgres-data-kitchen:
+  code-kitchen:

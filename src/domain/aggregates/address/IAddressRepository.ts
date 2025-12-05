@@ -1,6 +1,5 @@
 import { IRepository } from "core/abstractions/IRepository";
 import { Address } from "./Address";
-import { RecipeRawDTO } from "@application/order/dto/OrderRawDTO";
 import { OrderByClientRawDTO } from "@application/order/dto/OrderByClientRawDTO";
 
 export interface IAddressRepository extends IRepository<Address> {

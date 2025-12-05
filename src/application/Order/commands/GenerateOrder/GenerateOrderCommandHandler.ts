@@ -13,6 +13,7 @@ import { IAddressRepository } from "@domain/aggregates/address/IAddressRepositor
 import { IDailyAllocationRepository } from "@domain/aggregates/dailyAllocation/IDailyAllocationRepository";
 import { DailyAllocation } from "@domain/aggregates/dailyAllocation/DailyAllocation";
 import { AllocationLine } from "@domain/aggregates/dailyAllocation/AllocationLine";
+import { IRecipeRepository } from "@domain/aggregates/recipe/IRecipeRepository";
 
 @injectable()
 @CommandHandler(GenerateOrderCommand)
@@ -21,6 +22,7 @@ export class GenerateOrderCommandHandler {
         @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
         @inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
         @inject("IAddressRepository") private readonly addressRepository: IAddressRepository,
+        @inject("IRecipeRepository") private readonly recipeRepository: IRecipeRepository,
         @inject("IDailyAllocationRepository") private readonly dailyAllocationRepository: IDailyAllocationRepository
     ) {}
 
@@ -38,7 +40,7 @@ export class GenerateOrderCommandHandler {
             const newOrder = new Order(0, today, today, StatusOrder.CREATED);
             const dailyAllocations = new DailyAllocation(0, today);
 
-            const recipesToOrder = await this.addressRepository.getRecipesToPrepare(today);
+            const recipesToOrder = await this.recipeRepository.getRecipesToPrepare(today);
             const recipesPerClient = await this.addressRepository.getPerClientNeeds(today);
 
             if (recipesToOrder.length === 0) {

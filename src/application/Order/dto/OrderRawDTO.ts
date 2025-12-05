@@ -1,4 +1,4 @@
-export interface OrderRawDTO {
+export interface RecipeRawDTO {
     recipeId: number;
     quantity: number;
 }

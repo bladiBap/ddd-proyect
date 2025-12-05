@@ -1,6 +1,6 @@
 // handler de evento
 import { injectable, inject } from "tsyringe";
-import { EventHandler } from "@application/Mediator/decorators";
+import { EventHandler } from "@application/mediator/decorators";
 import { OrderItemCompletedEvent } from "@domain/aggregates/order/events/OrderItemCompletedEvent";
 import { IOrderRepository } from "@domain/aggregates/order/IOrderRepository";
 import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";

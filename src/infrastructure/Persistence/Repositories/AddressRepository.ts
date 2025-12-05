@@ -3,8 +3,8 @@ import { IAddressRepository } from "@domain/aggregates/address/IAddressRepositor
 import { Address } from "@domain/aggregates/address/Address";
 import { Address as AddressPersis } from "../PersistenceModel/Entities/Address";
 import { AddressMapper } from "../DomainModel/Config/AddressMapper";
-import { OrderRawDTO } from "@application/Order/dto/OrderRawDTO";
-import { OrderByClientRawDTO } from "@application/Order/dto/OrderByClientRawDTO";
+import { RecipeRawDTO } from "@application/order/dto/OrderRawDTO";
+import { OrderByClientRawDTO } from "@application/order/dto/OrderByClientRawDTO";
 import { inject, injectable } from "tsyringe";
 import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
@@ -14,44 +14,6 @@ export class AddressRepository implements IAddressRepository {
     constructor(
         @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
     ) {}
-    
-    async getRecipesToPrepare(date: Date): Promise<OrderRawDTO[]> {
-        const manager = this.emProvider.getManager();
-        
-        const start = new Date();
-        start.setHours(0, 0, 0, 0);
-
-        const end = new Date();
-        end.setHours(23, 59, 59, 999);
-
-
-        const result = await manager.query(`
-            SELECT 
-                ddr."recipeId" AS "recipeId",
-                COUNT(ddr."recipeId") AS "quantity"
-            FROM "address" a
-            INNER JOIN "calendar" c ON c."id" = a."calendarId"
-            INNER JOIN "meal_plan" mp ON mp."calendarId" = c."id"
-            INNER JOIN "dayli_diet" dd ON dd."mealPlanId" = mp."id"
-            INNER JOIN "dayli_diet_recipes" ddr ON ddr."dayliDietId" = dd."id"
-            WHERE a."date" = $1
-                AND mp."startDate" <= $1::date
-                AND mp."endDate" >= $2::date
-            GROUP BY ddr."recipeId"; `,
-            [start, end]
-        );
-
-        if (result.length === 0) {
-            return [];
-        }
-
-        const recipesToPrepare: OrderRawDTO[] = result.map((row: any) => ({
-            recipeId: parseInt(row.recipeId, 10),
-            quantity: parseInt(row.quantity, 10),
-        }));
-
-        return recipesToPrepare;
-    }
 
     async getPerClientNeeds(date: Date): Promise<OrderByClientRawDTO[]> {
         const manager = this.emProvider.getManager();

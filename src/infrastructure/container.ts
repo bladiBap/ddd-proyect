@@ -1,18 +1,18 @@
     import "reflect-metadata";
-    import "@application/Order/events/OrderItemCompletedEventHandler";
+    import "@application/order/events/OrderItemCompletedEventHandler";
 
     import { container } from "tsyringe";
 
     import { UnitOfWork } from "./Persistence/UnitOfWork";
     import { IUnitOfWork } from "core/abstractions/IUnitOfWork";
-    import { Mediator } from "@application/Mediator/Mediator";
+    import { Mediator } from "@application/mediator/Mediator";
 
 
     import { GetOrderDetailsHandler } from "@infrastructure/querys/GetOrderByDayhandler";
-    import { GenerateOrderCommandHandler } from "@application/Order/GenerateOrder/GenerateOrderCommandHandler";
-    import { CompleteOrderItemCommandHandler } from "@application/Order/CompleteOrderItem/CompleteOrderItemCommandHandler";
+    import { GenerateOrderCommandHandler } from "@application/order/commands/GenerateOrder/GenerateOrderCommandHandler";
+    import { CompleteOrderItemCommandHandler } from "@application/order/commands/CompleteOrderItem/CompleteOrderItemCommandHandler";
     import { GetClientsForDeliveredHandler } from "@infrastructure/querys/GetClientsForDeliveredHandler";
-    import { CreatePackageCommandHandler } from "@application/Package/CreatePackage/CreatePackageCommandHandler";
+    import { CreatePackageCommandHandler } from "@application/package/CreatePackage/CreatePackageCommandHandler";
 
     import { OrderRepository } from "./Persistence/Repositories/OrderRepositorty";
     import { AddressRepository } from "./Persistence/Repositories/AddressRepository";

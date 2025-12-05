@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { Mediator } from "@application/Mediator/Mediator";
-import { CreatePackageCommand } from "@application/Package/CreatePackage/CreatePackageCommand";
+import { Mediator } from "@application/mediator/Mediator";
+import { CreatePackageCommand } from "@application/package/CreatePackage/CreatePackageCommand";
 
 export class PackageController {
 

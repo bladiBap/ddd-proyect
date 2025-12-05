@@ -5,7 +5,7 @@ import { DomainEvent } from "@core/abstractions/DomainEvent";
 import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
 import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
 
-import { Mediator } from "@application/Mediator/Mediator";
+import { Mediator } from "@application/mediator/Mediator";
 import { DomainEventsCollector } from "@application/DomainEventsCollector";
 
 @injectable()

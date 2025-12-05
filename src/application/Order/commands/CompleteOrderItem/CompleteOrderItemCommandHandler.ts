@@ -1,5 +1,5 @@
 import { injectable, inject } from "tsyringe";
-import { CommandHandler } from "@application/Mediator/decorators";
+import { CommandHandler } from "@application/mediator/decorators";
 import { CompleteOrderItemCommand } from "./CompleteOrderItemCommand";
 import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
 import { Result } from "@core/results/Result";

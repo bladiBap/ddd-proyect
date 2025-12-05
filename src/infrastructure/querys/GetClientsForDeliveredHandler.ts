@@ -2,10 +2,10 @@ import { DataSource } from "typeorm";
 import { injectable, inject } from "tsyringe";
 import { ResultWithValue } from "@core/results/Result";
 
-import { QueryHandler } from "@application/Mediator/decorators";
-import { IClientDeliveredDTO } from "@application/Client/dto/dto";
-import { GetClientsForDelivered } from "@application/Client/GetClientsForDelivery/GetClientsForDelivered";
-import { ClientDeliveredDTOMapper } from "@application/Client/GetClientsForDelivery/ClientDeliveredDTOMapper";
+import { QueryHandler } from "@application/mediator/decorators";
+import { IClientDeliveredDTO } from "@application/client/dto/dto";
+import { GetClientsForDelivered } from "@application/client/GetClientsForDelivery/GetClientsForDelivered";
+import { ClientDeliveredDTOMapper } from "@application/client/GetClientsForDelivery/ClientDeliveredDTOMapper";
 
 @injectable()
 @QueryHandler(GetClientsForDelivered)

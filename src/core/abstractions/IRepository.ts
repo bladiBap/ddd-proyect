@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm";
 import { AggregateRoot } from "./AgregateRoot";
 
 export interface IRepository< T extends AggregateRoot> {

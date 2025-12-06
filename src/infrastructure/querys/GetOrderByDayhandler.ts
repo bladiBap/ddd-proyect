@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { Between, DataSource } from "typeorm";
-import { ResultWithValue } from "@core/results/Result";
+import { ResultWithValue } from "@core/Results/Result";
 
-import { QueryHandler } from "@application/mediator/decorators";
-import { GetOrderByDay } from "@application/order/queries/GetOrderByDay/GerOrderByDayQuery";
+import { QueryHandler } from "@application/Mediator/Decorators";
+import { GetOrderByDay } from "@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery";
 
-import { OrderDTOMapper } from "@application/order/queries/GetOrderByDay/OrderDTOMapper";
-import { OrderDTO } from "@application/order/dto/OrderDTO";
+import { OrderDTOMapper } from "@application/Order/Queries/GetOrderByDay/OrderDTOMapper";
+import { OrderDTO } from "@application/Order/Dto/OrderDTO";
 import { Order } from "@infrastructure/Persistence/PersistenceModel/Entities/Order";
 
 @injectable()

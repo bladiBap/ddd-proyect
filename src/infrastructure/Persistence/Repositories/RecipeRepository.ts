@@ -1,7 +1,7 @@
-import { RecipeRawDTO } from "@application/order/dto/OrderRawDTO";
-import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
-import { IRecipeRepository } from "@domain/aggregates/recipe/IRecipeRepository";
-import { Recipe } from "@domain/aggregates/recipe/Recipe";
+import { RecipeRawDTO } from "@application/Order/Dto/OrderRawDTO";
+import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
+import { IRecipeRepository } from "@domain/Recipe/Repositories/IRecipeRepository";
+import { Recipe } from "@domain/Recipe/Entities/Recipe";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

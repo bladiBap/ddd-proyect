@@ -1,7 +1,7 @@
-import { DailyAllocation as DailyAllocationDomain } from '@domain/aggregates/dailyAllocation/DailyAllocation';
+import { DailyAllocation as DailyAllocationDomain } from '@domain/DailyAllocation/Entities/DailyAllocation';
 import { DailyAllocation as DailyAllocationEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/DailyAllocation';
 
-import { AllocationLine as AllocationLineDomain} from '@domain/aggregates/dailyAllocation/AllocationLine';
+import { AllocationLine as AllocationLineDomain} from '@domain/DailyAllocation/Entities/AllocationLine';
 import { AllocationLine as AllocationLineEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/AllocationLine';
 
 export class DailyAllocationMapper {

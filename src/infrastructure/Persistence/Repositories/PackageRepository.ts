@@ -1,10 +1,10 @@
-import { IPackageRepository } from "@domain/aggregates/package/Package/IPackageRepository";
+import { IPackageRepository } from "@domain/Package/Repositories/IPackageRepository";
 import { Package } from "../PersistenceModel/Entities/Package";
-import { Package as DomainPackage } from "@domain/aggregates/package/Package/Package";
+import { Package as DomainPackage } from "@domain/Package/Entities/Package";
 import { PackageMapper } from "../DomainModel/Config/PackageMapper";
 
 import { inject, injectable } from "tsyringe";
-import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
+import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
 
 @injectable()
 export class PackageRepository implements IPackageRepository {

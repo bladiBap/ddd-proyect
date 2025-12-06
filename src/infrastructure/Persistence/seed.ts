@@ -1,18 +1,18 @@
 import "reflect-metadata";
-import { AppDataSource } from "../Persistence/PersistenceModel/data-source";
+import { AppDataSource } from "./PersistenceModel/DataSource";
 
-import { MeasurementUnit } from "../Persistence/PersistenceModel/Entities/MeasurementUnit";
-import { Client } from "../Persistence/PersistenceModel/Entities/Client";
-import { Ingredient } from "../Persistence/PersistenceModel/Entities/Ingredient";
-import { Recipe } from "../Persistence/PersistenceModel/Entities/Recipe";
-import { RecipeIngredient } from "../Persistence/PersistenceModel/Entities/RecipeIngredient";
-import { Order } from "../Persistence/PersistenceModel/Entities/Order";
-import { OrderItem } from "../Persistence/PersistenceModel/Entities/OrderItem";
-import { StatusOrder } from "@domain/aggregates/order/StatusOrderEnum";
-import { Address } from "../Persistence/PersistenceModel/Entities/Address";
-import { Calendar } from "../Persistence/PersistenceModel/Entities/Calendar";
-import { MealPlan } from "../Persistence/PersistenceModel/Entities/MealPlan";
-import { DayliDiet } from "../Persistence/PersistenceModel/Entities/DayliDiet";
+import { MeasurementUnit } from "./PersistenceModel/Entities/MeasurementUnit";
+import { Client } from "./PersistenceModel/Entities/Client";
+import { Ingredient } from "./PersistenceModel/Entities/Ingredient";
+import { Recipe } from "./PersistenceModel/Entities/Recipe";
+import { RecipeIngredient } from "./PersistenceModel/Entities/RecipeIngredient";
+import { Order } from "./PersistenceModel/Entities/Order";
+import { OrderItem } from "./PersistenceModel/Entities/OrderItem";
+import { StatusOrder } from "Domain/Order/Types/StatusOrderEnum";
+import { Address } from "./PersistenceModel/Entities/Address";
+import { Calendar } from "./PersistenceModel/Entities/Calendar";
+import { MealPlan } from "./PersistenceModel/Entities/MealPlan";
+import { DayliDiet } from "./PersistenceModel/Entities/DayliDiet";
 
 async function seed() {     
     await AppDataSource.initialize();

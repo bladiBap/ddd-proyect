@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { Mediator } from "@application/mediator/Mediator";
-import { GetClientsForDelivered } from "@application/client/GetClientsForDelivery/GetClientsForDelivered";
+import { Mediator } from "@application/Mediator/Mediator";
+import { GetClientsForDelivered } from "@application/Client/GetClientsForDelivery/GetClientsForDelivered";
 
 export class ClientController {
 

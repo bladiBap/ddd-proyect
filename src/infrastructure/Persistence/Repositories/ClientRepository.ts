@@ -1,11 +1,11 @@
 import { inject, injectable } from "tsyringe";
 
-import { IClientRepository } from "@domain/aggregates/client/IClientRepository";
+import { IClientRepository } from "@domain/Client/Repositories/IClientRepository";
+import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
 
-import { Client as ClientEntity } from "../PersistenceModel/Entities/Client";
-import { Client as ClientDomain } from "@domain/aggregates/client/Client";
 import { ClientMapper } from "../DomainModel/Config/ClientMapper";
-import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
+import { Client as ClientEntity } from "../PersistenceModel/Entities/Client";
+import { Client as ClientDomain } from "@domain/Client/Entities/Client";
 
 
 @injectable()

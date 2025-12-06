@@ -3,13 +3,13 @@
 		"baseUrl": "./src",
 		"outDir": "./dist",
 		"paths": {
-			"@domain/*": ["domain/*"],
-			"@application/*": ["application/*"],
-			"@infrastructure/*": ["infrastructure/*"],
-			"@presentation/*": ["presentation/*"],
-			"@shared/*": ["shared/*"],
-			"@core/*": ["core/*"],
-			"@utils/*": ["utils/*"]
+			"@domain/*": ["Domain/*"],
+			"@application/*": ["Application/*"],
+			"@infrastructure/*": ["Infrastructure/*"],
+			"@presentation/*": ["Presentation/*"],
+			"@shared/*": ["Shared/*"],
+			"@core/*": ["Core/*"],
+			"@utils/*": ["Utils/*"]
 		},
 		"target": "ES2020",
 		"module": "commonjs",

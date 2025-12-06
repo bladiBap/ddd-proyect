@@ -1,4 +1,4 @@
-import { IClientDeliveredDTO } from '../dto/dto';
+import { IClientDeliveredDTO } from '../Dto/dto';
 
 export class ClientDeliveredDTOMapper {
 

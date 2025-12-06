@@ -21,11 +21,11 @@ import { DailyAllocation } from "./Entities/DailyAllocation";
 
 export const dataSource = new DataSource({
     type: "postgres",
-    host: process.env.DB_HOST || "localhost",
-    port: Number(process.env.DB_PORT) || 5432,
-    username: process.env.DB_USER || "postgres",
-    password: process.env.DB_PASSWORD || "Sion$123",
-    database: process.env.DB_NAME || "ddd_database",
+    host: process.env.MS_KITCHEN_DB_HOST || "localhost",
+    port: Number(process.env.MS_KITCHEN_DB_PORT) || 5432,
+    username: process.env.MS_KITCHEN_DB_USER || "postgres",
+    password: process.env.MS_KITCHEN_DB_PASSWORD || "root",
+    database: process.env.MS_KITCHEN_DB_NAME || "ddd_database",
     synchronize: true,
     logging: false,
     entities: [

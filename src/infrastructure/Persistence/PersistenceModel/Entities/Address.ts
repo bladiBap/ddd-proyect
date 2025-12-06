@@ -1,6 +1,6 @@
 import { 
     Entity, PrimaryGeneratedColumn, Column, 
-    ManyToOne, OneToMany, JoinColumn, OneToOne
+    ManyToOne, JoinColumn, OneToOne
 } from "typeorm";
 import { Calendar } from "./Calendar";
 import { Package } from "./Package";

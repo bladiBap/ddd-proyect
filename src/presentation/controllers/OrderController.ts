@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { Mediator } from "@application/mediator/Mediator";
-import { GetOrderByDay } from "@application/order/queries/GetOrderByDay/GerOrderByDayQuery";
-import { GenerateOrderCommand } from "@application/order/commands/GenerateOrder/GenerateOrderCommand";
-import { CompleteOrderItemCommand } from "@application/order/commands/CompleteOrderItem/CompleteOrderItemCommand";
+import { Mediator } from "@application/Mediator/Mediator";
+import { GetOrderByDay } from "@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery";
+import { GenerateOrderCommand } from "@application/Order/Commands/GenerateOrder/GenerateOrderCommand";
+import { CompleteOrderItemCommand } from "@application/Order/Commands/CompleteOrderItem/CompleteOrderItemCommand";
 
 export class OrderController {
 

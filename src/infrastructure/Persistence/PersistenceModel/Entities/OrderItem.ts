@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { StatusOrder } from "@domain/aggregates/order/StatusOrderEnum";
+import { StatusOrder } from "Domain/Order/Types/StatusOrderEnum";
 
 import { Order } from "./Order";
 import { Recipe } from "./Recipe";

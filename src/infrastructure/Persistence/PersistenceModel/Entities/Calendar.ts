@@ -1,6 +1,5 @@
 import { 
-    Entity, PrimaryGeneratedColumn, Column, 
-    ManyToOne, OneToMany, JoinColumn, OneToOne
+    Entity, PrimaryGeneratedColumn, OneToMany, OneToOne
 } from "typeorm";
 import { MealPlan } from './MealPlan';
 import { Address } from "./Address";

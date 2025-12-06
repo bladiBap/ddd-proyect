@@ -1,4 +1,4 @@
-import { PackageItem as PackageItemDomain } from '@domain/aggregates/package/PackageItem/PackageItem';
+import { PackageItem as PackageItemDomain } from '@domain/Package/Entities/PackageItem';
 import { PackageItem as PackageItemEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/PackageItem';
 
 export class PackageItemMapper {

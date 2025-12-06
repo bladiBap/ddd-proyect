@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, OneToOne, JoinColumn } from "typeorm";
-import { StatusPackage } from "@domain/aggregates/package/Package/StatusPackage";
+import { StatusPackage } from "@domain/Package/Types/StatusPackage";
 
 import { PackageItem } from "./PackageItem";
 import { Client } from "./Client";

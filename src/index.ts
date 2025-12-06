@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import express from "express";
 
-import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/data-source";
-import { container } from "@infrastructure/container";
+import { AppDataSource } from "@infrastructure/Persistence/PersistenceModel/DataSource";
+import { container } from "@infrastructure/Container";
 import { DataSource } from "typeorm";
 
-import { OrderController } from "@presentation/controllers/OrderController";
-import { ClientController } from "@presentation/controllers/ClientController";
-import { PackageController } from "@presentation/controllers/PackageController";
-import { HelloWorldController } from "@presentation/controllers/HelloWorldController";
+import { OrderController } from "@presentation/Controllers/OrderController";
+import { ClientController } from "@presentation/Controllers/ClientController";
+import { PackageController } from "@presentation/Controllers/PackageController";
+import { HelloWorldController } from "@presentation/Controllers/HelloWorldController";
 
 async function bootstrap() {
     const ds = await AppDataSource.initialize();

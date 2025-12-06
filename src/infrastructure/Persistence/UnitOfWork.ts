@@ -1,11 +1,11 @@
 import { injectable, inject } from "tsyringe";
 import { EntityManager, QueryRunner, DataSource } from "typeorm";
 
-import { DomainEvent } from "@core/abstractions/DomainEvent";
-import { IUnitOfWork } from "@core/abstractions/IUnitOfWork";
-import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
+import { DomainEvent } from "@core/Abstractions/DomainEvent";
+import { IUnitOfWork } from "@core/Abstractions/IUnitOfWork";
+import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
 
-import { Mediator } from "@application/mediator/Mediator";
+import { Mediator } from "@application/Mediator/Mediator";
 import { DomainEventsCollector } from "@application/DomainEventsCollector";
 
 @injectable()

@@ -1,4 +1,4 @@
-import { OrderItem as OrderItemDomain } from '@domain/aggregates/order/OrderItem';
+import { OrderItem as OrderItemDomain } from '@domain/Order/Entities/OrderItem';
 import { OrderItem as OrderItemEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/OrderItem';
 
 export class OrderItemMapper {

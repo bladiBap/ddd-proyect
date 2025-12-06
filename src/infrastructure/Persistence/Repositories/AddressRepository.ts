@@ -1,12 +1,11 @@
-import { IAddressRepository } from "@domain/aggregates/address/IAddressRepository";
+import { IAddressRepository } from "@domain/Address/Repositories/IAddressRepository";
 
-import { Address } from "@domain/aggregates/address/Address";
+import { Address } from "@domain/Address/Entities/Address";
 import { Address as AddressPersis } from "../PersistenceModel/Entities/Address";
 import { AddressMapper } from "../DomainModel/Config/AddressMapper";
-import { RecipeRawDTO } from "@application/order/dto/OrderRawDTO";
-import { OrderByClientRawDTO } from "@application/order/dto/OrderByClientRawDTO";
+import { RecipeByClientDTO } from "Application/Order/Dto/RecipeByClientDTO";
 import { inject, injectable } from "tsyringe";
-import { IEntityManagerProvider } from "@core/abstractions/IEntityManagerProvider";
+import { IEntityManagerProvider } from "Core/Abstractions/IEntityManagerProvider";
 
 @injectable()
 export class AddressRepository implements IAddressRepository {
@@ -15,7 +14,7 @@ export class AddressRepository implements IAddressRepository {
         @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
     ) {}
 
-    async getPerClientNeeds(date: Date): Promise<OrderByClientRawDTO[]> {
+    async getPerClientNeeds(date: Date): Promise<RecipeByClientDTO[]> {
         const manager = this.emProvider.getManager();
         const formattedDate = date.toISOString().split("T")[0];
         const result = await manager.query(`
@@ -39,7 +38,7 @@ export class AddressRepository implements IAddressRepository {
         if (result.length === 0) {
             return [];
         }
-        const clientNeeds: OrderByClientRawDTO[] = result.map((row: any) => ({
+        const clientNeeds: RecipeByClientDTO[] = result.map((row: any) => ({
             clientId: parseInt(row.clientId, 10),
             recipeId: parseInt(row.recipeId, 10),
             quantity: parseInt(row.quantity, 10),

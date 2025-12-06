@@ -1,7 +1,7 @@
-import { Package as PackageDomain } from '@domain/aggregates/package/Package/Package';
+import { Package as PackageDomain } from '@domain/Package/Entities/Package';
 import { Package as PackageEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/Package'; 
 
-import { PackageItem as PackageItemDomain } from '@domain/aggregates/package/PackageItem/PackageItem';
+import { PackageItem as PackageItemDomain } from '@domain/Package/Entities/PackageItem';
 import { PackageItem as PackageItemEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/PackageItem';
 
 import { PackageItemMapper } from './PackageItemMapper';

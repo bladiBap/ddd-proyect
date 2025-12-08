@@ -3,9 +3,9 @@ import { IAddressRepository } from "@domain/Address/Repositories/IAddressReposit
 import { Address } from "@domain/Address/Entities/Address";
 import { Address as AddressPersis } from "../PersistenceModel/Entities/Address";
 import { AddressMapper } from "../DomainModel/Config/AddressMapper";
-import { RecipeByClientDTO } from "Application/Order/Dto/RecipeByClientDTO";
+import { RecipeByClientDTO } from "@application/Order/Dto/RecipeByClientDTO";
 import { inject, injectable } from "tsyringe";
-import { IEntityManagerProvider } from "Core/Abstractions/IEntityManagerProvider";
+import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
 
 @injectable()
 export class AddressRepository implements IAddressRepository {

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { StatusOrder } from "Domain/Order/Types/StatusOrderEnum";
+import { StatusOrder } from "@domain/Order/Types/StatusOrderEnum";
 
 import { OrderItem } from "./OrderItem";
 

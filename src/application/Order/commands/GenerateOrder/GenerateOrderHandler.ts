@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { injectable, inject } from "tsyringe";
-import { CommandHandler } from "Application/Mediator/Decorators";
+import { CommandHandler } from "@application/Mediator/Decorators";
 import { GenerateOrderCommand } from "./GenerateOrderCommand";
 import { IUnitOfWork } from "@core/Abstractions/IUnitOfWork";
 import { Order } from "@domain/Order/Entities/Order";

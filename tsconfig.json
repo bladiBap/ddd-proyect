@@ -1,15 +1,45 @@
+// {
+// 	"compilerOptions": {
+// 		"baseUrl": "./",
+// 		"outDir": "./dist",
+// 		"paths": {
+// 			"@domain/*": ["src/Domain/*"],
+// 			"@application/*": ["src/Application/*"],
+// 			"@infrastructure/*": ["src/Infrastructure/*"],
+// 			"@presentation/*": ["src/Presentation/*"],
+// 			"@shared/*": ["src/Shared/*"],
+// 			"@core/*": ["src/Core/*"],
+// 			"@utils/*": ["src/Utils/*"],
+// 			"@/": ["src/*"]
+// 		},
+// 		"target": "ES2020",
+// 		"module": "commonjs",
+// 		"rootDir": "./src",
+// 		"strict": true,
+// 		"esModuleInterop": true,
+// 		"skipLibCheck": true,
+// 		"forceConsistentCasingInFileNames": true,
+// 		"resolveJsonModule": true,
+// 		"moduleResolution": "node",
+// 		"experimentalDecorators": true,
+//     	"emitDecoratorMetadata": true
+// 	},
+// 	"include": ["src"],
+// 	"exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts"]
+// }
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
+		"baseUrl": "./",
 		"outDir": "./dist",
 		"paths": {
-			"@domain/*": ["Domain/*"],
-			"@application/*": ["Application/*"],
-			"@infrastructure/*": ["Infrastructure/*"],
-			"@presentation/*": ["Presentation/*"],
-			"@shared/*": ["Shared/*"],
-			"@core/*": ["Core/*"],
-			"@utils/*": ["Utils/*"]
+			"@domain/*": ["src/Domain/*"],
+			"@application/*": ["src/Application/*"],
+			"@infrastructure/*": ["src/Infrastructure/*"],
+			"@presentation/*": ["src/Presentation/*"],
+			"@shared/*": ["src/Shared/*"],
+			"@core/*": ["src/Core/*"],
+			"@utils/*": ["src/Utils/*"],
+			"@/*": ["src/*"]
 		},
 		"target": "ES2020",
 		"module": "commonjs",
@@ -18,8 +48,11 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "node",
 		"experimentalDecorators": true,
-    	"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true
 	},
-	"include": ["src"]
+	"include": ["src/**/*", "tests"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

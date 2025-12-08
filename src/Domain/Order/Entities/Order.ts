@@ -3,7 +3,7 @@ import { OrderError } from '../Errors/OrderError';
 import { StatusOrder } from '../Types/StatusOrderEnum';
 
 import { AggregateRoot } from '@core/Abstractions/AgregateRoot';
-import { DomainException } from 'Core/Results/DomainExeption';
+import { DomainException } from '@core/Results/DomainExeption';
 
 export class Order extends AggregateRoot {
 

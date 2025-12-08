@@ -8,7 +8,7 @@ import { Recipe } from "./PersistenceModel/Entities/Recipe";
 import { RecipeIngredient } from "./PersistenceModel/Entities/RecipeIngredient";
 import { Order } from "./PersistenceModel/Entities/Order";
 import { OrderItem } from "./PersistenceModel/Entities/OrderItem";
-import { StatusOrder } from "Domain/Order/Types/StatusOrderEnum";
+import { StatusOrder } from "@domain/Order/Types/StatusOrderEnum";
 import { Address } from "./PersistenceModel/Entities/Address";
 import { Calendar } from "./PersistenceModel/Entities/Calendar";
 import { MealPlan } from "./PersistenceModel/Entities/MealPlan";

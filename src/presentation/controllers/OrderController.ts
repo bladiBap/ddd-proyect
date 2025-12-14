@@ -31,7 +31,7 @@ export class OrderController {
             if (result.isFailure) {
                 return res.status(400).json({ ...result });
             }
-            return res.status(201).json({ message: "Order generated successfully" });
+            return res.status(201).json(result);
         } catch (error: any) {
             return res.status(500).json({ message: error.message });
         }

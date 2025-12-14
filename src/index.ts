@@ -30,7 +30,7 @@ async function bootstrap() {
     app.post("/order-today/generate", (req, res) => orderController.generateOrderReport(req, res));
     app.patch("/order-item/:orderItemId/complete", (req, res) => orderController.markOrderItemComplete(req, res));
     app.get("/clients/delivery-info", (req, res) => clientController.getClientsForDeliveredInformation(req, res));
-    app.post("/package/build", (req, res) => packageController.buildPackage(req, res));
+    app.post("/package", (req, res) => packageController.buildPackage(req, res));
 
     const PORT = Number(process.env.PORT) || 3000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

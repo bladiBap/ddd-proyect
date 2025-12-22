@@ -40,7 +40,7 @@ describe('OrderControllerIntTest', () => {
             // Arrange
             const client = new HttpClientBuilder().withUrl('order-today/generate', 'POST');
             // Act
-            const response = await client.send();
+            const response = await client.send<ResponseDto<null>>();
             const data: ResponseDto<null> = response.data;
             // Assert
             expect(response).toBeDefined();

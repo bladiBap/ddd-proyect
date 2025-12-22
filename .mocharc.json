@@ -1,0 +1,6 @@
+{
+    "extension": ["ts"],
+    "reporter": "spec",
+    "loader": "ts-node/esm",
+    "spec": ["contract-test/**/*.spec.ts"]
+}

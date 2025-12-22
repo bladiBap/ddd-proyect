@@ -1,32 +1,3 @@
-// {
-// 	"compilerOptions": {
-// 		"baseUrl": "./",
-// 		"outDir": "./dist",
-// 		"paths": {
-// 			"@domain/*": ["src/Domain/*"],
-// 			"@application/*": ["src/Application/*"],
-// 			"@infrastructure/*": ["src/Infrastructure/*"],
-// 			"@presentation/*": ["src/Presentation/*"],
-// 			"@shared/*": ["src/Shared/*"],
-// 			"@core/*": ["src/Core/*"],
-// 			"@utils/*": ["src/Utils/*"],
-// 			"@/": ["src/*"]
-// 		},
-// 		"target": "ES2020",
-// 		"module": "commonjs",
-// 		"rootDir": "./src",
-// 		"strict": true,
-// 		"esModuleInterop": true,
-// 		"skipLibCheck": true,
-// 		"forceConsistentCasingInFileNames": true,
-// 		"resolveJsonModule": true,
-// 		"moduleResolution": "node",
-// 		"experimentalDecorators": true,
-//     	"emitDecoratorMetadata": true
-// 	},
-// 	"include": ["src"],
-// 	"exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts"]
-// }
 {
 	"compilerOptions": {
 		"baseUrl": "./",
@@ -39,6 +10,7 @@
 			"@shared/*": ["src/Shared/*"],
 			"@core/*": ["src/Core/*"],
 			"@utils/*": ["src/Utils/*"],
+			"@int-test/*": ["integration-test/*"],
 			"@/*": ["src/*"]
 		},
 		"target": "ES2020",
@@ -53,6 +25,6 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	},
-	"include": ["src/**/*", "tests"],
+	"include": ["src/**/*", "tests", "integration-test/**/*"],
 	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

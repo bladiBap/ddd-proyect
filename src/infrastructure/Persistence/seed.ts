@@ -52,12 +52,12 @@ async function seed() {
 
     const [recipe1, recipe2] = await recipeRepo.save([
         recipeRepo.create({
-        name: "Chicken Rice Bowl",
-        instructions: "Cook rice, grill chicken, and serve together.",
+            name: "Chicken Rice Bowl",
+            instructions: "Cook rice, grill chicken, and serve together.",
         }),
         recipeRepo.create({
-        name: "Fried Egg",
-        instructions: "Fry an egg with a pinch of salt.",
+            name: "Fried Egg",
+            instructions: "Fry an egg with a pinch of salt.",
         }),
     ]);
 
@@ -97,18 +97,18 @@ async function seed() {
 
     const [mealPlan1, mealPlan2] = await mealPlanRepo.save([
         mealPlanRepo.create({
-        startDate,
-        endDate,
-        durationDays: 5,
-        calendar: calendar1,
-        client: client1,
+            startDate,
+            endDate,
+            durationDays: 5,
+            calendar: calendar1,
+            client: client1,
         }),
         mealPlanRepo.create({
-        startDate,
-        endDate,
-        durationDays: 5,
-        calendar: calendar2,
-        client: client2,
+            startDate,
+            endDate,
+            durationDays: 5,
+            calendar: calendar2,
+            client: client2,
         }),
     ]);
 
@@ -159,7 +159,7 @@ async function seed() {
         status: StatusOrder.CREATED,
         }),
     ]);
-    
+
     console.log("Database seeded successfully!");
     process.exit(0);
 }

@@ -1,8 +1,8 @@
 import { MatchersV3, PactV3 } from '@pact-foundation/pact';
 import { describe, it } from 'mocha';
-import { OrderService } from '../services/OrderService';
+import { OrderService } from '../Services/OrderService';
 import { expect } from 'chai';
-import { responseGenerateOrder } from '../response/models';
+import { responseGenerateOrder } from '../Response/Models';
 const { like } = MatchersV3;
 
 describe('Order Service', () => {

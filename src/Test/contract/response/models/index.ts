@@ -1,4 +1,4 @@
-import { Order } from '../interface/Order';
+import { Order } from '../Interface/Order';
 
 export const responseGenerateOrder : Order = {
     id: 1,

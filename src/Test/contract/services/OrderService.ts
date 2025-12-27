@@ -1,6 +1,6 @@
 import { ResponseDto } from '../../integration/DTOs/ResponseDto';
-import { Order } from '../response/interface/Order';
-import { api } from '../api';
+import { Order } from '../Response/Interface/Order';
+import { api } from '../Api';
 
 export class OrderService {
 

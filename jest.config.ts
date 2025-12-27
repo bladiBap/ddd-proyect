@@ -24,14 +24,14 @@ const config: Config = {
         }
     },
     testMatch: [
-        '<rootDir>/src/Test/unit/**/*.test.ts',
-        '<rootDir>/src/Test/unit/**/*.spec.ts',
-        //'<rootDir>/src/Test/integration/**/*.test.ts',
-        //'<rootDir>/src/Test/integration/**/*.spec.ts'
+        '<rootDir>/src/Test/Unit/**/*.test.ts',
+        '<rootDir>/src/Test/Unit/**/*.spec.ts',
+        //'<rootDir>/src/Test/Integration/**/*.test.ts',
+        //'<rootDir>/src/Test/Integration/**/*.spec.ts'
     ],
     moduleFileExtensions: ['ts', 'js', 'json'],
-    roots: ['<rootDir>/src/Test/unit'],
-    // roots: ['<rootDir>/src/Test/unit', '<rootDir>/src/Test/integration'],
+    roots: ['<rootDir>/src/Test/Unit'],
+    // roots: ['<rootDir>/src/Test/Unit', '<rootDir>/src/Test/Integration'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
     verbose: true,
     transform: {

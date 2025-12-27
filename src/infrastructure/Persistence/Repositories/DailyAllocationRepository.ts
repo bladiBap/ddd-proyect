@@ -1,28 +1,28 @@
-import "reflect-metadata";
-import { DailyAllocation } from "@domain/DailyAllocation/Entities/DailyAllocation";
-import { IDailyAllocationRepository } from "@domain/DailyAllocation/Repositories/IDailyAllocationRepository";
-import { AllocationLine } from "@domain/DailyAllocation/Entities/AllocationLine";
+import 'reflect-metadata';
+import { DailyAllocation } from '@domain/DailyAllocation/Entities/DailyAllocation';
+import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
+import { AllocationLine } from '@domain/DailyAllocation/Entities/AllocationLine';
 
-import { DailyAllocationMapper } from "../DomainModel/Config/DailyAllocationMapper";
-import { DailyAllocation as DailyAllocationEntity } from "../PersistenceModel/Entities/DailyAllocation";
-import { AllocationLine as AllocationLineEntity } from "../PersistenceModel/Entities/AllocationLine";
-import { inject, injectable } from "tsyringe";
-import { AllocationLineMapper } from "../DomainModel/Config/AllocationLineMapper";
-import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
-import { DateUtils } from "@utils/Date";
+import { DailyAllocationMapper } from '../DomainModel/Config/DailyAllocationMapper';
+import { DailyAllocation as DailyAllocationEntity } from '../PersistenceModel/Entities/DailyAllocation';
+import { AllocationLine as AllocationLineEntity } from '../PersistenceModel/Entities/AllocationLine';
+import { inject, injectable } from 'tsyringe';
+import { AllocationLineMapper } from '../DomainModel/Config/AllocationLineMapper';
+import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { DateUtils } from '@utils/Date';
 
 @injectable()
 export class DailyAllocationRepository implements IDailyAllocationRepository {
 
     constructor(
-        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
+        @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
     ) {}
 
     async findByDateAsync(date: Date): Promise<DailyAllocation> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
     async getByIdAsync(id: number, readOnly?: boolean): Promise<DailyAllocation | null> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     async addAsync(entity: DailyAllocation): Promise<void> {
@@ -45,7 +45,7 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
                     clientId: clientId
                 }
             },
-            relations: ["lines"],
+            relations: ['lines'],
         });
         
         if (!dailyAllocationEntity) {

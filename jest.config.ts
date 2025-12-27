@@ -1,4 +1,6 @@
 import type {Config} from 'jest';
+import { pathsToModuleNameMapper } from 'ts-jest';
+import { compilerOptions } from './tsconfig.json';
 
 const config: Config = {
     preset: 'ts-jest',
@@ -22,23 +24,15 @@ const config: Config = {
         }
     },
     testMatch: [
-        '<rootDir>/tests/**/*.test.ts',
-        '<rootDir>/tests/**/*.spec.ts',
-        '<rootDir>/src/**/*.test.ts',
-        '<rootDir>/src/**/*.spec.ts'
+        '<rootDir>/src/Test/unit/**/*.test.ts',
+        '<rootDir>/src/Test/unit/**/*.spec.ts',
+        //'<rootDir>/src/Test/integration/**/*.test.ts',
+        //'<rootDir>/src/Test/integration/**/*.spec.ts'
     ],
     moduleFileExtensions: ['ts', 'js', 'json'],
-    roots: ['<rootDir>/src', '<rootDir>/tests'],
-    moduleNameMapper: {
-        '^@domain/(.*)$': '<rootDir>/src/Domain/$1',
-        '^@application/(.*)$': '<rootDir>/src/Application/$1',
-        '^@infrastructure/(.*)$': '<rootDir>/src/Infrastructure/$1',
-        '^@presentation/(.*)$': '<rootDir>/src/Presentation/$1',
-        '^@shared/(.*)$': '<rootDir>/src/Shared/$1',
-        '^@core/(.*)$': '<rootDir>/src/Core/$1',
-        '^@utils/(.*)$': '<rootDir>/src/Utils/$1',
-        '^@/(.*)$': '<rootDir>/src/$1'
-    },
+    roots: ['<rootDir>/src/Test/unit'],
+    // roots: ['<rootDir>/src/Test/unit', '<rootDir>/src/Test/integration'],
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
     verbose: true,
     transform: {
         '^.+\\.ts$': 'ts-jest'

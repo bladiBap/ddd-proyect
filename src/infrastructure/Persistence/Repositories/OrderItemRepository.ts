@@ -1,17 +1,17 @@
-import { IOrderItemRepository } from "@domain/Order/Repositories/IOrderItemRepository";
-import { OrderItem } from "../PersistenceModel/Entities/OrderItem";
+import { IOrderItemRepository } from '@domain/Order/Repositories/IOrderItemRepository';
+import { OrderItem } from '../PersistenceModel/Entities/OrderItem';
 
-import { OrderItemMapper } from "../DomainModel/Config/OrderItemMapper";
-import { OrderItem as DomainOrderItem } from "@domain/Order/Entities/OrderItem";
+import { OrderItemMapper } from '../DomainModel/Config/OrderItemMapper';
+import { OrderItem as DomainOrderItem } from '@domain/Order/Entities/OrderItem';
 
-import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
-import { DomainEventsCollector } from "@application/DomainEventsCollector";
-import { inject, injectable } from "tsyringe";
+import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { DomainEventsCollector } from '@application/DomainEventsCollector';
+import { inject, injectable } from 'tsyringe';
 @injectable()
 export class OrderItemRepository implements IOrderItemRepository {
 
     constructor(
-        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
+        @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
     ) {}
 
     async deleteAsync(id: number): Promise<void> {
@@ -24,10 +24,10 @@ export class OrderItemRepository implements IOrderItemRepository {
         const manager = this.emProvider.getManager();
         const item = await manager.getRepository(OrderItem).findOne({
             where: { id },
-            relations: ["order"],
+            relations: ['order'],
         });
 
-        if (!item) return null;
+        if (!item) {return null;}
 
         const domainItem = OrderItemMapper.toDomain(item);
         return domainItem;

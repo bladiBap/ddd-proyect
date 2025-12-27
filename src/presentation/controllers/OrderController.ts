@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { Mediator } from "@application/Mediator/Mediator";
-import { GetOrderByDay } from "@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery";
-import { GenerateOrderCommand } from "@application/Order/Commands/GenerateOrder/GenerateOrderCommand";
-import { CompleteOrderItemCommand } from "@application/Order/Commands/CompleteOrderItem/CompleteOrderItemCommand";
+import { Request, Response } from 'express';
+import { Mediator } from '@application/Mediator/Mediator';
+import { GetOrderByDay } from '@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery';
+import { GenerateOrderCommand } from '@application/Order/Commands/GenerateOrder/GenerateOrderCommand';
+import { CompleteOrderItemCommand } from '@application/Order/Commands/CompleteOrderItem/CompleteOrderItemCommand';
 
 export class OrderController {
 
@@ -43,11 +43,11 @@ export class OrderController {
         const quantity = req?.body?.quantity;
 
         if (!orderItemId || isNaN(parseInt(orderItemId))) {
-            return res.status(400).json({ message: "Invalid order item ID" });
+            return res.status(400).json({ message: 'Invalid order item ID' });
         }
 
         if (quantity !== undefined && (isNaN(parseInt(quantity)))) {
-            return res.status(400).json({ message: "Invalid quantity" });
+            return res.status(400).json({ message: 'Invalid quantity' });
         }
 
         try {
@@ -55,7 +55,7 @@ export class OrderController {
             if (result.isFailure) {
                 return res.status(400).json({ ...result });
             }
-            return res.status(200).json({ message: "Order item updated" });
+            return res.status(200).json({ message: 'Order item updated' });
         } catch (error: any) {
             return res.status(500).json({ message: error.message });
         }

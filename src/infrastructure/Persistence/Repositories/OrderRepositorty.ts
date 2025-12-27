@@ -1,18 +1,18 @@
-import "reflect-metadata";
-import { DateUtils } from "@utils/Date";
-import { IOrderRepository } from "@domain/Order/Repositories/IOrderRepository";
-import { Order } from "@domain/Order/Entities/Order";
-import { Order as OrderEntity } from "../PersistenceModel/Entities/Order";
+import 'reflect-metadata';
+import { DateUtils } from '@utils/Date';
+import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
+import { Order } from '@domain/Order/Entities/Order';
+import { Order as OrderEntity } from '../PersistenceModel/Entities/Order';
 
-import { OrderMapper } from "../DomainModel/Config/OrderMapper";
-import { inject, injectable } from "tsyringe";
-import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
+import { OrderMapper } from '../DomainModel/Config/OrderMapper';
+import { inject, injectable } from 'tsyringe';
+import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
 
 @injectable()
 export class OrderRepository implements IOrderRepository {
 
     constructor(
-        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
+        @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
     ) {}
 
     async findByDateAsync(date: Date): Promise<Order[]> {
@@ -42,7 +42,7 @@ export class OrderRepository implements IOrderRepository {
             where: { id }
         });
 
-        if (!orderEntity) return null;
+        if (!orderEntity) {return null;}
         return OrderMapper.toDomain(orderEntity);
     }
 
@@ -54,7 +54,7 @@ export class OrderRepository implements IOrderRepository {
             where: { id, dateOrdered: today }
         });
 
-        if (!orderEntity) return null;
+        if (!orderEntity) {return null;}
         return OrderMapper.toDomain(orderEntity);
     }
 

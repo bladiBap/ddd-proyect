@@ -1,24 +1,24 @@
-import { IPackageRepository } from "@domain/Package/Repositories/IPackageRepository";
-import { Package } from "../PersistenceModel/Entities/Package";
-import { Package as DomainPackage } from "@domain/Package/Entities/Package";
-import { PackageMapper } from "../DomainModel/Config/PackageMapper";
+import { IPackageRepository } from '@domain/Package/Repositories/IPackageRepository';
+import { Package } from '../PersistenceModel/Entities/Package';
+import { Package as DomainPackage } from '@domain/Package/Entities/Package';
+import { PackageMapper } from '../DomainModel/Config/PackageMapper';
 
-import { inject, injectable } from "tsyringe";
-import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
+import { inject, injectable } from 'tsyringe';
+import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
 
 @injectable()
 export class PackageRepository implements IPackageRepository {
     
     constructor(
-        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
+        @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
     ) {}
 
     async getDetailsByIdAsync(id: number, readOnly?: boolean): Promise<DomainPackage | null> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     async getByIdAsync(id: number, readOnly?: boolean): Promise<DomainPackage | null> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     async addAsync(packageDomain: DomainPackage): Promise<void> {
@@ -38,7 +38,7 @@ export class PackageRepository implements IPackageRepository {
                 datePackage: today
             }
         });
-        if (!packageD) return null;
+        if (!packageD) {return null;}
         return PackageMapper.toDomain(packageD);
     }
 }

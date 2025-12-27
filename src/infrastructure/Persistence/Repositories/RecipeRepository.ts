@@ -1,18 +1,18 @@
-import { RecipeRawDTO } from "@application/Order/Dto/OrderRawDTO";
-import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
-import { IRecipeRepository } from "@domain/Recipe/Repositories/IRecipeRepository";
-import { Recipe } from "@domain/Recipe/Entities/Recipe";
-import { inject, injectable } from "tsyringe";
+import { RecipeRawDTO } from '@application/Order/Dto/OrderRawDTO';
+import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository';
+import { Recipe } from '@domain/Recipe/Entities/Recipe';
+import { inject, injectable } from 'tsyringe';
 
 @injectable()
 export class RecipeRepository implements IRecipeRepository {
 
     constructor(
-        @inject("IEntityManagerProvider") private readonly emProvider: IEntityManagerProvider
+        @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
     ) {}
 
     getByIdsAsync(ids: number[], readOnly?: boolean): Promise<Recipe[]> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     async getRecipesToPrepare(date: Date): Promise<RecipeRawDTO[]> {
@@ -39,10 +39,10 @@ export class RecipeRepository implements IRecipeRepository {
     }
 
     getByIdAsync(id: number, readOnly?: boolean): Promise<Recipe | null> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     addAsync(entity: Recipe): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 }

@@ -1,6 +1,6 @@
-import { Entity } from "@core/Abstractions/Entity";
-import { DomainException } from "@core/Results/DomainExeption";
-import { ClientError } from "../Errors/ClientError";
+import { Entity } from '@core/Abstractions/Entity';
+import { DomainException } from '@core/Results/DomainExeption';
+import { ClientError } from '../Errors/ClientError';
 
 export class Client extends Entity {
 

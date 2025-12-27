@@ -1,4 +1,4 @@
-import { Entity } from "@core/Abstractions/Entity";
+import { Entity } from '@core/Abstractions/Entity';
 
 export class PackageItem extends Entity {
 

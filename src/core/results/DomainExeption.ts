@@ -1,4 +1,4 @@
-import { Exception } from "./ErrorCustom";
+import { Exception } from './ErrorCustom';
 
 export class DomainException extends Error {
     

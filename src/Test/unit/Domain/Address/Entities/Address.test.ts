@@ -1,6 +1,6 @@
-import { DomainException } from '../../../../src/Core/Results/DomainExeption';
-import { Address } from '../../../../src/Domain/Address/Entities/Address';
-import { Coordinates } from '../../../../src/Domain/Address/ValuesObjects/Coordinates';
+import { DomainException } from '@core/Results/DomainExeption';
+import { Address } from '@domain/Address/Entities/Address';
+import { Coordinates } from '@domain/Address/ValuesObjects/Coordinates';
 
 describe('Address Entity', () => {
     const validCoordinates = new Coordinates(40.7128, -74.0060);

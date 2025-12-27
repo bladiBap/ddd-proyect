@@ -1,10 +1,10 @@
 import { 
     Entity, PrimaryGeneratedColumn, Column, OneToMany 
-} from "typeorm";
+} from 'typeorm';
 
-import { MealPlan } from "./MealPlan";
-import { Package } from "./Package";
-import { AllocationLine } from "./AllocationLine";
+import { MealPlan } from './MealPlan';
+import { Package } from './Package';
+import { AllocationLine } from './AllocationLine';
 
 @Entity()
 export class Client {

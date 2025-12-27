@@ -1,7 +1,7 @@
-import { AggregateRoot } from "@core/Abstractions/AgregateRoot";
-import { Coordinates } from "../ValuesObjects/Coordinates";
-import { AddressError } from "../Error/AddressError";
-import { DomainException } from "@core/Results/DomainExeption";
+import { AggregateRoot } from '@core/Abstractions/AgregateRoot';
+import { Coordinates } from '../ValuesObjects/Coordinates';
+import { AddressError } from '../Error/AddressError';
+import { DomainException } from '@core/Results/DomainExeption';
 
 export class Address extends AggregateRoot {
     

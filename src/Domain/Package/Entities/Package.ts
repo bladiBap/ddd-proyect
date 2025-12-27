@@ -1,9 +1,9 @@
-import { DomainException } from "@core/Results/DomainExeption";
-import { AggregateRoot } from "@core/Abstractions/AgregateRoot";
+import { DomainException } from '@core/Results/DomainExeption';
+import { AggregateRoot } from '@core/Abstractions/AgregateRoot';
 
-import { StatusPackage } from "@domain/Package/Types/StatusPackage";
-import { PackageError } from "@domain/Package/Errors/PackageError";
-import { PackageItem } from "@domain/Package/Entities/PackageItem";
+import { StatusPackage } from '@domain/Package/Types/StatusPackage';
+import { PackageError } from '@domain/Package/Errors/PackageError';
+import { PackageItem } from '@domain/Package/Entities/PackageItem';
 
 export class Package extends AggregateRoot {
     

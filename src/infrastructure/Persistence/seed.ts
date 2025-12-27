@@ -1,25 +1,25 @@
-import "reflect-metadata";
-import { AppDataSource } from "./PersistenceModel/DataSource";
+import 'reflect-metadata';
+import { AppDataSource } from './PersistenceModel/DataSource';
 
-import { MeasurementUnit } from "./PersistenceModel/Entities/MeasurementUnit";
-import { Client } from "./PersistenceModel/Entities/Client";
-import { Ingredient } from "./PersistenceModel/Entities/Ingredient";
-import { Recipe } from "./PersistenceModel/Entities/Recipe";
-import { RecipeIngredient } from "./PersistenceModel/Entities/RecipeIngredient";
-import { Order } from "./PersistenceModel/Entities/Order";
-import { OrderItem } from "./PersistenceModel/Entities/OrderItem";
-import { StatusOrder } from "@domain/Order/Types/StatusOrderEnum";
-import { Address } from "./PersistenceModel/Entities/Address";
-import { Calendar } from "./PersistenceModel/Entities/Calendar";
-import { MealPlan } from "./PersistenceModel/Entities/MealPlan";
-import { DayliDiet } from "./PersistenceModel/Entities/DayliDiet";
+import { MeasurementUnit } from './PersistenceModel/Entities/MeasurementUnit';
+import { Client } from './PersistenceModel/Entities/Client';
+import { Ingredient } from './PersistenceModel/Entities/Ingredient';
+import { Recipe } from './PersistenceModel/Entities/Recipe';
+import { RecipeIngredient } from './PersistenceModel/Entities/RecipeIngredient';
+import { Order } from './PersistenceModel/Entities/Order';
+import { OrderItem } from './PersistenceModel/Entities/OrderItem';
+import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
+import { Address } from './PersistenceModel/Entities/Address';
+import { Calendar } from './PersistenceModel/Entities/Calendar';
+import { MealPlan } from './PersistenceModel/Entities/MealPlan';
+import { DayliDiet } from './PersistenceModel/Entities/DayliDiet';
 
 async function seed() {     
     await AppDataSource.initialize();
     const appConection = AppDataSource.getInstance();
 
     await appConection.query('TRUNCATE TABLE "order_item", "order", "dayli_diet", "meal_plan", "calendar", "address", "recipe_ingredient", "recipe", "ingredient", "client", "measurement_unit", "daily_allocation", "allocation_line" RESTART IDENTITY CASCADE;');
-    console.log("Database cleaned!");
+    console.log('Database cleaned!');
 
     //Repositorios
     const unitRepo = appConection.getRepository(MeasurementUnit);
@@ -35,29 +35,29 @@ async function seed() {
     const dayliDietRepo = appConection.getRepository(DayliDiet);
 
     const [gram, piece] = await unitRepo.save([
-        unitRepo.create({ name: "Gram", simbol: "g" }),
-        unitRepo.create({ name: "Piece", simbol: "pc" }),
+        unitRepo.create({ name: 'Gram', simbol: 'g' }),
+        unitRepo.create({ name: 'Piece', simbol: 'pc' }),
     ]);
 
     const [client1, client2] = await clientRepo.save([
-        clientRepo.create({ name: "John Doe" }),
-        clientRepo.create({ name: "Jane Smith" }),
+        clientRepo.create({ name: 'John Doe' }),
+        clientRepo.create({ name: 'Jane Smith' }),
     ]);
 
     const [rice, chicken, egg] = await ingredientRepo.save([
-        ingredientRepo.create({ name: "Rice", measurementUnit: gram }),
-        ingredientRepo.create({ name: "Chicken Breast", measurementUnit: gram }),
-        ingredientRepo.create({ name: "Egg", measurementUnit: piece }),
+        ingredientRepo.create({ name: 'Rice', measurementUnit: gram }),
+        ingredientRepo.create({ name: 'Chicken Breast', measurementUnit: gram }),
+        ingredientRepo.create({ name: 'Egg', measurementUnit: piece }),
     ]);
 
     const [recipe1, recipe2] = await recipeRepo.save([
         recipeRepo.create({
-            name: "Chicken Rice Bowl",
-            instructions: "Cook rice, grill chicken, and serve together.",
+            name: 'Chicken Rice Bowl',
+            instructions: 'Cook rice, grill chicken, and serve together.',
         }),
         recipeRepo.create({
-            name: "Fried Egg",
-            instructions: "Fry an egg with a pinch of salt.",
+            name: 'Fried Egg',
+            instructions: 'Fry an egg with a pinch of salt.',
         }),
     ]);
 
@@ -73,17 +73,17 @@ async function seed() {
 
     const today = new Date();
     const address1 = addressRepo.create({
-        date: today.toISOString().split("T")[0],
-        address: "Av. Principal 123",
-        reference: "Casa azul",
+        date: today.toISOString().split('T')[0],
+        address: 'Av. Principal 123',
+        reference: 'Casa azul',
         latitude: -17.7833,
         longitude: -63.1821,
         calendar: calendar1,
     });
     const address2 = addressRepo.create({
-        date: today.toISOString().split("T")[0],
-        address: "Calle Secundaria 45",
-        reference: "Depto 2B",
+        date: today.toISOString().split('T')[0],
+        address: 'Calle Secundaria 45',
+        reference: 'Depto 2B',
         latitude: -17.7805,
         longitude: -63.1859,
         calendar: calendar2,
@@ -160,11 +160,11 @@ async function seed() {
         }),
     ]);
 
-    console.log("Database seeded successfully!");
+    console.log('Database seeded successfully!');
     process.exit(0);
 }
 
 seed().catch((err) => {
-    console.error("Error seeding database:", err);
+    console.error('Error seeding database:', err);
     process.exit(1);
 });

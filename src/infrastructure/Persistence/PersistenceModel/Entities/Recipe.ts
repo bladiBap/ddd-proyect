@@ -1,13 +1,13 @@
 import { 
     Entity, PrimaryGeneratedColumn, Column, 
     OneToMany, ManyToMany 
-} from "typeorm";
+} from 'typeorm';
 
-import { RecipeIngredient } from "./RecipeIngredient";
-import { DayliDiet } from "./DayliDiet";
-import { PackageItem } from "./PackageItem";
-import { OrderItem } from "./OrderItem";
-import { AllocationLine } from "./AllocationLine";
+import { RecipeIngredient } from './RecipeIngredient';
+import { DayliDiet } from './DayliDiet';
+import { PackageItem } from './PackageItem';
+import { OrderItem } from './OrderItem';
+import { AllocationLine } from './AllocationLine';
 
 @Entity()
 export class Recipe {

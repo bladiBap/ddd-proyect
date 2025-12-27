@@ -1,5 +1,5 @@
-import { AggregateRoot } from "@core/Abstractions/AgregateRoot";
-import { AllocationLine } from "./AllocationLine";
+import { AggregateRoot } from '@core/Abstractions/AgregateRoot';
+import { AllocationLine } from './AllocationLine';
 
 export class DailyAllocation extends AggregateRoot {
     private date: Date;

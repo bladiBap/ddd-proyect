@@ -1,27 +1,27 @@
 import 'reflect-metadata';
-import { CreatePackageHandler } from '../../../../src/Application/Package/Commands/CreatePackage/CreatePackageHandler';
-import { CreatePackageCommand } from '../../../../src/Application/Package/Commands/CreatePackage/CreatePackageCommand';
-import { Exception } from '../../../../src/Core/Results/ErrorCustom';
-import { IUnitOfWork } from '../../../../src/Core/Abstractions/IUnitOfWork';
-import { IClientRepository } from '../../../../src/Domain/Client/Repositories/IClientRepository';
-import { IAddressRepository } from '../../../../src/Domain/Address/Repositories/IAddressRepository';
-import { IPackageRepository } from '../../../../src/Domain/Package/Repositories/IPackageRepository';
-import { IDailyAllocationRepository } from '../../../../src/Domain/DailyAllocation/Repositories/IDailyAllocationRepository';
-import { Client } from '../../../../src/Domain/Client/Entities/Client';
-import { Address } from '../../../../src/Domain/Address/Entities/Address';
-import { Package } from '../../../../src/Domain/Package/Entities/Package';
-import { DailyAllocation } from '../../../../src/Domain/DailyAllocation/Entities/DailyAllocation';
-import { AllocationLine } from '../../../../src/Domain/DailyAllocation/Entities/AllocationLine';
-import { PackageItem } from '../../../../src/Domain/Package/Entities/PackageItem';
-import { StatusPackage } from '../../../../src/Domain/Package/Types/StatusPackage';
+import { CreatePackageHandler } from '@application/Package/Commands/CreatePackage/CreatePackageHandler';
+import { CreatePackageCommand } from '@application/Package/Commands/CreatePackage/CreatePackageCommand';
+import { Exception } from '@core/Results/ErrorCustom';
+import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
+import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
+import { IPackageRepository } from '@domain/Package/Repositories/IPackageRepository';
+import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
+import { Client } from '@domain/Client/Entities/Client';
+import { Address } from '@domain/Address/Entities/Address';
+import { Package } from '@domain/Package/Entities/Package';
+import { DailyAllocation } from '@domain/DailyAllocation/Entities/DailyAllocation';
+import { AllocationLine } from '@domain/DailyAllocation/Entities/AllocationLine';
+import { PackageItem } from '@domain/Package/Entities/PackageItem';
+import { StatusPackage } from '@domain/Package/Types/StatusPackage';
 
 // Mocks
-jest.mock('../../../../src/Domain/Client/Entities/Client');
-jest.mock('../../../../src/Domain/Address/Entities/Address');
-jest.mock('../../../../src/Domain/Package/Entities/Package');
-jest.mock('../../../../src/Domain/DailyAllocation/Entities/DailyAllocation');
-jest.mock('../../../../src/Domain/DailyAllocation/Entities/AllocationLine');
-jest.mock('../../../../src/Domain/Package/Entities/PackageItem');
+jest.mock('@domain/Client/Entities/Client');
+jest.mock('@domain/Address/Entities/Address');
+jest.mock('@domain/Package/Entities/Package');
+jest.mock('@domain/DailyAllocation/Entities/DailyAllocation');
+jest.mock('@domain/DailyAllocation/Entities/AllocationLine');
+jest.mock('@domain/Package/Entities/PackageItem');
 
 describe('CreatePackageHandler', () => {
     // Mocks de dependencias
@@ -53,28 +53,41 @@ describe('CreatePackageHandler', () => {
         mockUnitOfWork = {
             startTransaction: jest.fn(),
             commit: jest.fn(),
-            rollback: jest.fn()
-        } as any;
+            rollback: jest.fn(),
+            getRepository: jest.fn(),
+            getManager: jest.fn(),
+            getRequiredManager: jest.fn()
+        } as jest.Mocked<IUnitOfWork>;
         
         mockClientRepository = {
             getByIdAsync: jest.fn(),
             deleteAsync: jest.fn(),
             addAsync: jest.fn()
-        } as any;
+        } as jest.Mocked<IClientRepository>;
         
         mockAddressRepository = {
-            getAddressForTodayByClientId: jest.fn()
-        } as any;
+            getAddressForTodayByClientId: jest.fn(),
+            deleteAsync: jest.fn(),
+            getPerClientNeeds: jest.fn(),
+            getClientsForDeliveredInformation: jest.fn(),
+            getByIdAsync: jest.fn(),
+            addAsync: jest.fn()
+        } as jest.Mocked<IAddressRepository>;
         
         mockPackageRepository = {
             getPackageByAddressClientIdAsync: jest.fn(),
-            addAsync: jest.fn()
-        } as any;
+            addAsync: jest.fn(),
+            getByIdAsync: jest.fn(),
+            getDetailsByIdAsync: jest.fn()
+        } as jest.Mocked<IPackageRepository>;
         
         mockDailyAllocationRepository = {
             getDailyAllocationToday: jest.fn(),
-            updatedLines: jest.fn()
-        } as any;
+            updatedLines: jest.fn(),
+            addAsync: jest.fn(),
+            findByDateAsync: jest.fn(),
+            getByIdAsync: jest.fn()
+        } as jest.Mocked<IDailyAllocationRepository>;
         
         mockClient = {
             getId: jest.fn().mockReturnValue(clientId)

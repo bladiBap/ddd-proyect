@@ -1,5 +1,5 @@
-import { ValueObject } from "@core/Abstractions/ValueObject";
-import { Coordinates } from "@domain/Address/ValuesObjects/Coordinates";
+import { ValueObject } from '@core/Abstractions/ValueObject';
+import { Coordinates } from '@domain/Address/ValuesObjects/Coordinates';
 
 export class Address extends ValueObject {
     private street: string;
@@ -10,10 +10,10 @@ export class Address extends ValueObject {
     constructor(street: string, city: string, location: Coordinates) {
         super();
         if (street.trim().length === 0) {
-            throw new Error("Street is required.");
+            throw new Error('Street is required.');
         }
         if (city.trim().length === 0) {
-            throw new Error("City is required.");
+            throw new Error('City is required.');
         }
         this.street = street;
         this.city = city;

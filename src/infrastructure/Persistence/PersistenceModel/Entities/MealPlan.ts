@@ -13,13 +13,13 @@ export class MealPlan {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: "date" })
+    @Column({ type: 'date' })
     startDate!: Date;
 
-    @Column({ type: "date" })
+    @Column({ type: 'date' })
     endDate!: Date;
 
-    @Column({ type: "int" })
+    @Column({ type: 'int' })
     durationDays!: number;
 
     @OneToMany(() => DayliDiet, (dayliDiet) => dayliDiet.mealPlan, { cascade: true, eager: true })

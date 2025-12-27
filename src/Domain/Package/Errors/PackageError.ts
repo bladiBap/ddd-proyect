@@ -1,8 +1,8 @@
-import { StatusPackage } from "../Types/StatusPackage";
+import { StatusPackage } from '../Types/StatusPackage';
 
 export class PackageError {
     public static codeIsRequired(): Error {
-        return new Error(`The code of the package is required.`);
+        return new Error('The code of the package is required.');
     }
 
     public static canNotChangeStatus ( currentStatus: StatusPackage, newStatus: StatusPackage ) : Error {
@@ -10,10 +10,10 @@ export class PackageError {
     }
 
     public static packageMustHaveAtLeastOneItem(): Error {
-        return new Error(`The package must have at least one item.`);
+        return new Error('The package must have at least one item.');
     }
 
     public static cannotAddItemToDeliveredPackage(): Error {
-        return new Error(`Cannot add item to a package that is already DELIVERED.`);
+        return new Error('Cannot add item to a package that is already DELIVERED.');
     }
 }

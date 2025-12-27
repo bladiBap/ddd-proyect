@@ -1,6 +1,6 @@
-import { ValueObject } from "@core/Abstractions/ValueObject"
-import { DomainException } from "@core/Results/DomainExeption";
-import { CoordinateError } from "../Error/CoordinateError";
+import { ValueObject } from '@core/Abstractions/ValueObject'
+import { DomainException } from '@core/Results/DomainExeption';
+import { CoordinateError } from '../Error/CoordinateError';
 
 export class Coordinates extends ValueObject {
     private latitude: number;

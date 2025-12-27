@@ -1,10 +1,10 @@
-import { ErrorType } from "./ErrorType";
+import { ErrorType } from './ErrorType';
 
 export class Exception {
-    static readonly None = new Exception("", "", ErrorType.Failure);
+    static readonly None = new Exception('', '', ErrorType.Failure);
     static readonly NullValue = new Exception(
-        "General.Null",
-        "Null value was provided",
+        'General.Null',
+        'Null value was provided',
         ErrorType.Failure
     );
 
@@ -19,7 +19,7 @@ export class Exception {
         type: ErrorType,
         ...args: any[]
     ) {
-        this.structuredMessage = structuredMessage ?? "";
+        this.structuredMessage = structuredMessage ?? '';
         this.description = this.buildMessage(this.structuredMessage, args);
         this.code = code;
         this.type = type;
@@ -37,8 +37,8 @@ export class Exception {
 
         let result = structuredMessage;
         placeholders.forEach((placeholder, index) => {
-        if (index >= args.length) return;
-        const value = args[index]?.toString() ?? "";
+        if (index >= args.length) {return;}
+        const value = args[index]?.toString() ?? '';
         result = result.replace(placeholder, value);
         });
 

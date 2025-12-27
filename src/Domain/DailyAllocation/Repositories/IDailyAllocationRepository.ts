@@ -1,7 +1,7 @@
-import { IRepository } from "@core/Abstractions/IRepository";
+import { IRepository } from '@core/Abstractions/IRepository';
 import { DailyAllocation } from '../Entities/DailyAllocation';
-import { AllocationLine } from "../Entities/AllocationLine";
-import { EntityManager } from "typeorm";
+import { AllocationLine } from '../Entities/AllocationLine';
+import { EntityManager } from 'typeorm';
 
 export interface IDailyAllocationRepository extends IRepository<DailyAllocation> {
     findByDateAsync(date: Date): Promise<DailyAllocation>;

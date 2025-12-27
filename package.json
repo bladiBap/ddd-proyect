@@ -1,17 +1,20 @@
 {
 	"name": "proyecto",
 	"version": "1.0.0",
-	"description": "La carpeta `domain/` contiene los siguientes aggregados y entidades:",
-	"main": "index.js",
+	"description": "",
+	"main": "dist/index.js",
+	"type": "module",
 	"scripts": {
-		"dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
-		"build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-		"start": "node dist/index.js",
-		"typeorm": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/infrastructure/Persistence/PersistenceModel/db.ts",
-		"migration:generate": "npm run typeorm migration:generate ./src/infrastructure/Persistence/Migrations/InitialMigration",
+		"dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/index.ts",
+		"build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+		"start": "tsc -p tsconfig.build.json && node dist/index.js",
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --fix",
+		"typeorm": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/Infrastructure/Persistence/PersistenceModel/db.ts",
+		"migration:generate": "npm run typeorm migration:generate ./src/Infrastructure/Persistence/Migrations/InitialMigration",
 		"migration:run": "npm run typeorm migration:run",
 		"migration:revert": "npm run typeorm migration:revert",
-		"seed": "ts-node -r tsconfig-paths/register src/infrastructure/Persistence/seed.ts",
+		"seed": "ts-node -r tsconfig-paths/register src/Infrastructure/Persistence/seed.ts",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
@@ -31,6 +34,7 @@
 		"tsyringe": "^4.10.0"
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.39.2",
 		"@types/chai": "^5.2.3",
 		"@types/express": "^5.0.6",
 		"@types/jest": "^30.0.0",
@@ -38,6 +42,8 @@
 		"@types/node": "^24.10.1",
 		"@types/supertest": "^6.0.3",
 		"chai": "^6.2.1",
+		"eslint": "^9.39.2",
+		"globals": "^16.5.0",
 		"jest": "^30.2.0",
 		"mocha": "^11.7.5",
 		"supertest": "^7.1.4",
@@ -47,6 +53,7 @@
 		"tsc-alias": "^1.8.16",
 		"tsconfig-paths": "^4.2.0",
 		"typeorm": "^0.3.27",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.50.1"
 	}
 }

@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 
-import { MeasurementUnit } from "./MeasurementUnit";
-import { RecipeIngredient } from "./RecipeIngredient";
+import { MeasurementUnit } from './MeasurementUnit';
+import { RecipeIngredient } from './RecipeIngredient';
 
 @Entity()
 export class Ingredient {
@@ -12,7 +12,7 @@ export class Ingredient {
     name!: string;
 
     @ManyToOne(() => MeasurementUnit, (measurementUnit) => measurementUnit.ingredients, { eager: true })
-    @JoinColumn({ name: "measurementUnitId" })
+    @JoinColumn({ name: 'measurementUnitId' })
     measurementUnit!: MeasurementUnit;
 
     @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.ingredient)

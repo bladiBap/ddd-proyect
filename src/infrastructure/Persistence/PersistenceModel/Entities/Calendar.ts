@@ -1,8 +1,8 @@
 import { 
     Entity, PrimaryGeneratedColumn, OneToMany, OneToOne
-} from "typeorm";
+} from 'typeorm';
 import { MealPlan } from './MealPlan';
-import { Address } from "./Address";
+import { Address } from './Address';
 
 @Entity()
 export class Calendar{

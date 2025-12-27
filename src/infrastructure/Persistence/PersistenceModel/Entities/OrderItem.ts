@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { StatusOrder } from "@domain/Order/Types/StatusOrderEnum";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
 
-import { Order } from "./Order";
-import { Recipe } from "./Recipe";
+import { Order } from './Order';
+import { Recipe } from './Recipe';
 
 @Entity()
 export class OrderItem {
@@ -10,35 +10,35 @@ export class OrderItem {
     id!: number;
 
     @Column({
-        type: "enum",
+        type: 'enum',
         enum: StatusOrder,
         default: StatusOrder.CREATED
     })
     status!: StatusOrder;
 
     @Column({
-        type: "int"
+        type: 'int'
     })
     quantityPlanned!: number;
 
     @Column({
-        type: "int",
+        type: 'int',
         default: 0
     })
     quantityPrepared!: number;
 
     @Column({
-        type: "int",
+        type: 'int',
         default: 0
     })
     quantityDelivered!: number;
 
     @ManyToOne(() => Recipe, recipe => recipe.orderItems)
-    @JoinColumn({ name: "recipeId" })
+    @JoinColumn({ name: 'recipeId' })
     recipe!: Recipe;
 
     @ManyToOne(() => Order, order => order.orderItems)
-    @JoinColumn({ name: "orderId" })
+    @JoinColumn({ name: 'orderId' })
     order!: Order;
 
     @Column()

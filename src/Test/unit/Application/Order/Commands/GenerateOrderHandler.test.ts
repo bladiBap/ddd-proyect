@@ -1,26 +1,23 @@
-import "reflect-metadata";
-import { GenerateOrderHandler } from "../../../../src/Application/Order/Commands/GenerateOrder/GenerateOrderHandler";
-import { GenerateOrderCommand } from "../../../../src/Application/Order/Commands/GenerateOrder/GenerateOrderCommand";
-import { Result } from "../../../../src/Core/Results/Result";
-import { Exception } from "../../../../src/Core/Results/ErrorCustom";
-import { Order } from "../../../../src/Domain/Order/Entities/Order";
-import { DailyAllocation } from "../../../../src/Domain/DailyAllocation/Entities/DailyAllocation";
-import { AllocationLine } from "../../../../src/Domain/DailyAllocation/Entities/AllocationLine";
-import { StatusOrder } from "../../../../src/Domain/Order/Types/StatusOrderEnum";
+import 'reflect-metadata';
+import { GenerateOrderHandler } from '@application/Order/Commands/GenerateOrder/GenerateOrderHandler';
+import { GenerateOrderCommand } from '@application/Order/Commands/GenerateOrder/GenerateOrderCommand';
+import { Order } from '@domain/Order/Entities/Order';
+import { DailyAllocation } from '@domain/DailyAllocation/Entities/DailyAllocation';
+import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
 
-jest.mock("@core/Abstractions/IUnitOfWork");
-jest.mock("@domain/Order/Repositories/IOrderRepository");
-jest.mock("@domain/Address/Repositories/IAddressRepository");
-jest.mock("@domain/DailyAllocation/Repositories/IDailyAllocationRepository");
-jest.mock("@domain/Recipe/Repositories/IRecipeRepository");
+jest.mock('@core/Abstractions/IUnitOfWork');
+jest.mock('@domain/Order/Repositories/IOrderRepository');
+jest.mock('@domain/Address/Repositories/IAddressRepository');
+jest.mock('@domain/DailyAllocation/Repositories/IDailyAllocationRepository');
+jest.mock('@domain/Recipe/Repositories/IRecipeRepository');
 
-import { IUnitOfWork } from "../../../../src/Core/Abstractions/IUnitOfWork";
-import { IOrderRepository } from "../../../../src/Domain/Order/Repositories/IOrderRepository";
-import { IAddressRepository } from "../../../../src/Domain/Address/Repositories/IAddressRepository";
-import { IDailyAllocationRepository } from "../../../../src/Domain/DailyAllocation/Repositories/IDailyAllocationRepository";
-import { IRecipeRepository } from "../../../../src/Domain/Recipe/Repositories/IRecipeRepository";
+import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
+import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
+import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
+import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository';
 
-describe("GenerateOrderHandler", () => {
+describe('GenerateOrderHandler', () => {
 	let handler: GenerateOrderHandler;
 	let mockUnitOfWork: jest.Mocked<IUnitOfWork>;
 	let mockOrderRepository: jest.Mocked<IOrderRepository>;
@@ -29,7 +26,7 @@ describe("GenerateOrderHandler", () => {
 	let mockRecipeRepository: jest.Mocked<IRecipeRepository>;
 	let mockCommand: GenerateOrderCommand;
 
-	const mockToday = new Date("2024-01-15");
+	const mockToday = new Date('2024-01-15');
 	const mockRecipesToOrder = [
 		{ recipeId: 1, quantity: 10 },
 		{ recipeId: 2, quantity: 5 },
@@ -52,24 +49,44 @@ describe("GenerateOrderHandler", () => {
 			startTransaction: jest.fn(),
 			commit: jest.fn(),
 			rollback: jest.fn(),
-		} as any;
+			getManager: jest.fn(),
+			getRepository: jest.fn(),
+			getRequiredManager: jest.fn(),
+		} as jest.Mocked<IUnitOfWork>;
 
 		mockOrderRepository = {
 			findByDateAsync: jest.fn(),
 			addAsync: jest.fn(),
-		} as any;
+			deleteAsync: jest.fn(),
+			getByIdAsync: jest.fn(),
+			getByIdTodayAsync: jest.fn(),
+			updatedAsync: jest.fn(),
+		} as jest.Mocked<IOrderRepository>;
 
 		mockAddressRepository = {
 			getPerClientNeeds: jest.fn(),
-		} as any;
+			addAsync: jest.fn(),
+			deleteAsync: jest.fn(),
+			getByIdAsync: jest.fn(),
+			getAddressForTodayByClientId: jest.fn(),
+			getClientsForDeliveredInformation: jest.fn(),
+		} as jest.Mocked<IAddressRepository>;
 
 		mockDailyAllocationRepository = {
 			addAsync: jest.fn(),
-		} as any;
+			deleteAsync: jest.fn(),
+			updatedLines : jest.fn(),
+			getByIdAsync : jest.fn(),
+			findByDateAsync : jest.fn(),
+			getDailyAllocationToday : jest.fn(),
+		} as jest.Mocked<IDailyAllocationRepository>;
 
 		mockRecipeRepository = {
 			getRecipesToPrepare: jest.fn(),
-		} as any;
+			addAsync : jest.fn(),
+			getByIdAsync : jest.fn(),
+			getByIdsAsync : jest.fn(),
+		} as jest.Mocked<IRecipeRepository>;
 
 		jest.useFakeTimers();
 		jest.setSystemTime(mockToday);
@@ -90,9 +107,9 @@ describe("GenerateOrderHandler", () => {
 		jest.useRealTimers();
 	});
 
-	describe("execute", () => {
-		describe("happy path - creación exitosa", () => {
-			it("happy path - Generates order and daily allocation successfully", async () => {
+	describe('execute', () => {
+		describe('happy path - creación exitosa', () => {
+			it('happy path - Generates order and daily allocation successfully', async () => {
 				// Arrange
 				mockOrderRepository.findByDateAsync.mockResolvedValue([]);
 				mockRecipeRepository.getRecipesToPrepare.mockResolvedValue(
@@ -175,8 +192,8 @@ describe("GenerateOrderHandler", () => {
 			});
 		});
 
-		describe("failure scenarios", () => {
-			it("should return conflict when order for today already exists", async () => {
+		describe('failure scenarios', () => {
+			it('should return conflict when order for today already exists', async () => {
 				// Arrange
 				const mockExistingOrder = new Order(
                     1,
@@ -194,9 +211,9 @@ describe("GenerateOrderHandler", () => {
 
 				// Assert
 				expect(result.isSuccess).toBe(false);
-				expect(result.error?.code).toBe("Order.AlreadyExists");
+				expect(result.error?.code).toBe('Order.AlreadyExists');
 				expect(result.error?.structuredMessage).toBe(
-					"An order for today already exists"
+					'An order for today already exists'
 				);
 
 				expect(mockUnitOfWork.startTransaction).toHaveBeenCalledTimes(
@@ -217,7 +234,7 @@ describe("GenerateOrderHandler", () => {
 				).not.toHaveBeenCalled();
 			});
 
-			it("should return not found when no recipes to prepare", async () => {
+			it('should return not found when no recipes to prepare', async () => {
 				// Arrange
 				mockOrderRepository.findByDateAsync.mockResolvedValue([]);
 				mockRecipeRepository.getRecipesToPrepare.mockResolvedValue([]);
@@ -227,9 +244,9 @@ describe("GenerateOrderHandler", () => {
 
 				// Assert
 				expect(result.isSuccess).toBe(false);
-				expect(result.error?.code).toBe("Order.NoRecipes");
+				expect(result.error?.code).toBe('Order.NoRecipes');
 				expect(result.error?.structuredMessage).toBe(
-					"No recipes found to generate an order"
+					'No recipes found to generate an order'
 				);
 
 				expect(mockUnitOfWork.startTransaction).toHaveBeenCalledTimes(

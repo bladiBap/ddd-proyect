@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"baseUrl": "./",
 		"outDir": "./dist",
+		"rootDir": "./src",
 		"paths": {
 			"@domain/*": ["src/Domain/*"],
 			"@application/*": ["src/Application/*"],
@@ -10,21 +11,24 @@
 			"@shared/*": ["src/Shared/*"],
 			"@core/*": ["src/Core/*"],
 			"@utils/*": ["src/Utils/*"],
-			"@int-test/*": ["integration-test/*"],
+			"@test/*": ["src/Test/*"],
 			"@/*": ["src/*"]
 		},
-		"target": "ES2020",
+		"target": "es6",
 		"module": "commonjs",
-		"rootDir": "./src",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
+		"sourceMap": true,
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+		"strictPropertyInitialization": false
 	},
-	"include": ["src/**/*", "tests", "integration-test/**/*"],
-	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+	"include": [
+		"src/**/*"
+	],
+	"lib": ["es2015"]
 }

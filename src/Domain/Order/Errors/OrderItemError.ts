@@ -1,4 +1,4 @@
-import { StatusOrder } from "../Types/StatusOrderEnum";
+import { StatusOrder } from '../Types/StatusOrderEnum';
 
 export class OrderItemError {
 

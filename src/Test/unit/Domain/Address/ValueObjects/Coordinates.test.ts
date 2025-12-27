@@ -1,5 +1,5 @@
-import { Coordinates } from '../../../../src/Domain/Address/ValuesObjects/Coordinates';
-import { DomainException } from '../../../../src/Core/Results/DomainExeption';
+import { Coordinates } from '@domain/Address/ValuesObjects/Coordinates';
+import { DomainException } from '@core/Results/DomainExeption';
 
 describe('Coordinates Value Object', () => {
     describe('Creation', () => {

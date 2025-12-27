@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { Ingredient } from "./Ingredient";
-import { Recipe } from "./Recipe";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Ingredient } from './Ingredient';
+import { Recipe } from './Recipe';
 
 @Entity()
 export class RecipeIngredient {
@@ -11,10 +11,10 @@ export class RecipeIngredient {
     quantity!: number;
 
     @ManyToOne(() => Recipe, (recipe) => recipe.ingredients)
-    @JoinColumn({ name: "recipeId" })
+    @JoinColumn({ name: 'recipeId' })
     recipe!: Recipe;
 
     @ManyToOne(() => Ingredient, (ingredient) => ingredient.recipes)
-    @JoinColumn({ name: "ingredientId" })
+    @JoinColumn({ name: 'ingredientId' })
     ingredient!: Ingredient;
 }

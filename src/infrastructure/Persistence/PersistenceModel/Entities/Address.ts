@@ -1,16 +1,16 @@
 import { 
     Entity, PrimaryGeneratedColumn, Column, 
     ManyToOne, JoinColumn, OneToOne
-} from "typeorm";
-import { Calendar } from "./Calendar";
-import { Package } from "./Package";
+} from 'typeorm';
+import { Calendar } from './Calendar';
+import { Package } from './Package';
 
 @Entity()
 export class Address{
     @PrimaryGeneratedColumn()
     id!: number;
     
-    @Column({ type: "date" })
+    @Column({ type: 'date' })
     date!: Date;
 
     @Column()
@@ -19,14 +19,14 @@ export class Address{
     @Column()
     reference!: string;
 
-    @Column({ type: "float" })
+    @Column({ type: 'float' })
     latitude!: number;
 
-    @Column({ type: "float" })
+    @Column({ type: 'float' })
     longitude!: number;
 
     @ManyToOne(() => Calendar, (calendar) => calendar.addresses)
-    @JoinColumn({ name: "calendarId" })
+    @JoinColumn({ name: 'calendarId' })
     calendar!: Calendar;
 
     @Column()

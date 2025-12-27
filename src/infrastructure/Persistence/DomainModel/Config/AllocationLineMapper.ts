@@ -1,5 +1,5 @@
-import { AllocationLine as AllocationLineDomain } from "@domain/DailyAllocation/Entities/AllocationLine";
-import { AllocationLine as AllocationLineEntity } from "@infrastructure/Persistence/PersistenceModel/Entities/AllocationLine";
+import { AllocationLine as AllocationLineDomain } from '@domain/DailyAllocation/Entities/AllocationLine';
+import { AllocationLine as AllocationLineEntity } from '@infrastructure/Persistence/PersistenceModel/Entities/AllocationLine';
 
 export class AllocationLineMapper {
 

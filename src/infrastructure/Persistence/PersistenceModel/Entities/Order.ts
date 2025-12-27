@@ -1,21 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { StatusOrder } from "@domain/Order/Types/StatusOrderEnum";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
 
-import { OrderItem } from "./OrderItem";
+import { OrderItem } from './OrderItem';
 
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: "date" })
+    @Column({ type: 'date' })
     dateOrdered!: Date;
 
-    @Column({ type: "date" })
+    @Column({ type: 'date' })
     dateCreatedOn!: Date;
 
     @Column({
-        type: "enum",
+        type: 'enum',
         enum: StatusOrder,
         default: StatusOrder.CREATED
     })

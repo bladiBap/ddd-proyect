@@ -1,5 +1,5 @@
-import { ResponseDto } from '../DTOs/ResponseDto';
-import { HttpClientBuilder } from '../http/Client';
+import { ResponseDto } from '@test/integration/DTOs/ResponseDto';
+import { HttpClientBuilder } from '@test/integration/http/Client';
 
 describe('OrderControllerIntTest', () => {
     describe('GenerateOrder', () => {
@@ -9,7 +9,7 @@ describe('OrderControllerIntTest', () => {
             const client = new HttpClientBuilder().withUrl('order-today/generate', 'POST');   
             // Act
             const response = await client.send();
-            const data: ResponseDto<null> = response.data;
+            const data = response.data as ResponseDto<null>;
             // Assert
             expect(response).toBeDefined();
             expect(response.status).toBe(201);
@@ -23,7 +23,7 @@ describe('OrderControllerIntTest', () => {
             // Act
             const firstResponse = await client.send();
             const secondResponse = await client.send();
-            const data: ResponseDto<null> = secondResponse.data;
+            const data = secondResponse.data as ResponseDto<null>;
             // Assert
             expect(firstResponse).toBeDefined();
             expect(firstResponse.status).toBe(201);

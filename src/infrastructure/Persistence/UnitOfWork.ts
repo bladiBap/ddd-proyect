@@ -1,12 +1,12 @@
-import { injectable, inject } from "tsyringe";
-import { EntityManager, QueryRunner, DataSource } from "typeorm";
+import { injectable, inject } from 'tsyringe';
+import { EntityManager, QueryRunner, DataSource } from 'typeorm';
 
-import { DomainEvent } from "@core/Abstractions/DomainEvent";
-import { IUnitOfWork } from "@core/Abstractions/IUnitOfWork";
-import { IEntityManagerProvider } from "@core/Abstractions/IEntityManagerProvider";
+import { DomainEvent } from '@core/Abstractions/DomainEvent';
+import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
 
-import { Mediator } from "@application/Mediator/Mediator";
-import { DomainEventsCollector } from "@application/DomainEventsCollector";
+import { Mediator } from '@application/Mediator/Mediator';
+import { DomainEventsCollector } from '@application/DomainEventsCollector';
 
 @injectable()
 export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
@@ -17,12 +17,12 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
 
     constructor(
         @inject(Mediator) private readonly mediator: Mediator,
-        @inject("DataSource") private readonly dataSource: DataSource
+        @inject('DataSource') private readonly dataSource: DataSource
     ) {}
 
     async startTransaction(): Promise<void> {
         if (this.isActive) {
-            throw new Error("UnitOfWork: the transaction is already active.");
+            throw new Error('UnitOfWork: the transaction is already active.');
         }
         this.count += 1;
         const qr = this.dataSource.createQueryRunner();
@@ -36,7 +36,7 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
 
     async commit(): Promise<void> {
         if (!this.isActive || !this.queryRunner) {
-            throw new Error("UnitOfWork: no active transaction to commit.");
+            throw new Error('UnitOfWork: no active transaction to commit.');
         }
 
         const domainEvents = this.extractDomainEvents();
@@ -67,7 +67,7 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
     }
 
     getRepository<T extends { new (manager: EntityManager): any }>(repo: T): InstanceType<T> {
-        if (!this.manager) throw new Error("Transaction not started. Call start() first.");
+        if (!this.manager) {throw new Error('Transaction not started. Call start() first.');}
         return new repo(this.manager);
     }
 
@@ -93,7 +93,7 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
     
     getRequiredManager(): EntityManager {
         if (!this.isActive || !this.manager) {
-        throw new Error("UnitOfWork: se requiere transacción activa.");
+        throw new Error('UnitOfWork: se requiere transacción activa.');
         }
         return this.manager;
     }

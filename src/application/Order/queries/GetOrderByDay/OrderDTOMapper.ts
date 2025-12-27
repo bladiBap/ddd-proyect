@@ -1,5 +1,5 @@
-import { Order } from "@infrastructure/Persistence/PersistenceModel/Entities/Order";
-import { OrderDTO } from "@application/Order/Dto/OrderDTO";
+import { Order } from '@infrastructure/Persistence/PersistenceModel/Entities/Order';
+import { OrderDTO } from '@application/Order/Dto/OrderDTO';
 
 export class OrderDTOMapper {
     static toDTO(order: Order): OrderDTO {

@@ -1,4 +1,4 @@
-import { Exception } from "./ErrorCustom";
+import { Exception } from './ErrorCustom';
 
 export class Result {
     readonly isSuccess: boolean;
@@ -43,7 +43,7 @@ export class ResultWithValue<T> extends Result {
 
     get value(): T {
         if (!this.isSuccess) {
-        throw new Error("The value of a failure result can't be accessed.");
+        throw new Error('The value of a failure result can\'t be accessed.');
         }
         return this._value as T;
     }
@@ -53,8 +53,8 @@ export class ResultWithValue<T> extends Result {
     }
 
     static fromValue<T>(value: T | null | undefined): ResultWithValue<T> {
-        return value != null
-        ? Result.successWith(value)
+        return value !== null && value !== undefined
+        ? Result.successWith(value as T)
         : Result.failureWith<T>(Exception.NullValue);
     }
 }

@@ -1,24 +1,24 @@
-import { DataSource } from "typeorm";
-import { injectable, inject } from "tsyringe";
-import { ResultWithValue } from "@core/Results/Result";
+import { DataSource } from 'typeorm';
+import { injectable, inject } from 'tsyringe';
+import { ResultWithValue } from '@core/Results/Result';
 
-import { QueryHandler } from "@application/Mediator/Decorators";
-import { IClientDeliveredDTO } from "@application/Client/Dto/dto";
-import { GetClientsForDelivered } from "@application/Client/GetClientsForDelivery/GetClientsForDelivered";
-import { ClientDeliveredDTOMapper } from "@application/Client/GetClientsForDelivery/ClientDeliveredDTOMapper";
+import { QueryHandler } from '@application/Mediator/Decorators';
+import { IClientDeliveredDTO } from '@application/Client/Dto/dto';
+import { GetClientsForDelivered } from '@application/Client/GetClientsForDelivery/GetClientsForDelivered';
+import { ClientDeliveredDTOMapper } from '@application/Client/GetClientsForDelivery/ClientDeliveredDTOMapper';
 
 @injectable()
 @QueryHandler(GetClientsForDelivered)
 export class GetClientsForDeliveredHandler {
 
     constructor(
-        @inject("DataSource") private readonly dataSource: DataSource
+        @inject('DataSource') private readonly dataSource: DataSource
     ) {}
 
     async execute(query: GetClientsForDelivered): Promise<ResultWithValue<IClientDeliveredDTO[]>> {
 
         const today = new Date();
-        const formattedDate = today.toISOString().split("T")[0];
+        const formattedDate = today.toISOString().split('T')[0];
 
         const flatData = await this.dataSource.query(`
             SELECT 

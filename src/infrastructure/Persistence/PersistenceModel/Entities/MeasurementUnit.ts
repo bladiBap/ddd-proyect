@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from "typeorm";
-import { Ingredient } from "./Ingredient";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Ingredient } from './Ingredient';
 
 @Entity()
 export class MeasurementUnit {

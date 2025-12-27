@@ -1,9 +1,9 @@
-import "reflect-metadata";
-import { HandlerRegistry } from "./HandlerRegistry";
+import 'reflect-metadata';
+import { HandlerRegistry } from './HandlerRegistry';
 
-export const COMMAND_HANDLER_METADATA = Symbol("COMMAND_HANDLER_METADATA");
-export const QUERY_HANDLER_METADATA   = Symbol("QUERY_HANDLER_METADATA");
-export const EVENT_HANDLER_METADATA   = Symbol("EVENT_HANDLER_METADATA");
+export const COMMAND_HANDLER_METADATA = Symbol('COMMAND_HANDLER_METADATA');
+export const QUERY_HANDLER_METADATA   = Symbol('QUERY_HANDLER_METADATA');
+export const EVENT_HANDLER_METADATA   = Symbol('EVENT_HANDLER_METADATA');
 
 export function CommandHandler(commandType: Function): ClassDecorator {
     return (target: any) => {

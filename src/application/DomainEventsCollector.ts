@@ -1,10 +1,10 @@
-import { DomainEvent } from "@core/Abstractions/DomainEvent";
+import { DomainEvent } from '@core/Abstractions/DomainEvent';
 
 export class DomainEventsCollector {
     private static events: DomainEvent[] = [];
 
     static collect(events: DomainEvent[]) {
-        if (events.length) this.events.push(...events);
+        if (events.length) {this.events.push(...events);}
     }
 
     static pullAll(): DomainEvent[] {

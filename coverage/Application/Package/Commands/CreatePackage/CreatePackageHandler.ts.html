@@ -247,31 +247,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { injectable, inject } from "tsyringe";
-import { CommandHandler } from "@application/Mediator/Decorators";
-import { CreatePackageCommand } from "./CreatePackageCommand";
-import { IUnitOfWork } from "@core/Abstractions/IUnitOfWork";
-import { Package } from "@domain/Package/Entities/Package";
-import { PackageItem } from "@domain/Package/Entities/PackageItem";
-import { StatusPackage } from "@domain/Package/Types/StatusPackage";
-import { Result } from "@core/Results/Result";
-import { Exception } from "@core/Results/ErrorCustom";
-import { IPackageRepository } from "@domain/Package/Repositories/IPackageRepository";
-import { IClientRepository } from "@domain/Client/Repositories/IClientRepository";
-import { IAddressRepository } from "@domain/Address/Repositories/IAddressRepository";
-import { IDailyAllocationRepository } from "@domain/DailyAllocation/Repositories/IDailyAllocationRepository";
-import { CodeGenerator } from "@utils/Code";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { injectable, inject } from 'tsyringe';
+import { CommandHandler } from '@application/Mediator/Decorators';
+import { CreatePackageCommand } from './CreatePackageCommand';
+import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { Package } from '@domain/Package/Entities/Package';
+import { PackageItem } from '@domain/Package/Entities/PackageItem';
+import { StatusPackage } from '@domain/Package/Types/StatusPackage';
+import { Result } from '@core/Results/Result';
+import { Exception } from '@core/Results/ErrorCustom';
+import { IPackageRepository } from '@domain/Package/Repositories/IPackageRepository';
+import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
+import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
+import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
+import { CodeGenerator } from '@utils/Code';
 &nbsp;
 @injectable()
 @CommandHandler(CreatePackageCommand)
 export class CreatePackageHandler {
 &nbsp;
     constructor(
-        @inject("IUnitOfWork") private readonly unitOfWork: IUnitOfWork,
-        @inject("IClientRepository") private readonly clientRepository: IClientRepository,
-        @inject("IAddressRepository") private readonly addressRepository: IAddressRepository,
-        @inject("IPackageRepository") private readonly packageRepository: IPackageRepository,
-        @inject("IDailyAllocationRepository") private readonly dailyAllocationRepository: IDailyAllocationRepository,
+        @inject('IUnitOfWork') private readonly unitOfWork: IUnitOfWork,
+        @inject('IClientRepository') private readonly clientRepository: IClientRepository,
+        @inject('IAddressRepository') private readonly addressRepository: IAddressRepository,
+        @inject('IPackageRepository') private readonly packageRepository: IPackageRepository,
+        @inject('IDailyAllocationRepository') private readonly dailyAllocationRepository: IDailyAllocationRepository,
     ) {
     }
 &nbsp;
@@ -285,35 +285,35 @@ export class CreatePackageHandler {
             const client =  await this.clientRepository.getByIdAsync(clientId);
             if (!client) {
                 return Result.failure(
-                    Exception.NotFound("Client.NotFound", `Client with id ${clientId} not found`)
+                    Exception.NotFound('Client.NotFound', `Client with id ${clientId} not found`)
                 );
             }
 &nbsp;
             const address = await this.addressRepository.getAddressForTodayByClientId(clientId);
             if (!address) {
                 return Result.failure(
-                    Exception.NotFound("Address.NotFound", `No address found for client id ${clientId} today`)
+                    Exception.NotFound('Address.NotFound', `No address found for client id ${clientId} today`)
                 );
             }
 &nbsp;
             const packageExists = await this.packageRepository.getPackageByAddressClientIdAsync(address.getId(), clientId);
             if (packageExists) {
                 return Result.failure(
-                    Exception.Conflict("Package.AlreadyExists", `Package already exists for client id ${clientId} at address id ${address.getId()} today`)
+                    Exception.Conflict('Package.AlreadyExists', `Package already exists for client id ${clientId} at address id ${address.getId()} today`)
                 );
             }
 &nbsp;
             const dailyAllocation = await this.dailyAllocationRepository.getDailyAllocationToday(clientId);
             if (!dailyAllocation) {
                 return Result.failure(
-                    Exception.NotFound("DailyAllocation.NotFound", `No daily allocation found for client id ${clientId} today`)
+                    Exception.NotFound('DailyAllocation.NotFound', `No daily allocation found for client id ${clientId} today`)
                 );
             }
 &nbsp;
             const clientHasAllRecipes = dailyAllocation.clientHasAllRecipes(clientId, recipeIds);
             if (!clientHasAllRecipes) {
                 return Result.failure(
-                    Exception.InvalidOperation("DailyAllocation.MissingRecipes", `Client with id ${clientId} does not have all recipes for today`)
+                    Exception.InvalidOperation('DailyAllocation.MissingRecipes', `Client with id ${clientId} does not have all recipes for today`)
                 );
             }
 &nbsp;
@@ -332,8 +332,8 @@ export class CreatePackageHandler {
 <span class="cstat-no" title="statement not covered" >            await this.unitOfWork.rollback();</span>
 <span class="cstat-no" title="statement not covered" >            return Result.failure(</span>
                 Exception.Problem(
-                "Package.CreationFailed",
-                "Error creating package: " + (error as Error).message
+                'Package.CreationFailed',
+                'Error creating package: ' + (error as Error).message
                 )
             );
         }
@@ -346,7 +346,7 @@ export class CreatePackageHandler {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-22T01:47:02.496Z
+                at 2025-12-27T03:11:00.029Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

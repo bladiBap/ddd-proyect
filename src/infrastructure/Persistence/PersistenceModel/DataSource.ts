@@ -1,8 +1,8 @@
-import "reflect-metadata";
-import "dotenv/config";
+//import "reflect-metadata";
+import 'dotenv/config';
 
-import { DataSource } from "typeorm";
-import { dataSource } from "./Db";
+import { DataSource } from 'typeorm';
+import { dataSource } from './Db';
 
 export class AppDataSource {
     private static instance: DataSource;
@@ -20,7 +20,7 @@ export class AppDataSource {
 
         if (!dataSource.isInitialized) {
             await dataSource.initialize();
-            console.log("DataSource initialized successfully");
+            console.log('DataSource initialized successfully');
         }
 
         return dataSource;
@@ -31,7 +31,7 @@ export class AppDataSource {
 
         if (dataSource.isInitialized) {
             await dataSource.destroy();
-            console.log("DataSource destroyed");
+            console.log('DataSource destroyed');
         }
     }
 }

@@ -1,0 +1,142 @@
+{
+  "consumer": {
+    "name": "react-client"
+  },
+  "interactions": [
+    {
+      "description": "A request to get an order for today",
+      "providerStates": [
+        {
+          "name": "Order for today exists with order items"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/order-today/details"
+      },
+      "response": {
+        "body": {
+          "error": {
+            "code": "",
+            "description": "",
+            "structuredMessage": "",
+            "type": 0
+          },
+          "isSuccess": true,
+          "value": {
+            "dateCreatedOn": "2025-12-27",
+            "dateOrdered": "2025-12-27",
+            "id": 1,
+            "orderItems": [
+              {
+                "id": 1,
+                "quantity": 2,
+                "recipe": {
+                  "id": 1,
+                  "ingredients": [
+                    {
+                      "id": 1,
+                      "measurementUnit": {
+                        "id": 1,
+                        "name": "Gram",
+                        "simbol": "g"
+                      },
+                      "name": "Rice"
+                    },
+                    {
+                      "id": 2,
+                      "measurementUnit": {
+                        "id": 1,
+                        "name": "Gram",
+                        "simbol": "g"
+                      },
+                      "name": "Chicken Breast"
+                    }
+                  ],
+                  "instructions": "Cook rice, grill chicken, and serve together.",
+                  "name": "Chicken Rice Bowl"
+                },
+                "status": 0
+              },
+              {
+                "id": 2,
+                "quantity": 3,
+                "recipe": {
+                  "id": 2,
+                  "ingredients": [
+                    {
+                      "id": 3,
+                      "measurementUnit": {
+                        "id": 2,
+                        "name": "Piece",
+                        "simbol": "pc"
+                      },
+                      "name": "Egg"
+                    }
+                  ],
+                  "instructions": "Fry an egg with a pinch of salt.",
+                  "name": "Fried Egg"
+                },
+                "status": 0
+              },
+              {
+                "id": 3,
+                "quantity": 1,
+                "recipe": {
+                  "id": 2,
+                  "ingredients": [
+                    {
+                      "id": 3,
+                      "measurementUnit": {
+                        "id": 2,
+                        "name": "Piece",
+                        "simbol": "pc"
+                      },
+                      "name": "Egg"
+                    }
+                  ],
+                  "instructions": "Fry an egg with a pinch of salt.",
+                  "name": "Fried Egg"
+                },
+                "status": 0
+              }
+            ],
+            "status": 0
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "status": {}
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "13.2.0"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "order-service"
+  }
+}

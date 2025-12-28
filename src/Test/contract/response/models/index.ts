@@ -1,9 +1,10 @@
+import { ResponseDto } from '@test/Integration/DTOs/ResponseDto';
 import { Order } from '../Interface/Order';
 
 export const responseGenerateOrder : Order = {
     id: 1,
-    dateOrdered: '2025-12-21',
-    dateCreatedOn: '2025-12-21',
+    dateOrdered: '2025-12-27',
+    dateCreatedOn: '2025-12-27',
     status: 0,
     orderItems: [
         {
@@ -79,4 +80,15 @@ export const responseGenerateOrder : Order = {
             }
         }
     ]
+};
+
+export const responseGetOrder: ResponseDto<Order> = {
+    isSuccess: true,
+    error: {
+        structuredMessage: '',
+        description: '',
+        code: '',
+        type: 0
+    },
+    value: responseGenerateOrder
 };

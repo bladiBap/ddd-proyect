@@ -2,7 +2,7 @@ import { MatchersV3, PactV3 } from '@pact-foundation/pact';
 import { describe, it } from 'mocha';
 import { OrderService } from '../Services/OrderService';
 import { expect } from 'chai';
-import { responseGenerateOrder } from '../Response/Models';
+import { responseGenerateOrder, responseGetOrder } from '../Response/Models';
 const { like } = MatchersV3;
 
 describe('Order Service', () => {
@@ -11,6 +11,7 @@ describe('Order Service', () => {
     const provider = new PactV3({
         consumer: 'react-client',
         provider: 'order-service',
+        port: 3000,
     });
 
     describe('Ger Order for Today', () => {
@@ -19,15 +20,12 @@ describe('Order Service', () => {
                 .given('Order for today exists with order items')
                 .uponReceiving('A request to get an order for today')
                 .withRequest({
-                    method: 'POST',
-                    path: 'order-today/details',
+                    method: 'GET',
+                    path: '/order-today/details',
                 })
                 .willRespondWith({
-                    status: 201,
-                    body: like({
-                        isSuccess: true,
-                        data: null
-                    }),
+                    status: 200,
+                    body: like(responseGetOrder),
                 });
             await provider.executeTest(async (mockServer) => {
                 orderService = new OrderService(mockServer.url);

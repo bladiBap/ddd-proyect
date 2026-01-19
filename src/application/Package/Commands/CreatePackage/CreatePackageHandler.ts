@@ -6,7 +6,7 @@ import { Package } from '@domain/Package/Entities/Package';
 import { PackageItem } from '@domain/Package/Entities/PackageItem';
 import { StatusPackage } from '@domain/Package/Types/StatusPackage';
 import { Result } from '@core/Results/Result';
-import { Exception } from '@core/Results/ErrorCustom';
+import { Exception } from '@core/Results/Exception';
 import { IPackageRepository } from '@domain/Package/Repositories/IPackageRepository';
 import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
@@ -35,6 +35,7 @@ export class CreatePackageHandler {
 
             const client =  await this.clientRepository.getByIdAsync(clientId);
             if (!client) {
+                await this.unitOfWork.rollback();
                 return Result.failure(
                     Exception.NotFound('Client.NotFound', `Client with id ${clientId} not found`)
                 );
@@ -42,6 +43,7 @@ export class CreatePackageHandler {
 
             const address = await this.addressRepository.getAddressForTodayByClientId(clientId);
             if (!address) {
+                await this.unitOfWork.rollback();
                 return Result.failure(
                     Exception.NotFound('Address.NotFound', `No address found for client id ${clientId} today`)
                 );
@@ -49,6 +51,7 @@ export class CreatePackageHandler {
 
             const packageExists = await this.packageRepository.getPackageByAddressClientIdAsync(address.getId(), clientId);
             if (packageExists) {
+                await this.unitOfWork.rollback();
                 return Result.failure(
                     Exception.Conflict('Package.AlreadyExists', `Package already exists for client id ${clientId} at address id ${address.getId()} today`)
                 );
@@ -56,6 +59,7 @@ export class CreatePackageHandler {
 
             const dailyAllocation = await this.dailyAllocationRepository.getDailyAllocationToday(clientId);
             if (!dailyAllocation) {
+                await this.unitOfWork.rollback();
                 return Result.failure(
                     Exception.NotFound('DailyAllocation.NotFound', `No daily allocation found for client id ${clientId} today`)
                 );
@@ -63,6 +67,7 @@ export class CreatePackageHandler {
 
             const clientHasAllRecipes = dailyAllocation.clientHasAllRecipes(clientId, recipeIds);
             if (!clientHasAllRecipes) {
+                await this.unitOfWork.rollback();
                 return Result.failure(
                     Exception.InvalidOperation('DailyAllocation.MissingRecipes', `Client with id ${clientId} does not have all recipes for today`)
                 );

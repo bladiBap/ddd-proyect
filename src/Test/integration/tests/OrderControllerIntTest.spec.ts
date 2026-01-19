@@ -1,5 +1,5 @@
-import { ResponseDto } from '@test/integration/DTOs/ResponseDto';
-import { HttpClientBuilder } from '@test/integration/http/Client';
+import { ResponseDto } from '@test/Integration/DTOs/ResponseDto';
+import { HttpClientBuilder } from '@test/Integration/Http/Client';
 
 describe('OrderControllerIntTest', () => {
     describe('GenerateOrder', () => {
@@ -12,7 +12,7 @@ describe('OrderControllerIntTest', () => {
             const data = response.data as ResponseDto<null>;
             // Assert
             expect(response).toBeDefined();
-            expect(response.status).toBe(201);
+            expect(response.status).toBe(200);
             expect(data).toHaveProperty('isSuccess', true);
         });
 
@@ -26,7 +26,7 @@ describe('OrderControllerIntTest', () => {
             const data = secondResponse.data as ResponseDto<null>;
             // Assert
             expect(firstResponse).toBeDefined();
-            expect(firstResponse.status).toBe(201);
+            expect(firstResponse.status).toBe(200);
             expect(secondResponse).toBeDefined();
             expect(secondResponse.status).toBe(400);
             expect(data).toHaveProperty('isSuccess', false);
@@ -44,7 +44,7 @@ describe('OrderControllerIntTest', () => {
             const data: ResponseDto<null> = response.data;
             // Assert
             expect(response).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(409);
             expect(data).toHaveProperty('isSuccess', false);
             expect(data).toHaveProperty('error');
             expect(data.error).toHaveProperty('code', 'Order.NoRecipes');

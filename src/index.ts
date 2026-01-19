@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import express from 'express';
+import morgan from 'morgan';
 
 import { AppDataSource } from '@infrastructure/Persistence/PersistenceModel/DataSource';
 import { container } from '@infrastructure/Container';
@@ -18,7 +19,7 @@ async function bootstrap() {
 
     const app = express();
     app.use(express.json());
-
+    app.use(morgan('dev'));
     const orderController = new OrderController();
     const clientController = new ClientController();
     const packageController = new PackageController();
@@ -30,7 +31,7 @@ async function bootstrap() {
     app.post('/order-today/generate', (req, res) => orderController.generateOrderReport(req, res));
     app.patch('/order-item/:orderItemId/complete', (req, res) => orderController.markOrderItemComplete(req, res));
     app.get('/clients/delivery-info', (req, res) => clientController.getClientsForDeliveredInformation(req, res));
-    app.post('/package', (req, res) => packageController.buildPackage(req, res));
+    app.post('/package', (req, res) => packageController.create(req, res));
 
     const PORT = Number(process.env.PORT) || 3000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

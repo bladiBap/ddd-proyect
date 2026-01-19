@@ -1,15 +1,15 @@
 import { injectable, inject } from 'tsyringe';
 import { CommandHandler } from '@application/Mediator/Decorators';
-import { CompleteOrderItemCommand } from './CompleteOrderItemCommand';
+import { IncreaseQuantityOrderItemCommand } from './IncreaseQuantityOrderItemCommand';
 import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
 import { Result } from '@core/Results/Result';
-import { Exception } from '@core/Results/ErrorCustom';
+import { Exception } from '@core/Results/Exception';
 import { IOrderItemRepository } from '@domain/Order/Repositories/IOrderItemRepository';
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 
 @injectable()
-@CommandHandler(CompleteOrderItemCommand)
-export class CompleteOrderItemHandler {
+@CommandHandler(IncreaseQuantityOrderItemCommand)
+export class IncreaseQuantityOrderItemHandler {
 
     constructor(
         @inject('IUnitOfWork') private readonly _unitOfWork: IUnitOfWork,
@@ -17,7 +17,7 @@ export class CompleteOrderItemHandler {
         @inject('IOrderRepository') private readonly _orderRepository: IOrderRepository,
     ) {}
 
-    async execute(command: CompleteOrderItemCommand): Promise<Result> {
+    async execute(command: IncreaseQuantityOrderItemCommand): Promise<Result> {
         await this._unitOfWork.startTransaction();
         try {
             const orderItem = await this._orderItemRepository.getByIdAsync(command.orderItemId);
@@ -25,7 +25,7 @@ export class CompleteOrderItemHandler {
             if (!orderItem) {
                 await this._unitOfWork.rollback();
                 return Result.failure(
-                    Exception.NotFound('OrderItem.NotFound', 'Order item not found')
+                    Exception.NotFound('OrderItem.NotFound', 'Order item with given id not found')
                 );
             }
 

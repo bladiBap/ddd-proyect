@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { CreatePackageHandler } from '@application/Package/Commands/CreatePackage/CreatePackageHandler';
 import { CreatePackageCommand } from '@application/Package/Commands/CreatePackage/CreatePackageCommand';
-import { Exception } from '@core/Results/ErrorCustom';
+import { Exception } from '@core/Results/Exception';
 import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
 import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
@@ -226,7 +226,7 @@ describe('CreatePackageHandler', () => {
                 // Verificar que no se creó package
                 expect(mockPackageRepository.addAsync).not.toHaveBeenCalled();
                 expect(mockUnitOfWork.commit).not.toHaveBeenCalled();
-                expect(mockUnitOfWork.rollback).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.rollback).toHaveBeenCalled();
             });
         
             it('should return failure when address is not found for today', async () => {
@@ -242,6 +242,11 @@ describe('CreatePackageHandler', () => {
                 expect(result.isFailure).toBe(true);
                 expect(result.error?.code).toBe('Address.NotFound');
                 expect(result.error?.structuredMessage).toContain(`No address found for client id ${clientId} today`);
+
+                // Verificar que no se creó package
+                expect(mockPackageRepository.addAsync).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.commit).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.rollback).toHaveBeenCalled();
             });
         
             it('should return failure when package already exists', async () => {
@@ -258,6 +263,11 @@ describe('CreatePackageHandler', () => {
                 expect(result.isFailure).toBe(true);
                 expect(result.error?.code).toBe('Package.AlreadyExists');
                 expect(result.error?.structuredMessage).toContain(`Package already exists for client id ${clientId}`);
+                
+                // Verificar que no se creó package
+                expect(mockPackageRepository.addAsync).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.commit).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.rollback).toHaveBeenCalled();
             });
         
             it('should return failure when daily allocation is not found', async () => {
@@ -275,6 +285,11 @@ describe('CreatePackageHandler', () => {
                 expect(result.isFailure).toBe(true);
                 expect(result.error?.code).toBe('DailyAllocation.NotFound');
                 expect(result.error?.structuredMessage).toContain(`No daily allocation found for client id ${clientId} today`);
+
+                // Verificar que no se creó package
+                expect(mockPackageRepository.addAsync).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.commit).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.rollback).toHaveBeenCalled();
             });
         
             it('should return failure when client does not have all recipes', async () => {
@@ -293,6 +308,11 @@ describe('CreatePackageHandler', () => {
                 expect(result.isFailure).toBe(true);
                 expect(result.error?.code).toBe('DailyAllocation.MissingRecipes');
                 expect(result.error?.structuredMessage).toContain(`Client with id ${clientId} does not have all recipes`);
+
+                // Verificar que no se creó package
+                expect(mockPackageRepository.addAsync).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.commit).not.toHaveBeenCalled();
+                expect(mockUnitOfWork.rollback).toHaveBeenCalled();
             });
         });
     });

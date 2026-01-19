@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Application/Order/Commands/CompleteOrderItem/CompleteOrderItemHandler.ts</title>
+    <title>Code coverage report for Application/Order/Commands/CompleteOrderItem/IncreaseQuantityOrderItemHandler.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">Application/Order/Commands/CompleteOrderItem</a> CompleteOrderItemHandler.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">Application/Order/Commands/CompleteOrderItem</a> IncreaseQuantityOrderItemHandler.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -187,7 +187,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { injectable, inject } from "tsyringe";</span>
 <span class="cstat-no" title="statement not covered" >import { CommandHandler } from "@application/Mediator/Decorators";</span>
-<span class="cstat-no" title="statement not covered" >import { CompleteOrderItemCommand } from "./CompleteOrderItemCommand";</span>
+<span class="cstat-no" title="statement not covered" >import { IncreaseQuantityOrderItemCommand } from "./IncreaseQuantityOrderItemCommand";</span>
 import { IUnitOfWork } from "@core/Abstractions/IUnitOfWork";
 <span class="cstat-no" title="statement not covered" >import { Result } from "@core/Results/Result";</span>
 <span class="cstat-no" title="statement not covered" >import { Exception } from "@core/Results/ErrorCustom";</span>
@@ -195,8 +195,8 @@ import { IOrderItemRepository } from "@domain/Order/Repositories/IOrderItemRepos
 import { IOrderRepository } from "@domain/Order/Repositories/IOrderRepository";
 &nbsp;
 @injectable()
-@CommandHandler(CompleteOrderItemCommand)
-export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >CompleteOrderItemHandler </span>{</span></span>
+@CommandHandler(IncreaseQuantityOrderItemCommand)
+export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >IncreaseQuantityOrderItemHandler </span>{</span></span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >    constructor(</span>
         @inject("IUnitOfWork") private readonly <span class="cstat-no" title="statement not covered" >_unitOfWork: IUnitOfWork,</span>
@@ -204,7 +204,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
         @inject("IOrderRepository") private readonly <span class="cstat-no" title="statement not covered" >_orderRepository: IOrderRepository,</span>
     ) {}
 &nbsp;
-<span class="fstat-no" title="function not covered" >    async </span>execute(command: CompleteOrderItemCommand): Promise&lt;Result&gt; {
+<span class="fstat-no" title="function not covered" >    async </span>execute(command: IncreaseQuantityOrderItemCommand): Promise&lt;Result&gt; {
 <span class="cstat-no" title="statement not covered" >        await this._unitOfWork.startTransaction();</span>
 <span class="cstat-no" title="statement not covered" >        try {</span>
             const orderItem = <span class="cstat-no" title="statement not covered" >await this._orderItemRepository.getByIdAsync(command.orderItemId);</span>

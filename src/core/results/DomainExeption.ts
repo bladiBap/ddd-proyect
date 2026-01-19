@@ -1,5 +1,3 @@
-import { Exception } from './ErrorCustom';
-
 export class DomainException extends Error {
     
     public readonly errorMessage: string;

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import '@application/Order/Events/OrderItemCompleted';
 
-import { container } from 'tsyringe';
+import { container, Lifecycle } from 'tsyringe';
 
 import { UnitOfWork } from './Persistence/UnitOfWork';
 import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
@@ -10,7 +10,7 @@ import { Mediator } from '@application/Mediator/Mediator';
 
 import { GetOrderDetailsHandler } from '@infrastructure/Querys/GetOrderByDayhandler';
 import { GenerateOrderHandler } from '@application/Order/Commands/GenerateOrder/GenerateOrderHandler';
-import { CompleteOrderItemHandler } from '@application/Order/Commands/CompleteOrderItem/CompleteOrderItemHandler';
+import { IncreaseQuantityOrderItemHandler } from '@application/Order/Commands/IncreaseQuantityOrderItem/IncreaseQuantityOrderItemHandler';
 import { GetClientsForDeliveredHandler } from '@infrastructure/Querys/GetClientsForDeliveredHandler';
 import { CreatePackageHandler } from '@application/Package/Commands/CreatePackage/CreatePackageHandler';
 
@@ -33,7 +33,11 @@ import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository
 
 container.registerSingleton(Mediator, Mediator);
 
-container.registerSingleton<IUnitOfWork>('IUnitOfWork', UnitOfWork);
+container.register<IUnitOfWork>('IUnitOfWork', {
+    useClass: UnitOfWork,
+}, {
+    lifecycle: Lifecycle.ContainerScoped,
+});
 
 container.register('IEntityManagerProvider', {
     useToken: 'IUnitOfWork',
@@ -49,7 +53,7 @@ container.registerSingleton<IRecipeRepository>('IRecipeRepository', RecipeReposi
 
 container.registerSingleton(GetOrderDetailsHandler, GetOrderDetailsHandler);
 container.registerSingleton(GenerateOrderHandler, GenerateOrderHandler);
-container.registerSingleton(CompleteOrderItemHandler, CompleteOrderItemHandler);
+container.registerSingleton(IncreaseQuantityOrderItemHandler, IncreaseQuantityOrderItemHandler);
 container.registerSingleton(GetClientsForDeliveredHandler, GetClientsForDeliveredHandler);
 container.registerSingleton(CreatePackageHandler, CreatePackageHandler);
 

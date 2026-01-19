@@ -193,7 +193,7 @@
 <span class="cstat-no" title="statement not covered" >import { Mediator } from "@application/Mediator/Mediator";</span>
 <span class="cstat-no" title="statement not covered" >import { GetOrderByDay } from "@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery";</span>
 <span class="cstat-no" title="statement not covered" >import { GenerateOrderCommand } from "@application/Order/Commands/GenerateOrder/GenerateOrderCommand";</span>
-<span class="cstat-no" title="statement not covered" >import { CompleteOrderItemCommand } from "@application/Order/Commands/CompleteOrderItem/CompleteOrderItemCommand";</span>
+<span class="cstat-no" title="statement not covered" >import { IncreaseQuantityOrderItemCommand } from "@application/Order/Commands/CompleteOrderItem/IncreaseQuantityOrderItemCommand";</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export class O</span>rderController {
 &nbsp;
@@ -242,7 +242,7 @@
         }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        try {</span>
-            const result = <span class="cstat-no" title="statement not covered" >await mediator.send(new CompleteOrderItemCommand(parseInt(orderItemId), quantity ? parseInt(quantity) : undefined));</span>
+            const result = <span class="cstat-no" title="statement not covered" >await mediator.send(new IncreaseQuantityOrderItemCommand(parseInt(orderItemId), quantity ? parseInt(quantity) : undefined));</span>
 <span class="cstat-no" title="statement not covered" >            if (result.isFailure) {</span>
 <span class="cstat-no" title="statement not covered" >                return res.status(400).json({ ...result });</span>
             }

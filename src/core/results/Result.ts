@@ -1,12 +1,13 @@
-import { Exception } from './ErrorCustom';
+import { IResult, IResultWithValue } from '@core/Abstractions/IResult';
+import { Exception } from './Exception';
 
-export class Result {
+export class Result implements IResult {
     readonly isSuccess: boolean;
     readonly error: Exception;
 
     protected constructor(isSuccess: boolean, error: Exception) {
         if ((isSuccess && error !== Exception.None) || (!isSuccess && error === Exception.None)) {
-            throw new Error('Invalid error state in Result.');
+            throw new Error('Invalid error stat**e in Result.');
         }
         this.isSuccess = isSuccess;
         this.error = error;
@@ -33,7 +34,7 @@ export class Result {
     }
 }
 
-export class ResultWithValue<T> extends Result {
+export class ResultWithValue<T> extends Result implements IResultWithValue<T> {
     private readonly _value?: T;
 
     constructor(value: T | undefined, isSuccess: boolean, error: Exception) {

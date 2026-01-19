@@ -91,7 +91,7 @@ describe('GenerateOrderHandler', () => {
 		jest.useFakeTimers();
 		jest.setSystemTime(mockToday);
 
-		mockCommand = new GenerateOrderCommand();
+		mockCommand = new GenerateOrderCommand(mockToday);
 
 		// Crear handler con mocks inyectados
 		handler = new GenerateOrderHandler(
@@ -111,7 +111,7 @@ describe('GenerateOrderHandler', () => {
 		describe('happy path - creación exitosa', () => {
 			it('happy path - Generates order and daily allocation successfully', async () => {
 				// Arrange
-				mockOrderRepository.findByDateAsync.mockResolvedValue([]);
+				mockOrderRepository.findByDateAsync.mockResolvedValue(null);
 				mockRecipeRepository.getRecipesToPrepare.mockResolvedValue(
 					mockRecipesToOrder
 				);
@@ -202,9 +202,9 @@ describe('GenerateOrderHandler', () => {
                     StatusOrder.CREATED,
                     []
                 );
-				mockOrderRepository.findByDateAsync.mockResolvedValue([
+				mockOrderRepository.findByDateAsync.mockResolvedValue(
 					mockExistingOrder,
-				]);
+				);
 
 				// Act
 				const result = await handler.execute(mockCommand);
@@ -236,7 +236,7 @@ describe('GenerateOrderHandler', () => {
 
 			it('should return not found when no recipes to prepare', async () => {
 				// Arrange
-				mockOrderRepository.findByDateAsync.mockResolvedValue([]);
+				mockOrderRepository.findByDateAsync.mockResolvedValue(null);
 				mockRecipeRepository.getRecipesToPrepare.mockResolvedValue([]);
 
 				// Act

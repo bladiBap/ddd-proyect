@@ -15,18 +15,19 @@ export class OrderRepository implements IOrderRepository {
         @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
     ) {}
 
-    async findByDateAsync(date: Date): Promise<Order[]> {
+    async findByDateAsync(date: Date): Promise<Order | null> {
         const manager = this.emProvider.getManager();
         const formattedDate = DateUtils.formatDate(date);
         
-        const orders = await manager.getRepository(OrderEntity).find({
+        const order = await manager.getRepository(OrderEntity).findOne({
             where: { dateOrdered: formattedDate }
         });
         
-        if (orders.length === 0) {
-            return [];
+        if (!order) {
+            return null;
         }
-        return OrderMapper.toDomainList(orders);
+        
+        return OrderMapper.toDomain(order);
     }
 
     async deleteAsync(id: number): Promise<void> {

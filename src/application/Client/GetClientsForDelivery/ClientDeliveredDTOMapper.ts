@@ -1,34 +1,28 @@
+import { Address } from '@infrastructure/Persistence/PersistenceModel/Entities/Address';
 import { IClientDeliveredDTO } from '../Dto/dto';
 
 export class ClientDeliveredDTOMapper {
 
-    static toDTO(clients: any[]): IClientDeliveredDTO[] {
-        
-        const grouped: Record<number, IClientDeliveredDTO> = {};
-        
-        clients.forEach(item => {
-            if (!grouped[item.clientId]) {
-                grouped[item.clientId] = {
-                    clientName: item.clientName,
-                    id: item.clientId,
-                    address: {
-                        id: item.addressId,
-                        address: item.clientAddress,
-                        reference: item.reference,
-                        latitude: item.latitude,
-                        longitude: item.longitude,
-                    },
-                    recipes: [],
-                };
-            }
+    static toDTO(addressByUser: Address[]): IClientDeliveredDTO[] {
 
-            grouped[item.clientId].recipes.push({
-                id: item.recipeId,
-                name: item.recipeName,
-            });
-        });
+        const lista: IClientDeliveredDTO[] = addressByUser.map((item) => ({
+            clientName: item.calendar.mealPlan.client.name,
+            id: item.calendar.mealPlan.client.id,
+            address: {
+                id: item.id,
+                address: item.address,
+                reference: item.reference,
+                latitude: item.latitude,
+                longitude: item.longitude,
+            },
+            recipes: item.calendar.mealPlan.dayliDiets.flatMap((diet: any) =>
+                diet.recipes.map((recipe: any) => ({
+                    id: recipe.id,
+                    name: recipe.name,
+                }))
+            ),
+        }));
 
-        const lista = Object.values(grouped);
         return lista;
     }
 }

@@ -93,7 +93,7 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
     
     getRequiredManager(): EntityManager {
         if (!this.isActive || !this.manager) {
-        throw new Error('UnitOfWork: se requiere transacción activa.');
+            throw new Error('UnitOfWork: se requiere transacción activa.');
         }
         return this.manager;
     }

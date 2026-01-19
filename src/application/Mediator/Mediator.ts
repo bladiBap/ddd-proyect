@@ -1,27 +1,31 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
+import { IMediator } from './IMediator';
+import { IRequest } from '../../Core/Abstractions/IResquest';
 import { HandlerRegistry } from './HandlerRegistry';
+import { DomainEvent } from '@core/Abstractions/DomainEvent';
 
-export class Mediator {
-    async send(command: any): Promise<any> {
-        const handlerType = HandlerRegistry.resolveSingle(command.constructor);
+interface IHandler<TRequest, TResponse> {
+    execute(request: TRequest): Promise<TResponse>;
+}
+
+
+export class Mediator implements IMediator {
+    
+    async send<TResponse>(request: IRequest<TResponse>): Promise<TResponse> {
+        const requestType = request.constructor;
+        const handlerType = HandlerRegistry.resolveSingle(requestType);
+        
         if (!handlerType) {
-            throw new Error(`No command handler found for ${command.constructor.name}`);
+            throw new Error(`No handler found for ${requestType.name}`);
         }
-        const handler = container.resolve(handlerType);
-        return handler.execute(command);
+
+        const handler = container.resolve<IHandler<IRequest<TResponse>, TResponse>>(handlerType);
+        
+        return handler.execute(request);
     }
 
-    async ask(query: any): Promise<any> {
-        const handlerType = HandlerRegistry.resolveSingle(query.constructor);
-        if (!handlerType) {
-            throw new Error(`No query handler found for ${query.constructor.name}`);
-        }
-        const handler = container.resolve(handlerType);
-        return handler.execute(query);
-    }
-
-    async publish(event: any): Promise<void> {
+    async publish(event: DomainEvent): Promise<void> {
         
         const handlerTypes = HandlerRegistry.resolveMany(event.constructor);
         if (handlerTypes.length === 0) {return;}

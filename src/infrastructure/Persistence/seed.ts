@@ -13,6 +13,7 @@ import { Address } from './PersistenceModel/Entities/Address';
 import { Calendar } from './PersistenceModel/Entities/Calendar';
 import { MealPlan } from './PersistenceModel/Entities/MealPlan';
 import { DayliDiet } from './PersistenceModel/Entities/DayliDiet';
+import { DateUtils } from '@utils/Date';
 
 async function seed() {     
     await AppDataSource.initialize();
@@ -71,7 +72,7 @@ async function seed() {
     const calendar2 = calendarRepo.create({});
     await calendarRepo.save([calendar1, calendar2]);
 
-    const today = new Date();
+    const today = DateUtils.formatDate(new Date());
     const address1 = addressRepo.create({
         date: today.toISOString().split('T')[0],
         address: 'Av. Principal 123',
@@ -133,30 +134,30 @@ async function seed() {
     });
     await orderRepo.save(order);
 
-    const [item1, item2, item3] = await orderItemRepo.save([
+    await orderItemRepo.save([
         orderItemRepo.create({
-        order,
-        recipe: recipe1,
-        quantityPlanned: 2,
-        quantityPrepared: 0,
-        quantityDelivered: 0,
-        status: StatusOrder.CREATED,
+            order,
+            recipe: recipe1,
+            quantityPlanned: 2,
+            quantityPrepared: 0,
+            quantityDelivered: 0,
+            status: StatusOrder.CREATED,
         }),
         orderItemRepo.create({
-        order,
-        recipe: recipe2,
-        quantityPlanned: 3,
-        quantityPrepared: 0,
-        quantityDelivered: 0,
-        status: StatusOrder.CREATED,
+            order,
+            recipe: recipe2,
+            quantityPlanned: 3,
+            quantityPrepared: 0,
+            quantityDelivered: 0,
+            status: StatusOrder.CREATED,
         }),
         orderItemRepo.create({
-        order,
-        recipe: recipe2,
-        quantityPlanned: 1,
-        quantityPrepared: 0,
-        quantityDelivered: 0,
-        status: StatusOrder.CREATED,
+            order,
+            recipe: recipe2,
+            quantityPlanned: 1,
+            quantityPrepared: 0,
+            quantityDelivered: 0,
+            status: StatusOrder.CREATED,
         }),
     ]);
 

@@ -26,12 +26,12 @@ const config: Config = {
     testMatch: [
         '<rootDir>/src/Test/Unit/**/*.test.ts',
         '<rootDir>/src/Test/Unit/**/*.spec.ts',
-        //'<rootDir>/src/Test/Integration/**/*.test.ts',
-        //'<rootDir>/src/Test/Integration/**/*.spec.ts'
+        '<rootDir>/src/Test/Integration/**/*.test.ts',
+        '<rootDir>/src/Test/Integration/**/*.spec.ts'
     ],
     moduleFileExtensions: ['ts', 'js', 'json'],
-    roots: ['<rootDir>/src/Test/Unit'],
-    // roots: ['<rootDir>/src/Test/Unit', '<rootDir>/src/Test/Integration'],
+    //roots: ['<rootDir>/src/Test/Unit'],
+    roots: ['<rootDir>/src/Test/Unit', '<rootDir>/src/Test/Integration'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
     verbose: true,
     transform: {

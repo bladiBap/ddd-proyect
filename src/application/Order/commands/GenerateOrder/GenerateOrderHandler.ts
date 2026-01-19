@@ -6,7 +6,7 @@ import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
 import { Order } from '@domain/Order/Entities/Order';
 import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
 import { Result } from '@core/Results/Result';
-import { Exception } from '@core/Results/ErrorCustom';
+import { Exception } from '@core/Results/Exception';
 
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
@@ -26,22 +26,22 @@ export class GenerateOrderHandler {
         @inject('IDailyAllocationRepository') private readonly _dailyAllocationRepository: IDailyAllocationRepository
     ) {}
 
-    async execute(_: GenerateOrderCommand): Promise<Result> {
+    async execute( generateOrderCommand: GenerateOrderCommand): Promise<Result> {
         await this._unitOfWork.startTransaction();
         try {
-            const today = new Date();
+            const date = generateOrderCommand.date;
 
-            const existing = await this._orderRepository.findByDateAsync(today);
-            if (existing.length > 0) {
+            const order = await this._orderRepository.findByDateAsync(date);
+            if (order) {
                 await this._unitOfWork.rollback();
                 return Result.failure(Exception.Conflict('Order.AlreadyExists', 'An order for today already exists'));
             }
 
-            const newOrder = new Order(0, today, today, StatusOrder.CREATED);
-            const dailyAllocations = new DailyAllocation(0, today);
+            const newOrder = new Order(0, date, date, StatusOrder.CREATED);
+            const dailyAllocations = new DailyAllocation(0, date);
 
-            const recipesToOrder = await this._recipeRepository.getRecipesToPrepare(today);
-            const recipesPerClient = await this._addressRepository.getPerClientNeeds(today);
+            const recipesToOrder = await this._recipeRepository.getRecipesToPrepare(date);
+            const recipesPerClient = await this._addressRepository.getPerClientNeeds(date);
 
             if (recipesToOrder.length === 0) {
                 await this._unitOfWork.rollback();

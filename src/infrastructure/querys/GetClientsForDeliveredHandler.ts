@@ -5,6 +5,8 @@ import { ResultWithValue } from '@core/Results/Result';
 import { QueryHandler } from '@application/Mediator/Decorators';
 import { IClientDeliveredDTO } from '@application/Client/Dto/dto';
 import { GetClientsForDelivered } from '@application/Client/GetClientsForDelivery/GetClientsForDelivered';
+import { Address } from '@infrastructure/Persistence/PersistenceModel/Entities/Address';
+import { DateUtils } from '@utils/Date';
 import { ClientDeliveredDTOMapper } from '@application/Client/GetClientsForDelivery/ClientDeliveredDTOMapper';
 
 @injectable()
@@ -15,38 +17,22 @@ export class GetClientsForDeliveredHandler {
         @inject('DataSource') private readonly dataSource: DataSource
     ) {}
 
-    async execute(query: GetClientsForDelivered): Promise<ResultWithValue<IClientDeliveredDTO[]>> {
+    async execute(request: GetClientsForDelivered): Promise<ResultWithValue<IClientDeliveredDTO[]>> {
+        const addressTable = this.dataSource.getRepository(Address);
 
-        const today = new Date();
-        const formattedDate = today.toISOString().split('T')[0];
-
-        const flatData = await this.dataSource.query(`
-            SELECT 
-                c."name" AS "clientName",
-                c."id" AS "clientId",
-                a."address" AS "clientAddress",
-                a."reference" AS "reference",
-                a."latitude" AS "latitude",
-                a."longitude" AS "longitude",
-                a."id" AS "addressId",
-                r."name" AS "recipeName",
-                r."id"   AS "recipeId"
-            FROM "address" a
-            INNER JOIN "calendar" cal ON cal."id" = a."calendarId"
-            INNER JOIN "meal_plan" mp ON mp."calendarId" = cal."id"
-            INNER JOIN "client" c ON c."id" = mp."clientId"
-            INNER JOIN "dayli_diet" dd ON dd."mealPlanId" = mp."id"
-            INNER JOIN "dayli_diet_recipes" ddr ON ddr."dayliDietId" = dd."id"
-            INNER JOIN "recipe" r ON r."id" = ddr."recipeId"
-            WHERE a."date"::date = $1
-                AND mp."startDate" <= $1::date
-                AND mp."endDate" >= $1::date
-            ORDER BY c."name", r."name"; `,
-            [formattedDate]
-        );
-        
-        const lista = ClientDeliveredDTOMapper.toDTO(flatData);
-
-        return ResultWithValue.successWith<IClientDeliveredDTO[]>(lista);
+        const date = DateUtils.formatDate(request.date);
+        console.log('Fetching clients for delivery on date:', date);
+        const clientsToDelivered = await addressTable.find({
+            where: { date: date },
+            relations: [
+                'calendar',
+                'calendar.mealPlan',
+                'calendar.mealPlan.client',
+                'calendar.mealPlan.dayliDiets',
+                'calendar.mealPlan.dayliDiets.recipes'
+            ]
+        });
+        const listclientsToDeliveredList = ClientDeliveredDTOMapper.toDTO(clientsToDelivered);
+        return ResultWithValue.successWith<IClientDeliveredDTO[]>(listclientsToDeliveredList);
     }
 }

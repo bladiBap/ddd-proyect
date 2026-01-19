@@ -1,5 +1,5 @@
-import { ResponseDto } from '@test/integration/DTOs/ResponseDto';
-import { HttpClientBuilder } from '@test/integration/http/Client';
+import { ResponseDto } from '@test/Integration/DTOs/ResponseDto';
+import { HttpClientBuilder } from '@test/Integration/Http/Client';
 
 describe('PackageControllerIntTest', () => {
     describe('CreatePackage', () => {
@@ -33,7 +33,7 @@ describe('PackageControllerIntTest', () => {
             const data = response.data as ResponseDto<null>;
             // Assert
             expect(response).toBeDefined();
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(404);
             expect(data).toHaveProperty('isSuccess', false);
             expect(data).toHaveProperty('error');
             expect(data.error).toHaveProperty('code', 'Client.NotFound');
@@ -54,8 +54,10 @@ describe('PackageControllerIntTest', () => {
             // Assert
             expect(firstResponse).toBeDefined();
             expect(firstResponse.status).toBe(200);
+
             expect(secondResponse).toBeDefined();
             expect(secondResponse.status).toBe(400);
+            
             expect(data).toHaveProperty('isSuccess', false);
             expect(data).toHaveProperty('error');
             expect(data.error).toHaveProperty('code', 'Package.AlreadyExists');

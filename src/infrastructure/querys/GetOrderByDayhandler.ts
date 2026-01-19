@@ -7,6 +7,7 @@ import { GetOrderByDay } from '@application/Order/Queries/GetOrderByDay/GerOrder
 
 import { OrderDTOMapper } from '@application/Order/Queries/GetOrderByDay/OrderDTOMapper';
 import { OrderDTO } from '@application/Order/Dto/OrderDTO';
+
 import { Order } from '@infrastructure/Persistence/PersistenceModel/Entities/Order';
 
 @injectable()
@@ -38,7 +39,9 @@ export class GetOrderDetailsHandler {
             ]
         });
 
-        if (!order) {return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);}
+        if (!order) {
+            return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);
+        }
 
         return ResultWithValue.fromValue<OrderDTO>(OrderDTOMapper.toDTO(order));
     }

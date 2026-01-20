@@ -1,4 +1,4 @@
-import { IRepository } from '@core/Abstractions/IRepository';
+import { IRepository } from '@common/Core/Abstractions/IRepository';
 import { Recipe } from '../Entities/Recipe';
 import { RecipeRawDTO } from '@application/Order/Dto/OrderRawDTO';
 

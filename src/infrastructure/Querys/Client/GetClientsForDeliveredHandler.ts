@@ -1,12 +1,12 @@
 import { DataSource } from 'typeorm';
 import { injectable, inject } from 'tsyringe';
-import { ResultWithValue } from '@core/Results/Result';
+import { ResultWithValue } from '@common/Core/Results/Result';
 
-import { QueryHandler } from '@application/Mediator/Decorators';
+import { QueryHandler } from '@/Common/Mediator/Decorators';
 import { IClientDeliveredDTO } from '@application/Client/Dto/dto';
 import { GetClientsForDelivered } from '@application/Client/GetClientsForDelivery/GetClientsForDelivered';
 import { Address } from '@infrastructure/Persistence/PersistenceModel/Entities/Address';
-import { DateUtils } from '@utils/Date';
+import { DateUtils } from '@/Common/Utils/Date';
 import { ClientDeliveredDTOMapper } from '@application/Client/GetClientsForDelivery/ClientDeliveredDTOMapper';
 
 @injectable()
@@ -21,7 +21,6 @@ export class GetClientsForDeliveredHandler {
         const addressTable = this.dataSource.getRepository(Address);
 
         const date = DateUtils.formatDate(request.date);
-        console.log('Fetching clients for delivery on date:', date);
         const clientsToDelivered = await addressTable.find({
             where: { date: date },
             relations: [

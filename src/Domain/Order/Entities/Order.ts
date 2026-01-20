@@ -2,8 +2,8 @@ import { OrderItem } from './OrderItem';
 import { OrderError } from '../Errors/OrderError';
 import { StatusOrder } from '../Types/StatusOrderEnum';
 
-import { AggregateRoot } from '@core/Abstractions/AgregateRoot';
-import { DomainException } from '@core/Results/DomainExeption';
+import { AggregateRoot } from '@common/Core/Abstractions/AgregateRoot';
+import { DomainException } from '@common/Core/Results/DomainExeption';
 
 export class Order extends AggregateRoot {
 

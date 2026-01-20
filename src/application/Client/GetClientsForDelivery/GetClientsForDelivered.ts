@@ -1,5 +1,5 @@
-import { IRequest } from '@core/Abstractions/IResquest';
-import { IResultWithValue } from '@core/Abstractions/IResult';
+import { IRequest } from '@common/Core/Abstractions/IResquest';
+import { IResultWithValue } from '@common/Core/Abstractions/IResult';
 import { IClientDeliveredDTO } from '../Dto/dto';
 
 export class GetClientsForDelivered implements IRequest<IResultWithValue<IClientDeliveredDTO[]>> {

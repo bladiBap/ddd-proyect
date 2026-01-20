@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import { EventHandler } from '@application/Mediator/Decorators';
+import { EventHandler } from '@/Common/Mediator/Decorators';
 import { OrderItemCompletedEvent } from '@domain/Order/Events/OrderItemCompletedEvent';
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 import { OrderExeption } from '../Exeptions/OrderExeption';

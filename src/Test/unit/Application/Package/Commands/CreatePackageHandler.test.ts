@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { CreatePackageHandler } from '@application/Package/Commands/CreatePackage/CreatePackageHandler';
 import { CreatePackageCommand } from '@application/Package/Commands/CreatePackage/CreatePackageCommand';
-import { Exception } from '@core/Results/Exception';
-import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { Exception } from '@common/Core/Results/Exception';
+import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
 import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
 import { IPackageRepository } from '@domain/Package/Repositories/IPackageRepository';

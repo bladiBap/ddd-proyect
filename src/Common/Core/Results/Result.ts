@@ -1,4 +1,4 @@
-import { IResult, IResultWithValue } from '@core/Abstractions/IResult';
+import { IResult, IResultWithValue } from '@common/Core/Abstractions/IResult';
 import { Exception } from './Exception';
 
 export class Result implements IResult {

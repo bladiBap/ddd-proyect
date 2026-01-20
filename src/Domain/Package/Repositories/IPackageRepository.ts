@@ -1,4 +1,4 @@
-import { IRepository } from '@core/Abstractions/IRepository';
+import { IRepository } from '@common/Core/Abstractions/IRepository';
 import { Package } from '../Entities/Package';
 
 export interface IPackageRepository extends IRepository<Package> {

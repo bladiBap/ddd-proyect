@@ -1,4 +1,4 @@
-import { IRepository } from '@core/Abstractions/IRepository';
+import { IRepository } from '@common/Core/Abstractions/IRepository';
 import { DailyAllocation } from '../Entities/DailyAllocation';
 import { AllocationLine } from '../Entities/AllocationLine';
 import { EntityManager } from 'typeorm';

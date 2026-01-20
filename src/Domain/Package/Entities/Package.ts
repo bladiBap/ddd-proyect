@@ -1,5 +1,5 @@
-import { DomainException } from '@core/Results/DomainExeption';
-import { AggregateRoot } from '@core/Abstractions/AgregateRoot';
+import { DomainException } from '@common/Core/Results/DomainExeption';
+import { AggregateRoot } from '@common/Core/Abstractions/AgregateRoot';
 
 import { StatusPackage } from '@domain/Package/Types/StatusPackage';
 import { PackageError } from '@domain/Package/Errors/PackageError';

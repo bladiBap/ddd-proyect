@@ -5,7 +5,7 @@ import { Address as AddressPersis } from '../PersistenceModel/Entities/Address';
 import { AddressMapper } from '../DomainModel/Config/AddressMapper';
 import { RecipeByClientDTO } from '@application/Order/Dto/RecipeByClientDTO';
 import { inject, injectable } from 'tsyringe';
-import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
 
 @injectable()
 export class AddressRepository implements IAddressRepository {
@@ -77,27 +77,6 @@ export class AddressRepository implements IAddressRepository {
             [formattedDate]
         );
     }
-    
-    async deleteAsync(id: number): Promise<void> {
-        const manager = this.emProvider.getManager();
-        await manager.getRepository(AddressPersis).delete({ id });
-    }
-
-    async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
-        const manager = this.emProvider.getManager();
-        const address = await manager.getRepository(AddressPersis).findOne(
-            { where: { id: id }, relations: ['client'] }
-        );
-        if (!address) {return null;}
-        return AddressMapper.toDomain(address);
-    }
-
-    async addAsync(entity: Address): Promise<void> {
-        const manager = this.emProvider.getManager();
-        const addressEntity = AddressMapper.toPersistence(entity);
-
-        await manager.getRepository(AddressPersis).save(addressEntity);
-    }
 
     async getAddressForTodayByClientId(clientId: number): Promise<Address | null> {
         
@@ -123,5 +102,31 @@ export class AddressRepository implements IAddressRepository {
 
         return AddressMapper.toDomain(addressRaw);
     }
-    
+
+    async addAsync(entity: Address): Promise<void> {
+        const manager = this.emProvider.getManager();
+        const addressEntity = AddressMapper.toPersistence(entity);
+
+        await manager.getRepository(AddressPersis).save(addressEntity);
+    }
+
+    async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
+        const manager = this.emProvider.getManager();
+        const address = await manager.getRepository(AddressPersis).findOne(
+            { where: { id: id }}
+        );
+        if (!address) {return null;}
+        return AddressMapper.toDomain(address);
+    }
+
+    async updateAsync(address: Address): Promise<void> {
+        const manager = this.emProvider.getManager();
+        const addressEntity = AddressMapper.toPersistence(address);
+        await manager.getRepository(AddressPersis).save(addressEntity);
+    }
+
+    async deleteAsync(id: number): Promise<void> {
+        const manager = this.emProvider.getManager();
+        await manager.getRepository(AddressPersis).delete({ id });
+    }
 }

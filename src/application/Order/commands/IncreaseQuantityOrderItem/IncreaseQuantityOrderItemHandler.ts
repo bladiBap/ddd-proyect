@@ -1,9 +1,9 @@
 import { injectable, inject } from 'tsyringe';
-import { CommandHandler } from '@application/Mediator/Decorators';
+import { CommandHandler } from '@/Common/Mediator/Decorators';
 import { IncreaseQuantityOrderItemCommand } from './IncreaseQuantityOrderItemCommand';
-import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
-import { Result } from '@core/Results/Result';
-import { Exception } from '@core/Results/Exception';
+import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
+import { Result } from '@common/Core/Results/Result';
+import { Exception } from '@common/Core/Results/Exception';
 import { IOrderItemRepository } from '@domain/Order/Repositories/IOrderItemRepository';
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 

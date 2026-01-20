@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">78.94% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>15/19</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">86.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>13/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -99,78 +99,78 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { </span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { 
     Entity, PrimaryGeneratedColumn, Column, 
     ManyToOne, JoinColumn, OneToOne
-} from "typeorm";
-<span class="cstat-no" title="statement not covered" >import { Calendar } from "./Calendar";</span>
-<span class="cstat-no" title="statement not covered" >import { Package } from "./Package";</span>
+} from 'typeorm';
+import { Calendar } from './Calendar';
+import { Package } from './Package';
 &nbsp;
 @Entity()
-export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >Address{</span></span></span>
+export class Address{
     @PrimaryGeneratedColumn()
-<span class="cstat-no" title="statement not covered" >    id!: number;</span>
+    id!: number;
     
-    @Column({ type: "date" })
-<span class="cstat-no" title="statement not covered" >    date!: Date;</span>
+    @Column({ type: 'date' })
+    date!: Date;
 &nbsp;
     @Column()
-<span class="cstat-no" title="statement not covered" >    address!: string;</span>
+    address!: string;
 &nbsp;
     @Column()
-<span class="cstat-no" title="statement not covered" >    reference!: string;</span>
+    reference!: string;
 &nbsp;
-    @Column({ type: "float" })
-<span class="cstat-no" title="statement not covered" >    latitude!: number;</span>
+    @Column({ type: 'float' })
+    latitude!: number;
 &nbsp;
-    @Column({ type: "float" })
-<span class="cstat-no" title="statement not covered" >    longitude!: number;</span>
+    @Column({ type: 'float' })
+    longitude!: number;
 &nbsp;
     @ManyToOne(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >Calendar,</span> <span class="fstat-no" title="function not covered" >(c</span>alendar) =&gt; <span class="cstat-no" title="statement not covered" >calendar.addresses)</span>
-    @JoinColumn({ name: "calendarId" })
-<span class="cstat-no" title="statement not covered" >    calendar!: Calendar;</span>
+    @JoinColumn({ name: 'calendarId' })
+    calendar!: Calendar;
 &nbsp;
     @Column()
-<span class="cstat-no" title="statement not covered" >    calendarId!: number;</span>
+    calendarId!: number;
 &nbsp;
     @OneToOne(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >Package,</span> <span class="fstat-no" title="function not covered" >(p</span>ackag) =&gt; <span class="cstat-no" title="statement not covered" >packag.address)</span>
-<span class="cstat-no" title="statement not covered" >    package!: Package;</span>
+    package!: Package;
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -178,7 +178,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-22T01:47:02.496Z
+                at 2026-01-20T05:42:08.880Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

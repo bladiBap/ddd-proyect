@@ -1,35 +1,30 @@
 import { inject, injectable } from 'tsyringe';
-import { Between, DataSource } from 'typeorm';
-import { ResultWithValue } from '@core/Results/Result';
+import { DataSource } from 'typeorm';
+import { ResultWithValue } from '@common/Core/Results/Result';
 
-import { QueryHandler } from '@application/Mediator/Decorators';
-import { GetOrderByDay } from '@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery';
+import { QueryHandler } from '@/Common/Mediator/Decorators';
+import { GetOrderById } from '@application/Order/Queries/GetOrderByIdQuery';
 
-import { OrderDTOMapper } from '@application/Order/Queries/GetOrderByDay/OrderDTOMapper';
+import { OrderDTOMapper } from '@application/Order/Queries/Mappers/OrderDTOMapper';
 import { OrderDTO } from '@application/Order/Dto/OrderDTO';
 
 import { Order } from '@infrastructure/Persistence/PersistenceModel/Entities/Order';
 
 @injectable()
-@QueryHandler(GetOrderByDay)
-export class GetOrderDetailsHandler {
+@QueryHandler(GetOrderById)
+export class GetOrderByIdHandler {
 
     constructor(
         @inject('DataSource') private readonly dataSource: DataSource
     ) {}
 
-    async execute(query: GetOrderByDay): Promise< ResultWithValue<OrderDTO>> {
+    async execute(query: GetOrderById): Promise< ResultWithValue<OrderDTO>> {
         
         const orderTable = this.dataSource.getRepository(Order);
-
-        const startOfDay = new Date(query.date);
-        startOfDay.setHours(0, 0, 0, 0);
-
-        const endOfDay = new Date(query.date);
-        endOfDay.setHours(23, 59, 59, 999);
+        const orderId = query.id;
 
         const order = await orderTable.findOne({
-            where: { dateOrdered: Between(startOfDay, endOfDay) },
+            where: { id: orderId },
             relations: [
                 'orderItems',
                 'orderItems.recipe',

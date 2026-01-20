@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
-import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
 
 import { ClientMapper } from '../DomainModel/Config/ClientMapper';
 import { Client as ClientEntity } from '../PersistenceModel/Entities/Client';

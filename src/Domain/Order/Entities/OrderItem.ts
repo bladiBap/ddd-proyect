@@ -1,8 +1,8 @@
 import { OrderItemError } from '../Errors/OrderItemError';
 import { StatusOrder } from '../Types/StatusOrderEnum';
 
-import { Entity } from '@core/Abstractions/Entity';
-import { DomainException } from '@core/Results/DomainExeption';
+import { Entity } from '@common/Core/Abstractions/Entity';
+import { DomainException } from '@common/Core/Results/DomainExeption';
 
 //Eventos
 import { OrderItemCompletedEvent } from '../Events/OrderItemCompletedEvent';

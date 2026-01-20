@@ -1,17 +1,17 @@
 import { injectable, inject } from 'tsyringe';
-import { CommandHandler } from '@application/Mediator/Decorators';
+import { CommandHandler } from '@/Common/Mediator/Decorators';
 import { CreatePackageCommand } from './CreatePackageCommand';
-import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
 import { Package } from '@domain/Package/Entities/Package';
 import { PackageItem } from '@domain/Package/Entities/PackageItem';
 import { StatusPackage } from '@domain/Package/Types/StatusPackage';
-import { Result } from '@core/Results/Result';
-import { Exception } from '@core/Results/Exception';
+import { Result } from '@common/Core/Results/Result';
+import { Exception } from '@common/Core/Results/Exception';
 import { IPackageRepository } from '@domain/Package/Repositories/IPackageRepository';
 import { IClientRepository } from '@domain/Client/Repositories/IClientRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
 import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
-import { CodeGenerator } from '@utils/Code';
+import { CodeGenerator } from '@/Common/Utils/Code';
 
 @injectable()
 @CommandHandler(CreatePackageCommand)

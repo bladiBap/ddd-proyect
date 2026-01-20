@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>16/20</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">82.35% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>14/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,95 +109,95 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// allocation/AllocationLine.ts
-<span class="cstat-no" title="statement not covered" >import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";</span>
-<span class="cstat-no" title="statement not covered" >import { DailyAllocation } from "./DailyAllocation";</span>
-<span class="cstat-no" title="statement not covered" >import { Client } from "./Client";</span>
-<span class="cstat-no" title="statement not covered" >import { Recipe } from "./Recipe";</span>
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { DailyAllocation } from './DailyAllocation';
+import { Client } from './Client';
+import { Recipe } from './Recipe';
 &nbsp;
 @Entity()
-export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >AllocationLine </span>{</span></span>
+export class AllocationLine {
     
     @PrimaryGeneratedColumn()
-<span class="cstat-no" title="statement not covered" >    id!: number;</span>
+    id!: number;
     
     @ManyToOne(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >DailyAllocation,</span> <span class="fstat-no" title="function not covered" >a </span>=&gt; <span class="cstat-no" title="statement not covered" >a.lines) </span>
-    @JoinColumn({ name: "allocationId" }) 
-<span class="cstat-no" title="statement not covered" >    allocation!: DailyAllocation;</span>
+    @JoinColumn({ name: 'allocationId' }) 
+    allocation!: DailyAllocation;
 &nbsp;
     @Column({
-        name: "allocationId",
+        name: 'allocationId',
     })
-<span class="cstat-no" title="statement not covered" >    allocationId!: number;</span>
+    allocationId!: number;
 &nbsp;
     
     @ManyToOne(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >Client) </span>
-    @JoinColumn({ name: "clientId" }) 
-<span class="cstat-no" title="statement not covered" >    client!: Client;</span>
+    @JoinColumn({ name: 'clientId' }) 
+    client!: Client;
 &nbsp;
     @Column({
-        name: "clientId",
+        name: 'clientId',
     })
-<span class="cstat-no" title="statement not covered" >    clientId!: number;</span>
+    clientId!: number;
     
     @ManyToOne(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >Recipe) </span>
-    @JoinColumn({ name: "recipeId" }) 
-<span class="cstat-no" title="statement not covered" >    recipe!: Recipe;</span>
+    @JoinColumn({ name: 'recipeId' }) 
+    recipe!: Recipe;
 &nbsp;
     @Column({
-        name: "recipeId",
+        name: 'recipeId',
     })
-<span class="cstat-no" title="statement not covered" >    recipeId!: number;</span>
+    recipeId!: number;
     
-    @Column({ type: "int" }) 
-<span class="cstat-no" title="statement not covered" >    quantityNeeded!: number;</span>
+    @Column({ type: 'int' }) 
+    quantityNeeded!: number;
 &nbsp;
-    @Column({ type: "int", default: 0 }) 
-<span class="cstat-no" title="statement not covered" >    quantityPackaged!: number;</span>
+    @Column({ type: 'int', default: 0 }) 
+    quantityPackaged!: number;
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -205,7 +205,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-22T01:47:02.074Z
+                at 2026-01-20T05:42:08.577Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

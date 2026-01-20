@@ -1,4 +1,4 @@
-import { IRepository } from '@core/Abstractions/IRepository';
+import { IRepository } from '@common/Core/Abstractions/IRepository';
 import { Order } from '../Entities/Order';
 
 export interface IOrderRepository extends IRepository<Order> {

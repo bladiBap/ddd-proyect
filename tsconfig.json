@@ -8,9 +8,8 @@
 			"@application/*": ["src/Application/*"],
 			"@infrastructure/*": ["src/Infrastructure/*"],
 			"@presentation/*": ["src/Presentation/*"],
-			"@shared/*": ["src/Shared/*"],
-			"@core/*": ["src/Core/*"],
-			"@utils/*": ["src/Utils/*"],
+			"@common/*": ["src/Common/*"],
+			"@utils/*": ["src/Common/Utils/*"],
 			"@test/*": ["src/Test/*"],
 			"@/*": ["src/*"]
 		},

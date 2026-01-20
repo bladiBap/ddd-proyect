@@ -1,5 +1,5 @@
-import { IRequest } from '@core/Abstractions/IResquest';
-import { IResult } from '@core/Abstractions/IResult';
+import { IRequest } from '@common/Core/Abstractions/IResquest';
+import { IResult } from '@common/Core/Abstractions/IResult';
 
 export class GenerateOrderCommand implements IRequest<IResult> {
     _result: IResult;

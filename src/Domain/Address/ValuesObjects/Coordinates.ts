@@ -1,5 +1,5 @@
-import { ValueObject } from '@core/Abstractions/ValueObject'
-import { DomainException } from '@core/Results/DomainExeption';
+import { ValueObject } from '@common/Core/Abstractions/ValueObject'
+import { DomainException } from '@common/Core/Results/DomainExeption';
 import { CoordinateError } from '../Error/CoordinateError';
 
 export class Coordinates extends ValueObject {

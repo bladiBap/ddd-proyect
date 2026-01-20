@@ -1,4 +1,4 @@
-import { Entity } from '@core/Abstractions/Entity';
+import { Entity } from '@common/Core/Abstractions/Entity';
 import { AllocationLineError } from '../Errors/AllocationLineError';
 export class AllocationLine extends Entity {
     private allocationId : number;

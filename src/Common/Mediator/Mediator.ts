@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { IMediator } from './IMediator';
-import { IRequest } from '../../Core/Abstractions/IResquest';
+import { IRequest } from '@common/Core/Abstractions/IResquest';
 import { HandlerRegistry } from './HandlerRegistry';
-import { DomainEvent } from '@core/Abstractions/DomainEvent';
+import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
 
 interface IHandler<TRequest, TResponse> {
     execute(request: TRequest): Promise<TResponse>;

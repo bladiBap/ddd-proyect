@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
-import { CommandHandler } from '@application/Mediator/Decorators';
+import { CommandHandler } from '@/Common/Mediator/Decorators';
 import { GenerateOrderCommand } from './GenerateOrderCommand';
-import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
 import { Order } from '@domain/Order/Entities/Order';
 import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
-import { Result } from '@core/Results/Result';
-import { Exception } from '@core/Results/Exception';
+import { Result } from '@common/Core/Results/Result';
+import { Exception } from '@common/Core/Results/Exception';
 
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';

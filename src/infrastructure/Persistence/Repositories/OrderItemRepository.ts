@@ -4,7 +4,7 @@ import { OrderItem } from '../PersistenceModel/Entities/OrderItem';
 import { OrderItemMapper } from '../DomainModel/Config/OrderItemMapper';
 import { OrderItem as DomainOrderItem } from '@domain/Order/Entities/OrderItem';
 
-import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
 import { DomainEventsCollector } from '@application/DomainEventsCollector';
 import { inject, injectable } from 'tsyringe';
 @injectable()

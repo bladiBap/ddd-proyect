@@ -4,7 +4,7 @@ import { Package as DomainPackage } from '@domain/Package/Entities/Package';
 import { PackageMapper } from '../DomainModel/Config/PackageMapper';
 
 import { inject, injectable } from 'tsyringe';
-import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
 
 @injectable()
 export class PackageRepository implements IPackageRepository {

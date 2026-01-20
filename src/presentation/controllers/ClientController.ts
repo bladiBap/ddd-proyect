@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { Mediator } from '@application/Mediator/Mediator';
+import { Mediator } from '@/Common/Mediator/Mediator';
 import { GetClientsForDelivered } from '@application/Client/GetClientsForDelivery/GetClientsForDelivered';
-import { handlerResponse } from '@utils/handlerResponse';
+import { handlerResponse } from '@/Common/Utils/handlerResponse';
 
 export class ClientController {
 

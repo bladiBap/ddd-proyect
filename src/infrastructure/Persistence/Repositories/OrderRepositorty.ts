@@ -1,12 +1,12 @@
 import 'reflect-metadata';
-import { DateUtils } from '@utils/Date';
+import { DateUtils } from '@/Common/Utils/Date';
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 import { Order } from '@domain/Order/Entities/Order';
 import { Order as OrderEntity } from '../PersistenceModel/Entities/Order';
 
 import { OrderMapper } from '../DomainModel/Config/OrderMapper';
 import { inject, injectable } from 'tsyringe';
-import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
+import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
 
 @injectable()
 export class OrderRepository implements IOrderRepository {

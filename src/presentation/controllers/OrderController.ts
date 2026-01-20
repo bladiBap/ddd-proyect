@@ -1,11 +1,22 @@
 import { Request, Response } from 'express';
-import { Mediator } from '@application/Mediator/Mediator';
-import { GetOrderByDay } from '@application/Order/Queries/GetOrderByDay/GerOrderByDayQuery';
+import { Mediator } from '@/Common/Mediator/Mediator';
+import { GetOrderByDay } from '@application/Order/Queries/GetOrderByDayQuery';
 import { GenerateOrderCommand } from '@application/Order/Commands/GenerateOrder/GenerateOrderCommand';
 import { IncreaseQuantityOrderItemCommand } from '@application/Order/Commands/IncreaseQuantityOrderItem/IncreaseQuantityOrderItemCommand';
-import { handlerResponse } from '@utils/handlerResponse';
+import { handlerResponse } from '@/Common/Utils/handlerResponse';
+import { GetOrderById } from '@application/Order/Queries/GetOrderByIdQuery';
 
 export class OrderController {
+
+    async getById (req: Request, res: Response) {
+        const mediator = new Mediator();
+        const { orderId } = req.params;
+        if (!orderId || isNaN(parseInt(orderId))) {
+            return res.status(400).json({ message: 'Invalid order ID' });
+        }
+        const result = await mediator.send(new GetOrderById(parseInt(orderId)));
+        return handlerResponse(result, res);
+    }
 
     async getOrderOfTheDay(req: Request, res: Response) {
         const mediator = new Mediator();

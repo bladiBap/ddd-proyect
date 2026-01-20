@@ -5,13 +5,13 @@ import { Order } from '@domain/Order/Entities/Order';
 import { DailyAllocation } from '@domain/DailyAllocation/Entities/DailyAllocation';
 import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
 
-jest.mock('@core/Abstractions/IUnitOfWork');
+jest.mock('@common/Core/Abstractions/IUnitOfWork');
 jest.mock('@domain/Order/Repositories/IOrderRepository');
 jest.mock('@domain/Address/Repositories/IAddressRepository');
 jest.mock('@domain/DailyAllocation/Repositories/IDailyAllocationRepository');
 jest.mock('@domain/Recipe/Repositories/IRecipeRepository');
 
-import { IUnitOfWork } from '@core/Abstractions/IUnitOfWork';
+import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
 import { IOrderRepository } from '@domain/Order/Repositories/IOrderRepository';
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
 import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';

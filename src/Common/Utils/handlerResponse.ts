@@ -1,6 +1,6 @@
 import { Response } from 'express';
-import { IResult } from '@core/Abstractions/IResult';
-import { ExceptionType } from '@core/Results/ExceptionType';
+import { IResult } from '@common/Core/Abstractions/IResult';
+import { ExceptionType } from '@common/Core/Results/ExceptionType';
 
 export function handlerResponse( result :IResult, res : Response ) {
     if( result.isSuccess ) {

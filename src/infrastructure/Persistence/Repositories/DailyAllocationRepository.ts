@@ -8,8 +8,8 @@ import { DailyAllocation as DailyAllocationEntity } from '../PersistenceModel/En
 import { AllocationLine as AllocationLineEntity } from '../PersistenceModel/Entities/AllocationLine';
 import { inject, injectable } from 'tsyringe';
 import { AllocationLineMapper } from '../DomainModel/Config/AllocationLineMapper';
-import { IEntityManagerProvider } from '@core/Abstractions/IEntityManagerProvider';
-import { DateUtils } from '@utils/Date';
+import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
+import { DateUtils } from '@/Common/Utils/Date';
 
 @injectable()
 export class DailyAllocationRepository implements IDailyAllocationRepository {

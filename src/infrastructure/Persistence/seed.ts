@@ -13,7 +13,7 @@ import { Address } from './PersistenceModel/Entities/Address';
 import { Calendar } from './PersistenceModel/Entities/Calendar';
 import { MealPlan } from './PersistenceModel/Entities/MealPlan';
 import { DayliDiet } from './PersistenceModel/Entities/DayliDiet';
-import { DateUtils } from '@utils/Date';
+import { DateUtils } from '@/Common/Utils/Date';
 
 async function seed() {     
     await AppDataSource.initialize();

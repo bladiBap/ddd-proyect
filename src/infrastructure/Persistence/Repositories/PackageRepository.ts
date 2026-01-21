@@ -29,13 +29,13 @@ export class PackageRepository implements IPackageRepository {
 
     async getPackageByAddressClientIdAsync(addressId: number, clientId: number): Promise<DomainPackage | null> {
         const manager = this.emProvider.getManager();
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const datePk = new Date();
+        datePk.setHours(0, 0, 0, 0);
         const packageD = await manager.getRepository(Package).findOne({
             where: {
                 address: { id: addressId },
                 client: { id: clientId },
-                datePackage: today
+                //datePackage: datePk
             }
         });
         if (!packageD) {return null;}

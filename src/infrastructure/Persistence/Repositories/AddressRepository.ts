@@ -6,6 +6,7 @@ import { AddressMapper } from '../DomainModel/Config/AddressMapper';
 import { RecipeByClientDTO } from '@application/Order/Dto/RecipeByClientDTO';
 import { inject, injectable } from 'tsyringe';
 import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManagerProvider';
+import { DateUtils } from '@common/Utils/Date';
 
 @injectable()
 export class AddressRepository implements IAddressRepository {
@@ -16,7 +17,7 @@ export class AddressRepository implements IAddressRepository {
 
     async getPerClientNeeds(date: Date): Promise<RecipeByClientDTO[]> {
         const manager = this.emProvider.getManager();
-        const formattedDate = date.toISOString().split('T')[0];
+        const formattedDate = DateUtils.formatDate(date);
         const result = await manager.query(`
             SELECT 
                 c."id" AS "clientId",
@@ -32,6 +33,7 @@ export class AddressRepository implements IAddressRepository {
             WHERE a."date" = $1
                 AND mp."startDate" <= $1::date
                 AND mp."endDate" >= $1::date
+                AND dd."date" = $1
             GROUP BY c."id", c."name", ddr."recipeId"; `,
             [formattedDate]
         );
@@ -78,12 +80,12 @@ export class AddressRepository implements IAddressRepository {
         );
     }
 
-    async getAddressForTodayByClientId(clientId: number): Promise<Address | null> {
+    async getAddressByDateAndClientId(clientId: number, date: Date): Promise<Address | null> {
         
-        const start = new Date();
+        const start = new Date(date);
         start.setHours(0, 0, 0, 0);
 
-        const end = new Date();
+        const end = new Date(date);
         end.setHours(23, 59, 59, 999);
 
         const manager = this.emProvider.getManager();

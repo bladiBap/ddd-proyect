@@ -32,9 +32,9 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
         return;
     }
 
-    async getDailyAllocationToday(clientId: number): Promise<DailyAllocation | null> {
-        const today = new Date();
-        const formattedDate = DateUtils.formatDate(today);
+    async getDailyAllocation(clientId: number, date: Date): Promise<DailyAllocation | null> {
+        
+        const formattedDate = DateUtils.formatDate(date);
 
         const manager = this.emProvider.getManager();
 
@@ -57,7 +57,7 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
     async updatedLines(lines: AllocationLine[]): Promise<void> {
         const allocationLineEntities = lines.map(line => AllocationLineMapper.toPersistence(line));
         const manager = this.emProvider.getManager();
-        const res = await manager.getRepository(AllocationLineEntity).save(allocationLineEntities);
+        await manager.getRepository(AllocationLineEntity).save(allocationLineEntities);
         return;
     }
 }

@@ -13,15 +13,19 @@ export class OrderItemCompleted {
     ) {}
 
     async handle(event: OrderItemCompletedEvent): Promise<void> {
-        const orderId = event.orderId;
+        try {
+            const orderId = event.orderId;
 
-        const order = await this._orderRepository.getByIdAsync(orderId);
-        
-        if (!order) {
-            throw OrderExeption.notFoundById(orderId);
+            const order = await this._orderRepository.getByIdAsync(orderId);
+            
+            if (!order) {
+                throw OrderExeption.notFoundById(orderId);
+            }
+
+            order.changeToCompleted();
+            await this._orderRepository.updatedAsync(order);
+        } catch (e) {
+            console.error('Error handling OrderItemCompletedEvent:', e);
         }
-
-        order.changeToCompleted();
-        await this._orderRepository.updatedAsync(order);
     }
 }

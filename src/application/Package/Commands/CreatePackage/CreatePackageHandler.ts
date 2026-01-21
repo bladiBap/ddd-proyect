@@ -27,7 +27,7 @@ export class CreatePackageHandler {
     }
 
     async execute(command: CreatePackageCommand): Promise<Result> {
-        const { clientId, recipeIds } = command;
+        const { clientId, recipeIds, date } = command;
 
         await this.unitOfWork.startTransaction();
 
@@ -41,7 +41,7 @@ export class CreatePackageHandler {
                 );
             }
 
-            const address = await this.addressRepository.getAddressForTodayByClientId(clientId);
+            const address = await this.addressRepository.getAddressByDateAndClientId(clientId, date);
             if (!address) {
                 await this.unitOfWork.rollback();
                 return Result.failure(
@@ -57,7 +57,7 @@ export class CreatePackageHandler {
                 );
             }
 
-            const dailyAllocation = await this.dailyAllocationRepository.getDailyAllocationToday(clientId);
+            const dailyAllocation = await this.dailyAllocationRepository.getDailyAllocation(clientId, date);
             if (!dailyAllocation) {
                 await this.unitOfWork.rollback();
                 return Result.failure(

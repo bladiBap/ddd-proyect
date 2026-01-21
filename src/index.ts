@@ -31,7 +31,7 @@ async function bootstrap() {
     //order
     app.get('/order/:orderId', (req, res) => orderController.getById(req, res));
     app.get('/order-today/details', (req, res) => orderController.getOrderOfTheDay(req, res));
-    app.post('/order-today/generate', (req, res) => orderController.generateOrderReport(req, res));
+    app.post('/order/generate', (req, res) => orderController.generateOrderReport(req, res));
     //address
     app.post('/address', (req, res) => addressController.create(req, res));
     app.put('/address', (req, res) => addressController.update(req, res));

@@ -5,6 +5,7 @@ import { GenerateOrderCommand } from '@application/Order/Commands/GenerateOrder/
 import { IncreaseQuantityOrderItemCommand } from '@application/Order/Commands/IncreaseQuantityOrderItem/IncreaseQuantityOrderItemCommand';
 import { handlerResponse } from '@/Common/Utils/handlerResponse';
 import { GetOrderById } from '@application/Order/Queries/GetOrderByIdQuery';
+import { DateUtils } from '@common/Utils/Date';
 
 export class OrderController {
 
@@ -27,8 +28,9 @@ export class OrderController {
 
     async generateOrderReport(req: Request, res: Response) {
         const mediator = new Mediator();
-        const todayDate = new Date();
-        const result = await mediator.send(new GenerateOrderCommand(todayDate));
+        const { date } = req.body;
+        const dateObj = DateUtils.formatDate(new Date(date));
+        const result = await mediator.send(new GenerateOrderCommand(dateObj));
         return handlerResponse(result, res);
     }
 

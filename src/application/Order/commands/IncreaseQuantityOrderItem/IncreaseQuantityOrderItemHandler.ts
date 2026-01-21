@@ -29,6 +29,13 @@ export class IncreaseQuantityOrderItemHandler {
                 );
             }
 
+            if (orderItem.isStatusCompleted()) {
+                await this._unitOfWork.rollback();
+                return Result.failure(
+                    Exception.InvalidOperation('OrderItem.AlreadyCompleted', 'Order item is already completed')
+                );
+            }
+
             const order = await this._orderRepository.getByIdTodayAsync(orderItem.getOrderId());
             
             if (!order) {

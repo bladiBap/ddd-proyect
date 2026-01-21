@@ -5,6 +5,6 @@ import { EntityManager } from 'typeorm';
 
 export interface IDailyAllocationRepository extends IRepository<DailyAllocation> {
     findByDateAsync(date: Date): Promise<DailyAllocation>;
-    getDailyAllocationToday(clientId: number): Promise<DailyAllocation | null>;
+    getDailyAllocation(clientId: number, date: Date): Promise<DailyAllocation | null>;
     updatedLines(lines: AllocationLine[], em?: EntityManager): Promise<void>;
 }

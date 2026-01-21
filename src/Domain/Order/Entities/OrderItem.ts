@@ -79,6 +79,10 @@ export class OrderItem extends Entity{
         return this.quantityPrepared - this.quantityDelivered;
     }
 
+    public isStatusCompleted() : boolean {
+        return this.status === StatusOrder.COMPLETED;
+    }
+
     public getRecipeId() : number {
         return this.recipeId;
     }

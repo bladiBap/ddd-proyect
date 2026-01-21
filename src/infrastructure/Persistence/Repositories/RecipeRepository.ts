@@ -29,7 +29,7 @@ export class RecipeRepository implements IRecipeRepository {
             INNER JOIN "meal_plan" mp ON mp."calendarId" = c."id"
             INNER JOIN "dayli_diet" dd ON dd."mealPlanId" = mp."id"
             INNER JOIN "dayli_diet_recipes" ddr ON ddr."dayliDietId" = dd."id"
-            WHERE a."date" = $1
+            WHERE a."date" = $1 AND dd."date" = $1
                 AND $1::date BETWEEN mp."startDate" AND mp."endDate"
             GROUP BY ddr."recipeId"; `,
             [date]

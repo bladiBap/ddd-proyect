@@ -68,8 +68,9 @@ describe('GenerateOrderHandler', () => {
 			addAsync: jest.fn(),
 			deleteAsync: jest.fn(),
 			getByIdAsync: jest.fn(),
-			getAddressForTodayByClientId: jest.fn(),
+			getAddressByDateAndClientId: jest.fn(),
 			getClientsForDeliveredInformation: jest.fn(),
+			updateAsync: jest.fn(),
 		} as jest.Mocked<IAddressRepository>;
 
 		mockDailyAllocationRepository = {
@@ -78,7 +79,7 @@ describe('GenerateOrderHandler', () => {
 			updatedLines : jest.fn(),
 			getByIdAsync : jest.fn(),
 			findByDateAsync : jest.fn(),
-			getDailyAllocationToday : jest.fn(),
+			getDailyAllocation : jest.fn(),
 		} as jest.Mocked<IDailyAllocationRepository>;
 
 		mockRecipeRepository = {

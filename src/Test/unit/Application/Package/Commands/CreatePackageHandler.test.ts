@@ -14,6 +14,7 @@ import { DailyAllocation } from '@domain/DailyAllocation/Entities/DailyAllocatio
 import { AllocationLine } from '@domain/DailyAllocation/Entities/AllocationLine';
 import { PackageItem } from '@domain/Package/Entities/PackageItem';
 import { StatusPackage } from '@domain/Package/Types/StatusPackage';
+import { DateUtils } from '@common/Utils/Date';
 
 // Mocks
 jest.mock('@domain/Client/Entities/Client');
@@ -36,9 +37,10 @@ describe('CreatePackageHandler', () => {
     
     // Datos de prueba
     const clientId = 1;
+    const today = DateUtils.formatDate(new Date());
     const addressId = 100;
     const recipeIds = [101, 102, 103];
-    const createPackageCommand = new CreatePackageCommand(clientId, recipeIds);
+    const createPackageCommand = new CreatePackageCommand(clientId, today, recipeIds);
     
     // Mocks de entidades
     let mockClient: jest.Mocked<Client>;
@@ -66,12 +68,13 @@ describe('CreatePackageHandler', () => {
         } as jest.Mocked<IClientRepository>;
         
         mockAddressRepository = {
-            getAddressForTodayByClientId: jest.fn(),
+            getAddressByDateAndClientId: jest.fn(),
             deleteAsync: jest.fn(),
             getPerClientNeeds: jest.fn(),
             getClientsForDeliveredInformation: jest.fn(),
             getByIdAsync: jest.fn(),
-            addAsync: jest.fn()
+            addAsync: jest.fn(),
+            updateAsync: jest.fn()
         } as jest.Mocked<IAddressRepository>;
         
         mockPackageRepository = {
@@ -82,7 +85,7 @@ describe('CreatePackageHandler', () => {
         } as jest.Mocked<IPackageRepository>;
         
         mockDailyAllocationRepository = {
-            getDailyAllocationToday: jest.fn(),
+            getDailyAllocation: jest.fn(),
             updatedLines: jest.fn(),
             addAsync: jest.fn(),
             findByDateAsync: jest.fn(),
@@ -146,9 +149,9 @@ describe('CreatePackageHandler', () => {
             it('should create package successfully when all conditions are met', async () => {
                 // Arrange
                 mockClientRepository.getByIdAsync.mockResolvedValue(mockClient);
-                mockAddressRepository.getAddressForTodayByClientId.mockResolvedValue(mockAddress);
+                mockAddressRepository.getAddressByDateAndClientId.mockResolvedValue(mockAddress);
                 mockPackageRepository.getPackageByAddressClientIdAsync.mockResolvedValue(null);
-                mockDailyAllocationRepository.getDailyAllocationToday.mockResolvedValue(mockDailyAllocation);
+                mockDailyAllocationRepository.getDailyAllocation.mockResolvedValue(mockDailyAllocation);
                 mockDailyAllocation.clientHasAllRecipes.mockReturnValue(true);
                 
                 // Act
@@ -159,9 +162,9 @@ describe('CreatePackageHandler', () => {
                 expect(result.isFailure).toBe(false);
                 
                 expect(mockClientRepository.getByIdAsync).toHaveBeenCalledWith(clientId);
-                expect(mockAddressRepository.getAddressForTodayByClientId).toHaveBeenCalledWith(clientId);
+                expect(mockAddressRepository.getAddressByDateAndClientId).toHaveBeenCalledWith(clientId, today);
                 expect(mockPackageRepository.getPackageByAddressClientIdAsync).toHaveBeenCalledWith(addressId, clientId);
-                expect(mockDailyAllocationRepository.getDailyAllocationToday).toHaveBeenCalledWith(clientId);
+                expect(mockDailyAllocationRepository.getDailyAllocation).toHaveBeenCalledWith(clientId, today);
                 expect(mockDailyAllocation.clientHasAllRecipes).toHaveBeenCalledWith(clientId, recipeIds);
                 
                 expect(mockUnitOfWork.startTransaction).toHaveBeenCalled();
@@ -232,7 +235,7 @@ describe('CreatePackageHandler', () => {
             it('should return failure when address is not found for today', async () => {
                 // Arrange
                 mockClientRepository.getByIdAsync.mockResolvedValue(mockClient);
-                mockAddressRepository.getAddressForTodayByClientId.mockResolvedValue(null);
+                mockAddressRepository.getAddressByDateAndClientId.mockResolvedValue(null);
                 
                 // Act
                 const result = await createPackageHandler.execute(createPackageCommand);
@@ -252,7 +255,7 @@ describe('CreatePackageHandler', () => {
             it('should return failure when package already exists', async () => {
                 // Arrange
                 mockClientRepository.getByIdAsync.mockResolvedValue(mockClient);
-                mockAddressRepository.getAddressForTodayByClientId.mockResolvedValue(mockAddress);
+                mockAddressRepository.getAddressByDateAndClientId.mockResolvedValue(mockAddress);
                 mockPackageRepository.getPackageByAddressClientIdAsync.mockResolvedValue(mockPackage);
                 
                 // Act
@@ -273,9 +276,9 @@ describe('CreatePackageHandler', () => {
             it('should return failure when daily allocation is not found', async () => {
                 // Arrange
                 mockClientRepository.getByIdAsync.mockResolvedValue(mockClient);
-                mockAddressRepository.getAddressForTodayByClientId.mockResolvedValue(mockAddress);
+                mockAddressRepository.getAddressByDateAndClientId.mockResolvedValue(mockAddress);
                 mockPackageRepository.getPackageByAddressClientIdAsync.mockResolvedValue(null);
-                mockDailyAllocationRepository.getDailyAllocationToday.mockResolvedValue(null);
+                mockDailyAllocationRepository.getDailyAllocation.mockResolvedValue(null);
                 
                 // Act
                 const result = await createPackageHandler.execute(createPackageCommand);
@@ -295,9 +298,9 @@ describe('CreatePackageHandler', () => {
             it('should return failure when client does not have all recipes', async () => {
                 // Arrange
                 mockClientRepository.getByIdAsync.mockResolvedValue(mockClient);
-                mockAddressRepository.getAddressForTodayByClientId.mockResolvedValue(mockAddress);
+                mockAddressRepository.getAddressByDateAndClientId.mockResolvedValue(mockAddress);
                 mockPackageRepository.getPackageByAddressClientIdAsync.mockResolvedValue(null);
-                mockDailyAllocationRepository.getDailyAllocationToday.mockResolvedValue(mockDailyAllocation);
+                mockDailyAllocationRepository.getDailyAllocation.mockResolvedValue(mockDailyAllocation);
                 mockDailyAllocation.clientHasAllRecipes.mockReturnValue(false);
                 
                 // Act

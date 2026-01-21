@@ -14,6 +14,8 @@ import { Calendar } from './PersistenceModel/Entities/Calendar';
 import { MealPlan } from './PersistenceModel/Entities/MealPlan';
 import { DayliDiet } from './PersistenceModel/Entities/DayliDiet';
 import { DateUtils } from '@/Common/Utils/Date';
+import { DailyAllocation } from './PersistenceModel/Entities/DailyAllocation';
+import { AllocationLine } from './PersistenceModel/Entities/AllocationLine';
 
 async function seed() {     
     await AppDataSource.initialize();
@@ -43,6 +45,7 @@ async function seed() {
     const [client1, client2] = await clientRepo.save([
         clientRepo.create({ name: 'John Doe' }),
         clientRepo.create({ name: 'Jane Smith' }),
+        clientRepo.create({ name: 'Alice Johnson' }),
     ]);
 
     const [rice, chicken, egg] = await ingredientRepo.save([
@@ -73,6 +76,9 @@ async function seed() {
     await calendarRepo.save([calendar1, calendar2]);
 
     const today = DateUtils.formatDate(new Date());
+    const tomorrow = DateUtils.tomorrow(today);
+    const dayAfterTomorrow = DateUtils.addDays(today, 2);
+
     const address1 = addressRepo.create({
         date: today.toISOString().split('T')[0],
         address: 'Av. Principal 123',
@@ -89,7 +95,44 @@ async function seed() {
         longitude: -63.1859,
         calendar: calendar2,
     });
-    await addressRepo.save([address1, address2]);
+
+    const address3 = addressRepo.create({
+        date: tomorrow.toISOString().split('T')[0],
+        address: 'Calle Tercera 789',
+        reference: 'Edificio rojo',
+        latitude: -17.7790,
+        longitude: -63.1835,
+        calendar: calendar1,
+    });
+
+    const address4 = addressRepo.create({
+        date: tomorrow.toISOString().split('T')[0],
+        address: 'Avenida Cuarta 101',
+        reference: 'Casa verde',
+        latitude: -17.7812,
+        longitude: -63.1847,
+        calendar: calendar2,
+    });
+
+    const address5 = addressRepo.create({
+        date: dayAfterTomorrow.toISOString().split('T')[0],
+        address: 'Boulevard Quinta 202',
+        reference: 'Depto 3C',
+        latitude: -17.7825,
+        longitude: -63.1860,
+        calendar: calendar1,
+    });
+
+    const address6 = addressRepo.create({
+        date: dayAfterTomorrow.toISOString().split('T')[0],
+        address: 'Calle Sexta 303',
+        reference: 'Casa amarilla',
+        latitude: -17.7838,
+        longitude: -63.1872,
+        calendar: calendar2,
+    });
+
+    await addressRepo.save([address1, address2, address3, address4, address5, address6]);
 
     const startDate = new Date(today);
     startDate.setDate(today.getDate() - 2);
@@ -125,41 +168,70 @@ async function seed() {
         mealPlan: mealPlan2,
         recipes: [recipe2],
     });
-    await dayliDietRepo.save([diet1, diet2]);
 
-    const order = orderRepo.create({
-        dateOrdered: today,
-        dateCreatedOn: new Date(),
-        status: StatusOrder.CREATED,
+    const dietTomorrow1 = dayliDietRepo.create({
+        date: tomorrow,
+        nDayPlan: 4,
+        mealPlan: mealPlan1,
+        recipes: [],
     });
-    await orderRepo.save(order);
 
-    await orderItemRepo.save([
-        orderItemRepo.create({
-            order,
-            recipe: recipe1,
-            quantityPlanned: 2,
-            quantityPrepared: 0,
-            quantityDelivered: 0,
-            status: StatusOrder.CREATED,
-        }),
-        orderItemRepo.create({
-            order,
-            recipe: recipe2,
-            quantityPlanned: 3,
-            quantityPrepared: 0,
-            quantityDelivered: 0,
-            status: StatusOrder.CREATED,
-        }),
-        orderItemRepo.create({
-            order,
-            recipe: recipe2,
-            quantityPlanned: 1,
-            quantityPrepared: 0,
-            quantityDelivered: 0,
-            status: StatusOrder.CREATED,
-        }),
-    ]);
+    const dietTomorrow2 = dayliDietRepo.create({
+        date: tomorrow,
+        nDayPlan: 4,
+        mealPlan: mealPlan2,
+        recipes: [],
+    });
+
+    const dietDayAfterTomorrow1 = dayliDietRepo.create({
+        date: dayAfterTomorrow,
+        nDayPlan: 5,
+        mealPlan: mealPlan1,
+        recipes: [recipe1],
+    });
+
+    const dietDayAfterTomorrow2 = dayliDietRepo.create({
+        date: dayAfterTomorrow,
+        nDayPlan: 5,
+        mealPlan: mealPlan2,
+        recipes: [recipe2],
+    });
+
+    await dayliDietRepo.save([diet1, diet2, dietTomorrow1, dietTomorrow2, dietDayAfterTomorrow1, dietDayAfterTomorrow2]);
+
+    // const order = orderRepo.create({
+    //     dateOrdered: today,
+    //     dateCreatedOn: new Date(),
+    //     status: StatusOrder.CREATED,
+    // });
+    // await orderRepo.save(order);
+
+    // await orderItemRepo.save([
+    //     orderItemRepo.create({
+    //         order,
+    //         recipe: recipe1,
+    //         quantityPlanned: 2,
+    //         quantityPrepared: 0,
+    //         quantityDelivered: 0,
+    //         status: StatusOrder.CREATED,
+    //     }),
+    //     orderItemRepo.create({
+    //         order,
+    //         recipe: recipe2,
+    //         quantityPlanned: 3,
+    //         quantityPrepared: 0,
+    //         quantityDelivered: 0,
+    //         status: StatusOrder.CREATED,
+    //     }),
+    //     orderItemRepo.create({
+    //         order,
+    //         recipe: recipe2,
+    //         quantityPlanned: 1,
+    //         quantityPrepared: 0,
+    //         quantityDelivered: 0,
+    //         status: StatusOrder.CREATED,
+    //     }),
+    // ]);
 
     console.log('Database seeded successfully!');
     process.exit(0);

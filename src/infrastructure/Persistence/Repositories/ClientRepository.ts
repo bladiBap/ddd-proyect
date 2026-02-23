@@ -26,7 +26,9 @@ export class ClientRepository implements IClientRepository {
         const entity = await manager.getRepository(ClientEntity).findOne({
             where: { id },
         });
-        if (!entity) {return null;}
+        if (!entity) {
+            return null;
+        }
         return ClientMapper.toDomain(entity);
     }
 

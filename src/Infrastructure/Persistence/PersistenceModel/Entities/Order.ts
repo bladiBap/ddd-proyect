@@ -1,0 +1,26 @@
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
+
+import { OrderItem } from './OrderItem';
+
+@Entity()
+export class Order {
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @Column({ type: 'date' })
+    dateOrdered!: Date;
+
+    @Column({ type: 'date' })
+    dateCreatedOn!: Date;
+
+    @Column({
+        type: 'enum',
+        enum: StatusOrder,
+        default: StatusOrder.CREATED
+    })
+    status!: StatusOrder;
+
+    @OneToMany(() => OrderItem, orderItem => orderItem.order, { cascade: true, eager: true })
+    orderItems!: OrderItem[];
+}

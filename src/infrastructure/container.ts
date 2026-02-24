@@ -35,6 +35,10 @@ import { IPackageRepository } from '@domain/Package/Repositories/IPackageReposit
 import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
 import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository';
 
+//Services
+import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
+import { OutboxService } from '@outbox/Service/OutboxService';
+
 
 container.registerSingleton(Mediator, Mediator);
 
@@ -47,7 +51,11 @@ container.register<IUnitOfWork>('IUnitOfWork', {
 container.register('IEntityManagerProvider', {
     useToken: 'IUnitOfWork',
 });
+container.register('IOutboxDatabase', {
+    useToken: 'IUnitOfWork',
+});
 
+//Repositories
 container.registerSingleton<IOrderRepository>('IOrderRepository', OrderRepository);
 container.registerSingleton<IAddressRepository>('IAddressRepository', AddressRepository);
 container.registerSingleton<IOrderItemRepository>('IOrderItemRepository', OrderItemRepository);
@@ -56,6 +64,10 @@ container.registerSingleton<IPackageRepository>('IPackageRepository', PackageRep
 container.registerSingleton<IDailyAllocationRepository>('IDailyAllocationRepository', DailyAllocationRepository);
 container.registerSingleton<IRecipeRepository>('IRecipeRepository', RecipeRepository);
 
+//Services
+container.registerSingleton<IOutboxService<any>>('IOutboxService', OutboxService);
+
+// Handlers
 container.registerSingleton('GetOrderByDay', GetOrderByDayHandler);
 container.registerSingleton('GetOrderById', GetOrderByIdHandler);
 container.registerSingleton('GenerateOrderHandler', GenerateOrderHandler);

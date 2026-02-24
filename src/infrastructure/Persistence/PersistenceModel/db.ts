@@ -18,6 +18,7 @@ import { Recipe } from './Entities/Recipe';
 import { RecipeIngredient } from './Entities/RecipeIngredient';
 import { AllocationLine } from './Entities/AllocationLine';
 import { DailyAllocation } from './Entities/DailyAllocation';
+import { OutboxMessage } from '@/Outbox/Persistence/OutboxMessage';
 
 export const dataSource = new DataSource({
     type: 'postgres',
@@ -44,6 +45,7 @@ export const dataSource = new DataSource({
         PackageItem,
         Order,
         OrderItem,
+        OutboxMessage,
     ],
 });
         

@@ -7,9 +7,10 @@ import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManager
 
 import { Mediator } from '@/Common/Mediator/Mediator';
 import { DomainEventsCollector } from '@application/DomainEventsCollector';
+import { IOutboxDatabase } from '@outbox/Repository/IOutboxDatabase';
 
 @injectable()
-export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider  {
+export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider, IOutboxDatabase {
     private queryRunner?: QueryRunner;
     private manager?: EntityManager;
     private isActive = false;

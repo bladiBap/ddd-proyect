@@ -11,6 +11,7 @@
 			"@common/*": ["src/Common/*"],
 			"@utils/*": ["src/Common/Utils/*"],
 			"@test/*": ["src/Test/*"],
+			"@outbox/*": ["src/Outbox/*"],
 			"@/*": ["src/*"]
 		},
 		"target": "es6",

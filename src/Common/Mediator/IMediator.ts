@@ -1,4 +1,4 @@
-import { IRequest } from '../../Core/Abstractions/IResquest';
+import { IRequest } from '@common/Core/Abstractions/IResquest';
 
 export interface IMediator {
     

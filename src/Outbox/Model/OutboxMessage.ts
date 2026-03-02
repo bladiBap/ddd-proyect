@@ -20,7 +20,6 @@ export class OutboxMessage<E> {
         this.processed = false;
         this.content = content;
         
-        // En TS/JS, obtenemos el nombre de la clase del objeto de esta forma
         this.type = (content as any).constructor.name;
         
         this.correlationId = correlationId;

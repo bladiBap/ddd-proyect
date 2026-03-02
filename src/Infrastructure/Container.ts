@@ -38,9 +38,21 @@ import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository
 //Services
 import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
 import { OutboxService } from '@outbox/Service/OutboxService';
+import { RabbitMQSettings } from '@/Comunication/RabbitMQ/Services/RabbitMQSetting';
+import { constants } from '@common/Constants/Constants';
+import { IOutboxDatabase } from '@outbox/Repository/IOutboxDatabase';
+import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
 
 
 container.registerSingleton(Mediator, Mediator);
+container.registerInstance(RabbitMQSettings, new RabbitMQSettings(
+    5672,
+    false,
+    constants.RABBIT_MQ_SETTINGS.HOST,
+    constants.RABBIT_MQ_SETTINGS.USERNAME,
+    constants.RABBIT_MQ_SETTINGS.PASSWORD,
+    constants.RABBIT_MQ_SETTINGS.VIRTUAL_HOST,
+));
 
 container.register<IUnitOfWork>('IUnitOfWork', {
     useClass: UnitOfWork,
@@ -51,9 +63,7 @@ container.register<IUnitOfWork>('IUnitOfWork', {
 container.register('IEntityManagerProvider', {
     useToken: 'IUnitOfWork',
 });
-container.register('IOutboxDatabase', {
-    useToken: 'IUnitOfWork',
-});
+
 
 //Repositories
 container.registerSingleton<IOrderRepository>('IOrderRepository', OrderRepository);
@@ -65,7 +75,11 @@ container.registerSingleton<IDailyAllocationRepository>('IDailyAllocationReposit
 container.registerSingleton<IRecipeRepository>('IRecipeRepository', RecipeRepository);
 
 //Services
-container.registerSingleton<IOutboxService<any>>('IOutboxService', OutboxService);
+container.register<IOutboxDatabase>('IOutboxDatabase', {
+    useToken: 'IUnitOfWork',
+});
+container.registerSingleton<IOutboxService<DomainEvent>>('IOutboxService', OutboxService);
+
 
 // Handlers
 container.registerSingleton('GetOrderByDay', GetOrderByDayHandler);

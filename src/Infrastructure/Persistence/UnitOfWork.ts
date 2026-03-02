@@ -67,11 +67,6 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider, IOutboxD
         }
     }
 
-    getRepository<T extends { new (manager: EntityManager): any }>(repo: T): InstanceType<T> {
-        if (!this.manager) {throw new Error('Transaction not started. Call start() first.');}
-        return new repo(this.manager);
-    }
-
     private extractDomainEvents(): DomainEvent[] {
         return DomainEventsCollector.pullAll();
     }
@@ -90,12 +85,5 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider, IOutboxD
 
     getManager(): EntityManager {
         return this.manager ?? this.dataSource.manager;
-    }
-    
-    getRequiredManager(): EntityManager {
-        if (!this.isActive || !this.manager) {
-            throw new Error('UnitOfWork: se requiere transacción activa.');
-        }
-        return this.manager;
     }
 }

@@ -15,6 +15,11 @@ import { DailyAllocation } from '@domain/DailyAllocation/Entities/DailyAllocatio
 import { AllocationLine } from '@domain/DailyAllocation/Entities/AllocationLine';
 import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository';
 
+// import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
+// import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
+// import { PackageCompleted } from '@domain/Package/Events/PackageReady';
+// import { OutboxMessage } from '@outbox/Model/OutboxMessage';
+
 @injectable()
 @CommandHandler(GenerateOrderCommand)
 export class GenerateOrderHandler {
@@ -23,8 +28,17 @@ export class GenerateOrderHandler {
         @inject('IOrderRepository') private readonly _orderRepository: IOrderRepository,
         @inject('IAddressRepository') private readonly _addressRepository: IAddressRepository,
         @inject('IRecipeRepository') private readonly _recipeRepository: IRecipeRepository,
-        @inject('IDailyAllocationRepository') private readonly _dailyAllocationRepository: IDailyAllocationRepository
+        @inject('IDailyAllocationRepository') private readonly _dailyAllocationRepository: IDailyAllocationRepository,
+        //@inject('IOutboxService') private readonly _outboxService: IOutboxService<DomainEvent>
     ) {}
+
+    // async addOutboxMessage(): Promise<void> {
+    //     const packageCompletedEvent = new PackageCompleted(1);
+    //     const outboxMessage : OutboxMessage<DomainEvent> = new OutboxMessage<DomainEvent>(
+    //         packageCompletedEvent
+    //     );
+    //     await this._outboxService.addAsync(outboxMessage);
+    // }
 
     async execute( generateOrderCommand: GenerateOrderCommand): Promise<Result> {
         await this._unitOfWork.startTransaction();
@@ -61,11 +75,12 @@ export class GenerateOrderHandler {
             
             await this._orderRepository.addAsync(newOrder);
             await this._dailyAllocationRepository.addAsync(dailyAllocations);
-            
+            //await this.addOutboxMessage();
             await this._unitOfWork.commit();
 
             return Result.success();
         } catch (error) {
+            console.error('Error generating order:', error);
             await this._unitOfWork.rollback();
             return Result.failure(Exception.Problem('Order.CreationFailed', 'Failed to create order due to an internal error'));
         }

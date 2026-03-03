@@ -25,3 +25,11 @@ export function EventHandler(eventType: Function): ClassDecorator {
         HandlerRegistry.registerMany(eventType, target);
     };
 }
+
+export function EventHandlerOutbox(outboxClass: any, contentClass: any): ClassDecorator {
+    return (target: any) => {
+        HandlerRegistry.registerMany(outboxClass, target);
+        HandlerRegistry.registerOutboxRelation(contentClass, outboxClass);
+        Reflect.defineMetadata(EVENT_HANDLER_METADATA, outboxClass, target);
+    };
+}

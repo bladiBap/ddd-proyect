@@ -41,7 +41,11 @@ import { OutboxService } from '@outbox/Service/OutboxService';
 import { RabbitMQSettings } from '@/Comunication/RabbitMQ/Services/RabbitMQSetting';
 import { constants } from '@common/Constants/Constants';
 import { IOutboxDatabase } from '@outbox/Repository/IOutboxDatabase';
-import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
+//import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
+import { OutboxProcessor } from '@outbox/Processor/OutboxProcesor';
+import { PackageCompletedHandler } from '@application/OutboxMessagehandler/PackageCompletedHandler';
+import { OtrodHandler } from '@application/OutboxMessagehandler/OtroHandler';
+import { RabbitMQExternalPublisher } from '@comunication/RabbitMQ/Services/RabbitMQExternalPublisher';
 
 
 container.registerSingleton(Mediator, Mediator);
@@ -74,12 +78,18 @@ container.registerSingleton<IPackageRepository>('IPackageRepository', PackageRep
 container.registerSingleton<IDailyAllocationRepository>('IDailyAllocationRepository', DailyAllocationRepository);
 container.registerSingleton<IRecipeRepository>('IRecipeRepository', RecipeRepository);
 
-//Services
-container.register<IOutboxDatabase>('IOutboxDatabase', {
-    useToken: 'IUnitOfWork',
-});
-container.registerSingleton<IOutboxService<DomainEvent>>('IOutboxService', OutboxService);
+//Outbox
+container.register<IOutboxDatabase>('IOutboxDatabase', { useToken: 'IUnitOfWork' });
+container.register(OutboxProcessor, { useClass: OutboxProcessor }, { lifecycle: Lifecycle.ContainerScoped });
+container.registerSingleton(OutboxService);
+container.register('IOutboxService', { useToken: OutboxService },{ lifecycle: Lifecycle.ContainerScoped });
+container.register('IOutboxRepository', { useToken: OutboxService });
 
+//Handlers Outbox 
+container.register('OutboxMessage<PackageCompleted>', { useClass: PackageCompletedHandler });
+
+//Rabbit
+container.register('IExternalPublisher', { useClass: RabbitMQExternalPublisher }, { lifecycle: Lifecycle.ContainerScoped });
 
 // Handlers
 container.registerSingleton('GetOrderByDay', GetOrderByDayHandler);

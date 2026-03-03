@@ -1,18 +1,14 @@
-import { injectable, inject } from 'tsyringe';
-import { IOutboxRepository } from '@outbox/Repository/IOutboxRepository';
-//import { IRabbitMQPublisher } from '@comunication/RabbitMQ/Interface/IRabbitMQPublisher';
-import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
+import { injectable, DependencyContainer } from 'tsyringe';
+import { container as rootContainer } from '@/Infrastructure/Container';
+import { OutboxProcessor } from './OutboxProcesor';
 
 @injectable()
-export class OutboxWorker<TContent> {
+export class OutboxWorker {
     private intervalId: NodeJS.Timeout | null = null;
-    private readonly INTERVAL_MS = 5000;
+    private readonly INTERVAL_MS = 12000;
     private isProcessing = false;
 
     constructor(
-        @inject('IOutboxRepository') private readonly outboxRepo: IOutboxRepository<TContent>,
-        //@inject('IRabbitMQPublisher') private readonly rabbitPublisher: IRabbitMQPublisher,
-        @inject('IUnitOfWork') private readonly uow: IUnitOfWork
     ) {}
 
     public start(): void {
@@ -32,9 +28,12 @@ export class OutboxWorker<TContent> {
         }
         this.isProcessing = true;
 
+        const childContainer: DependencyContainer = rootContainer.createChildContainer();
         try {
-            console.log(`Verificando outbox: ${new Date().toISOString()}`);
-            //await this.processMessages();
+            console.log(`Outbox Worker ejecutando ciclo a las ${new Date().toISOString()}`);
+            const processor = childContainer.resolve(OutboxProcessor);
+            await processor.process();
+            console.log(`Outbox Worker ciclo finalizado a las ${new Date().toISOString()}`);
         } catch (error) {
             console.error('Error fatal en el ciclo del worker:', error);
         } finally {

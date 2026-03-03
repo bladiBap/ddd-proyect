@@ -5,6 +5,7 @@ import { IOutboxRepository } from '../Repository/IOutboxRepository';
 import { IOutboxService } from './Interface/IOutboxService';
 import { IOutboxDatabase } from '@outbox/Repository/IOutboxDatabase';
 import { inject, injectable } from 'tsyringe';
+
 @injectable()
 export class OutboxService<TContent> implements IOutboxService<TContent>, IOutboxRepository<TContent> {
 
@@ -32,6 +33,7 @@ export class OutboxService<TContent> implements IOutboxService<TContent>, IOutbo
             order: { created : 'ASC' },
             take: pageSize
         });
-        return entities.map(OutboxMapper.toOutboxMessage<TContent>);
+        const messages = entities.map(entity => OutboxMapper.toOutboxMessage<TContent>(entity));
+        return messages;
     }
 }

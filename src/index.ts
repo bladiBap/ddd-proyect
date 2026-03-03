@@ -12,11 +12,15 @@ import { PackageController } from '@presentation/Controllers/PackageController';
 import { HelloWorldController } from '@presentation/Controllers/HelloWorldController';
 import { AddressController } from '@presentation/Controllers/AddressController';
 
+import { OutboxWorker } from '@outbox/Processor/OutboxWorker';
+
 async function bootstrap() {
     const ds = await AppDataSource.initialize();
     console.log('DB conectada');
-
     container.registerInstance<DataSource>('DataSource', ds);
+
+    const outboxWorker = container.resolve(OutboxWorker);
+    outboxWorker.start();
 
     const app = express();
     app.use(express.json());

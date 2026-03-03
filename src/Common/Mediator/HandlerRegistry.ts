@@ -6,6 +6,8 @@ export class HandlerRegistry {
 
     private static multiHandlers = new Map<Function, HandlerType[]>();
 
+    private static outboxMapping = new Map<Function, any>();
+
     static registerSingle(requestType: Function, handlerType: HandlerType) {
         this.singleHandlers.set(requestType, handlerType);
     }
@@ -22,5 +24,13 @@ export class HandlerRegistry {
 
     static resolveMany(eventType: Function): HandlerType[] {
         return this.multiHandlers.get(eventType) ?? [];
+    }
+
+    static registerOutboxRelation(contentClass: Function, outboxClass: HandlerType) {
+        this.outboxMapping.set(contentClass, outboxClass);
+    }
+
+    static resolveOutboxClassFor(contentClass: Function): HandlerType | undefined {
+        return this.outboxMapping.get(contentClass);
     }
 }

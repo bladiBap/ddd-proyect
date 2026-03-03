@@ -1,10 +1,30 @@
+import { EventMap } from '@domain/EventMap/EventMap';
 import { OutboxMessage } from '@outbox/Model/OutboxMessage';
 import { OutboxMessage as OutboxEntity } from '@outbox/Persistence/OutboxMessage';
+import { plainToInstance } from 'class-transformer';
 
 export class OutboxMapper {
 
+    static deserializeContent(content: string, type: string): any {
+        const targetClass = EventMap[type];
+        if (!targetClass) {
+            throw new Error(`Tipo de evento desconocido: ${type}`);
+        }
+        return plainToInstance(targetClass, JSON.parse(content));
+    }
+
     static toOutboxMessage<TContent>( outboxEntity: OutboxEntity ): OutboxMessage<TContent> {
-        const content = outboxEntity.content as TContent;
+        const contentRecord = outboxEntity.content;
+        const contentRecordString = JSON.stringify(contentRecord);
+
+        const content = this.deserializeContent(contentRecordString, outboxEntity.type) as TContent;
+        // console.log(`Deserializando contenido para tipo ${outboxEntity.type}:`, content);
+        // console.log(`Type del contenido deserializado: ${typeof content}`);
+        //
+        // const expectedClass = EventMap[outboxEntity.type];
+        // console.log(`Esperando instancia de: ${expectedClass?.name}`);
+        // console.log(`Es instancia de ${expectedClass?.name}?`, content instanceof expectedClass);
+
         const message = new OutboxMessage<TContent>(content)
         message.id = outboxEntity.id;
         message.type = outboxEntity.type;

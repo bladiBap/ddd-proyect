@@ -14,6 +14,7 @@ export class RabbitMQExternalPublisher implements IExternalPublisher {
     async publishAsync<T extends IntegrationMessage>(
         message: T, 
         destination?: string | null, 
+        routingKey?: string | null,
         declareDestination?: boolean
     ): Promise<void> {
         console.log(`Publicando mensaje de tipo ${message.constructor.name} en RabbitMQ...`);
@@ -44,7 +45,7 @@ export class RabbitMQExternalPublisher implements IExternalPublisher {
             
             const published = channel.publish(
                 exchangeName, 
-                '',
+                routingKey ?? '',
                 messageBuffer, 
                 {
                     contentType: 'application/json',

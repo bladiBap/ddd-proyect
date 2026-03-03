@@ -16,7 +16,7 @@ export class PackageCompletedOutbox extends OutboxMessage<PackageCompleted> {
 @EventHandlerOutbox(PackageCompletedOutbox, PackageCompleted)
 export class PackageCompletedHandler implements IEventHandler<OutboxMessage<PackageCompleted>> {
 
-    private readonly eventType = 'package-completed';
+    private readonly eventType = 'order';
     private readonly _externalPublisher: IExternalPublisher;
 
     constructor(
@@ -35,6 +35,6 @@ export class PackageCompletedHandler implements IEventHandler<OutboxMessage<Pack
             domainEvent.createdAt,
             domainEvent.items
         );
-        await this._externalPublisher.publishAsync(packageCompleted, this.eventType); 
+        await this._externalPublisher.publishAsync(packageCompleted, this.eventType, 'order.completed'); 
     }
 }

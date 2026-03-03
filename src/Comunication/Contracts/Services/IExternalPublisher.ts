@@ -9,6 +9,7 @@ export interface IExternalPublisher {
     publishAsync<T extends IntegrationMessage>(
         message: T,
         destination?: string | null,
+        routingKey?: string | null,
         declareDestination?: boolean
     ): Promise<void>;
 }

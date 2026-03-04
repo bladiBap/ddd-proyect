@@ -13,6 +13,8 @@ import { HelloWorldController } from '@presentation/Controllers/HelloWorldContro
 import { AddressController } from '@presentation/Controllers/AddressController';
 
 import { OutboxWorker } from '@outbox/Processor/OutboxWorker';
+import { RabbitMQBusConfigurator } from '@comunication/RabbitMQ/RabbitMQBusConfigurator';
+import { ClientCreatedHandlerConsumer } from '@infrastructure/RabbitMQ/ClientCreatedHandlerConsumer';
 
 async function bootstrap() {
     const ds = await AppDataSource.initialize();
@@ -21,6 +23,16 @@ async function bootstrap() {
 
     const outboxWorker = container.resolve(OutboxWorker);
     outboxWorker.start();
+
+    RabbitMQBusConfigurator.addConsumer(
+        'ClientCreated', 
+        ClientCreatedHandlerConsumer,
+        'ms-kitchen-queue',
+        'patients',
+        'patient.created'
+    );
+
+    RabbitMQBusConfigurator.start();
 
     const app = express();
     app.use(express.json());

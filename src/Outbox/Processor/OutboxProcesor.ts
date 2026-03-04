@@ -1,10 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import { IOutboxRepository } from '@outbox/Repository/IOutboxRepository';
-//import { IRabbitMQPublisher } from '@comunication/RabbitMQ/Interface/IRabbitMQPublisher';
 import { IUnitOfWork } from '@common/Core/Abstractions/IUnitOfWork';
 import { Mediator } from '@common/Mediator/Mediator';
 import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
-import { PackageCompletedOutbox } from '@application/OutboxMessagehandler/PackageCompletedHandler';
 
 @injectable()
 export class OutboxProcessor<TContent extends DomainEvent> {
@@ -26,13 +24,9 @@ export class OutboxProcessor<TContent extends DomainEvent> {
                 
                 await this.uow.startTransaction();
 
-                
-                //await this.rabbitPublisher.publish(item.topic, item.content);
-                console.log(item.content.constructor.name);
                 await this.mediator.publishOutboxMessage(item);
                             
                 item.markAsProcessed();
-                
                 
                 await this.outboxRepo.update(item); 
 

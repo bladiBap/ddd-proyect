@@ -12,6 +12,11 @@ import { IClientRepository } from '@domain/Client/Repositories/IClientRepository
 import { IAddressRepository } from '@domain/Address/Repositories/IAddressRepository';
 import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories/IDailyAllocationRepository';
 import { CodeGenerator } from '@/Common/Utils/Code';
+import { PackageCompleted } from '@domain/Package/Events/PackageCompleted';
+import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
+import { OutboxMessage } from '@outbox/Model/OutboxMessage';
+import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
+import { Client } from '@domain/Client/Entities/Client';
 
 @injectable()
 @CommandHandler(CreatePackageCommand)
@@ -23,7 +28,16 @@ export class CreatePackageHandler {
         @inject('IAddressRepository') private readonly addressRepository: IAddressRepository,
         @inject('IPackageRepository') private readonly packageRepository: IPackageRepository,
         @inject('IDailyAllocationRepository') private readonly dailyAllocationRepository: IDailyAllocationRepository,
+        @inject('IOutboxService') private readonly _outboxService: IOutboxService<DomainEvent>
     ) {
+    }
+
+    async addOutboxMessage(client: Client, address: Address ): Promise<void> {
+        const packageCompletedEvent = new PackageCompleted('uuid', new Date(), { latitude: '0', longitude: '0' }, new Date(), [{ recipeId: 'recipe-uuid', quantity: 1 }, { recipeId: 'recipe-uuid', quantity: 2 }]);
+        const outboxMessage : OutboxMessage<DomainEvent> = new OutboxMessage<DomainEvent>(
+            packageCompletedEvent
+        );
+        await this._outboxService.addAsync(outboxMessage);
     }
 
     async execute(command: CreatePackageCommand): Promise<Result> {

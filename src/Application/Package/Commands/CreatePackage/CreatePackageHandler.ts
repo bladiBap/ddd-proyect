@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { injectable, inject } from 'tsyringe';
 import { CommandHandler } from '@/Common/Mediator/Decorators';
 import { CreatePackageCommand } from './CreatePackageCommand';
@@ -17,6 +18,7 @@ import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
 import { OutboxMessage } from '@outbox/Model/OutboxMessage';
 import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
 import { Client } from '@domain/Client/Entities/Client';
+import { Address } from '@domain/Address/Entities/Address';
 
 @injectable()
 @CommandHandler(CreatePackageCommand)
@@ -33,7 +35,25 @@ export class CreatePackageHandler {
     }
 
     async addOutboxMessage(client: Client, address: Address ): Promise<void> {
-        const packageCompletedEvent = new PackageCompleted('uuid', new Date(), { latitude: '0', longitude: '0' }, new Date(), [{ recipeId: 'recipe-uuid', quantity: 1 }, { recipeId: 'recipe-uuid', quantity: 2 }]);
+        const packageCompletedEvent = new PackageCompleted(
+            randomUUID(), 
+            new Date(), 
+            { 
+                latitude: address.getLocation().getLatitude().toString(), 
+                longitude: address.getLocation().getLongitude().toString()
+            }, 
+            new Date(), 
+            [
+                { 
+                    recipeId: randomUUID(), 
+                    quantity: 1 
+                }, 
+                { 
+                    recipeId: randomUUID(), 
+                    quantity: 2 
+                }
+            ]
+        );
         const outboxMessage : OutboxMessage<DomainEvent> = new OutboxMessage<DomainEvent>(
             packageCompletedEvent
         );
@@ -95,6 +115,7 @@ export class CreatePackageHandler {
             
             await this.packageRepository.addAsync(newPackage);
             await this.dailyAllocationRepository.updatedLines(dailyAllocation.getLines());
+            await this.addOutboxMessage(client, address);
             await this.unitOfWork.commit();
 
             return Result.success();

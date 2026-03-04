@@ -36,16 +36,14 @@ import { IDailyAllocationRepository } from '@domain/DailyAllocation/Repositories
 import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository';
 
 //Services
-import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
 import { OutboxService } from '@outbox/Service/OutboxService';
 import { RabbitMQSettings } from '@/Comunication/RabbitMQ/Services/RabbitMQSetting';
 import { constants } from '@common/Constants/Constants';
 import { IOutboxDatabase } from '@outbox/Repository/IOutboxDatabase';
-//import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
 import { OutboxProcessor } from '@outbox/Processor/OutboxProcesor';
 import { PackageCompletedHandler } from '@application/OutboxMessagehandler/PackageCompletedHandler';
-import { OtrodHandler } from '@application/OutboxMessagehandler/OtroHandler';
 import { RabbitMQExternalPublisher } from '@comunication/RabbitMQ/Services/RabbitMQExternalPublisher';
+import { ClientCreatedHandler } from '@application/Client/Command/ClientCreatedHandler';
 
 
 container.registerSingleton(Mediator, Mediator);
@@ -102,4 +100,7 @@ container.registerSingleton('CreateAddressCommand', CreateAddressHandler);
 container.registerSingleton('UpdateAddressCommand', UpdateAddressHandler);
 container.registerSingleton('DeleteAddressCommand', DeleteAddressHandler);
 container.registerSingleton('GetAddressById', GetAddressByIdHandler);
+
+//Handler incomming messages RabbitMQ
+container.registerSingleton('ClientCreatedCommand', ClientCreatedHandler);
 export { container };

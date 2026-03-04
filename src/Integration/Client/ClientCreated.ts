@@ -1,12 +1,12 @@
 import { IntegrationMessage } from '@comunication/Contracts/Message/IntegrationMessage';
 
 export class ClientCreated extends IntegrationMessage {
-    public clientId: string;
-    public name: string;
+    public Id: string;
+    public FirstName: string;
 
-    constructor(clientId: string, name: string) {
+    constructor(clientId: string, firstName: string) {
         super();
-        this.clientId = clientId;
-        this.name = name;
+        this.Id = clientId;
+        this.FirstName = firstName;
     }
 }

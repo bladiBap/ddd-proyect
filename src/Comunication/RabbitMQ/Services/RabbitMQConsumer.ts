@@ -66,7 +66,7 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
         console.log(`[*] Esperando mensajes en ${this._queueName}. Para salir presiona CTRL+C`);
 
         await this._channel.consume(this._queueName, async (msg: ConsumeMessage | null) => {
-            if (!msg) {
+        if (!msg) {
                 return;
             }
 

@@ -17,8 +17,6 @@ import { IRecipeRepository } from '@domain/Recipe/Repositories/IRecipeRepository
 
 import { IOutboxService } from '@outbox/Service/Interface/IOutboxService';
 import { DomainEvent } from '@common/Core/Abstractions/DomainEvent';
-import { PackageCompleted } from '@domain/Package/Events/PackageCompleted';
-import { OutboxMessage } from '@outbox/Model/OutboxMessage';
 
 @injectable()
 @CommandHandler(GenerateOrderCommand)
@@ -31,14 +29,6 @@ export class GenerateOrderHandler {
         @inject('IDailyAllocationRepository') private readonly _dailyAllocationRepository: IDailyAllocationRepository,
         @inject('IOutboxService') private readonly _outboxService: IOutboxService<DomainEvent>
     ) {}
-
-    async addOutboxMessage(): Promise<void> {
-        const packageCompletedEvent = new PackageCompleted('uuid', new Date(), { latitude: '0', longitude: '0' }, new Date(), [{ recipeId: 'recipe-uuid', quantity: 1 }, { recipeId: 'recipe-uuid', quantity: 2 }]);
-        const outboxMessage : OutboxMessage<DomainEvent> = new OutboxMessage<DomainEvent>(
-            packageCompletedEvent
-        );
-        await this._outboxService.addAsync(outboxMessage);
-    }
 
     async execute( generateOrderCommand: GenerateOrderCommand): Promise<Result> {
         await this._unitOfWork.startTransaction();
@@ -75,7 +65,6 @@ export class GenerateOrderHandler {
             
             await this._orderRepository.addAsync(newOrder);
             await this._dailyAllocationRepository.addAsync(dailyAllocations);
-            //await this.addOutboxMessage();
             await this._unitOfWork.commit();
 
             return Result.success();

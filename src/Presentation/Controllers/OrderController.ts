@@ -11,7 +11,7 @@ export class OrderController {
 
     async getById (req: Request, res: Response) {
         const mediator = new Mediator();
-        const { orderId } = req.params;
+        const orderId = req.params.orderId as string;
         if (!orderId || isNaN(parseInt(orderId))) {
             return res.status(400).json({ message: 'Invalid order ID' });
         }
@@ -28,7 +28,7 @@ export class OrderController {
 
     async generateOrderReport(req: Request, res: Response) {
         const mediator = new Mediator();
-        const { date } = req.body;
+        const date = req.body.date as string;
         const dateObj = DateUtils.formatDate(new Date(date));
         const result = await mediator.send(new GenerateOrderCommand(dateObj));
         return handlerResponse(result, res);
@@ -36,18 +36,26 @@ export class OrderController {
 
     async markOrderItemComplete(req: Request, res: Response) {
         const mediator = new Mediator();
-        const { orderItemId } = req.params;
-        const quantity = req?.body?.quantity;
+        // Solución para las líneas de error detectadas por Docker
+        const orderItemId = req.params.orderItemId as string;
+        const quantityRaw = req.body?.quantity;
 
         if (!orderItemId || isNaN(parseInt(orderItemId))) {
             return res.status(400).json({ message: 'Invalid order item ID' });
         }
 
-        if (quantity !== undefined && (isNaN(parseInt(quantity)))) {
+        const quantity = quantityRaw !== undefined ? parseInt(quantityRaw as string) : undefined;
+
+        if (quantityRaw !== undefined && isNaN(quantity!)) {
             return res.status(400).json({ message: 'Invalid quantity' });
         }
 
-        const result = await mediator.send(new IncreaseQuantityOrderItemCommand(parseInt(orderItemId), quantity ? parseInt(quantity) : undefined));
+        const result = await mediator.send(
+            new IncreaseQuantityOrderItemCommand(
+                parseInt(orderItemId), 
+                quantity
+            )
+        );
         return handlerResponse(result, res);
     }
 }

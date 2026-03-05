@@ -15,6 +15,7 @@ import { AddressController } from '@presentation/Controllers/AddressController';
 import { OutboxWorker } from '@outbox/Processor/OutboxWorker';
 import { RabbitMQBusConfigurator } from '@comunication/RabbitMQ/RabbitMQBusConfigurator';
 import { ClientCreatedHandlerConsumer } from '@infrastructure/RabbitMQ/ClientCreatedHandlerConsumer';
+import { validateToken } from '@common/Middleware/AuthMiddleware';
 
 async function bootstrap() {
     const ds = await AppDataSource.initialize();
@@ -37,27 +38,33 @@ async function bootstrap() {
     const app = express();
     app.use(express.json());
     app.use(morgan('dev'));
+
+    const kitchenRouter = express.Router();
+    kitchenRouter.use(validateToken);
+
     const orderController = new OrderController();
     const addressController = new AddressController();
     const clientController = new ClientController();
     const packageController = new PackageController();
     const helloWorldController = new HelloWorldController();
 
-    app.get('/hello-world', (req, res) => helloWorldController.getHelloWorld(req, res));
+    //hello world
+    kitchenRouter.get('/hello-world', (req, res) => helloWorldController.getHelloWorld(req, res));
     //order
-    app.get('/order/:orderId', (req, res) => orderController.getById(req, res));
-    app.get('/order-today/details', (req, res) => orderController.getOrderOfTheDay(req, res));
-    app.post('/order/generate', (req, res) => orderController.generateOrderReport(req, res));
+    kitchenRouter.get('/order/:orderId', (req, res) => orderController.getById(req, res));
+    kitchenRouter.get('/order-today/details', (req, res) => orderController.getOrderOfTheDay(req, res));
+    kitchenRouter.post('/order/generate', (req, res) => orderController.generateOrderReport(req, res));
     //address
-    app.post('/address', (req, res) => addressController.create(req, res));
-    app.put('/address', (req, res) => addressController.update(req, res));
-    app.delete('/address/:id', (req, res) => addressController.delete(req, res));
-    app.get('/address/:id', (req, res) => addressController.getById(req, res));
+    kitchenRouter.post('/address', (req, res) => addressController.create(req, res));
+    kitchenRouter.put('/address', (req, res) => addressController.update(req, res));
+    kitchenRouter.delete('/address/:id', (req, res) => addressController.delete(req, res));
+    kitchenRouter.get('/address/:id', (req, res) => addressController.getById(req, res));
 
-    app.patch('/order-item/:orderItemId/complete', (req, res) => orderController.markOrderItemComplete(req, res));
-    app.get('/clients/delivery-info', (req, res) => clientController.getClientsForDeliveredInformation(req, res));
-    app.post('/package', (req, res) => packageController.create(req, res));
+    kitchenRouter.patch('/order-item/:orderItemId/complete', (req, res) => orderController.markOrderItemComplete(req, res));
+    kitchenRouter.get('/clients/delivery-info', (req, res) => clientController.getClientsForDeliveredInformation(req, res));
+    kitchenRouter.post('/package', (req, res) => packageController.create(req, res));
 
+    app.use('/api/kitchen', kitchenRouter);
     const PORT = Number(process.env.PORT) || 3000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }

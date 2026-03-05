@@ -31,7 +31,7 @@ export class PackageCompletedHandler implements IEventHandler<OutboxMessage<Pack
         const packageCompleted : PackageCompletedIntegration = new PackageCompletedIntegration(
             domainEvent.customerId,
             domainEvent.deliveryDate,
-            domainEvent.deliveryAddress,
+            domainEvent.deliveryLocation,
             domainEvent.createdAt,
             domainEvent.items
         );

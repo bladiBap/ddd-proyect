@@ -24,12 +24,13 @@ class Item {
 
 export class PackageCompleted extends DomainEvent {    
     customerId: string;
+    deliveryAddress: string;
 
     @Type(() => Date)
     deliveryDate: Date;
     
     @Type(() => DeliveryAddress)
-    deliveryAddress: DeliveryAddress;
+    deliveryLocation: DeliveryAddress;
     
     @Type(() => Date)
     createdAt: Date;
@@ -37,11 +38,12 @@ export class PackageCompleted extends DomainEvent {
     @Type(() => Item)
     items: Item[];
 
-    constructor(customerId: string, deliveryDate: Date, deliveryAddress: DeliveryAddress, createdAt: Date, items: Item[]) {
+    constructor(customerId: string, deliveryDate: Date, deliveryAddress: string, deliveryLocation: DeliveryAddress, createdAt: Date, items: Item[]) {
         super();
         this.customerId = customerId;
         this.deliveryDate = deliveryDate;
         this.deliveryAddress = deliveryAddress;
+        this.deliveryLocation = deliveryLocation;
         this.createdAt = createdAt;
         this.items = items;
     }

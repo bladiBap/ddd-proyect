@@ -37,7 +37,8 @@ export class CreatePackageHandler {
     async addOutboxMessage(client: Client, address: Address ): Promise<void> {
         const packageCompletedEvent = new PackageCompleted(
             randomUUID(), 
-            new Date(), 
+            new Date(),
+            address.getStreet() + ' ' + address.getReference(),
             { 
                 latitude: address.getLocation().getLatitude().toString(), 
                 longitude: address.getLocation().getLongitude().toString()

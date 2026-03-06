@@ -16,7 +16,7 @@ export class PackageCompletedOutbox extends OutboxMessage<PackageCompleted> {
 @EventHandlerOutbox(PackageCompletedOutbox, PackageCompleted)
 export class PackageCompletedHandler implements IEventHandler<OutboxMessage<PackageCompleted>> {
 
-    private readonly eventType = 'order';
+    private readonly eventType = 'orders';
     private readonly _externalPublisher: IExternalPublisher;
 
     constructor(

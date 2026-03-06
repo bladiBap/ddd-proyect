@@ -19,6 +19,7 @@ export class RabbitMQExternalPublisher implements IExternalPublisher {
     ): Promise<void> {
         console.log(`Publicando mensaje de tipo ${message.constructor.name} en RabbitMQ...`);
         console.log(`Configuración de RabbitMQ: Host=${this.settings.host}, Port=${this.settings.port}, VirtualHost=${this.settings.virtualHost}`);
+        console.log(`Settings: ${JSON.stringify(this.settings)}`);
         const connection : ChannelModel = await client.connect({
             hostname: this.settings.host,
             port: this.settings.port,

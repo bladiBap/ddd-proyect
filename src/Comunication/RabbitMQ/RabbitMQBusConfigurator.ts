@@ -30,7 +30,7 @@ export class RabbitMQBusConfigurator {
         const consumer = new RabbitMQConsumer<T>(
             queueName,
             settings,
-            true,
+            false,
             exchangeName,
             routingKey,
             handlerToken

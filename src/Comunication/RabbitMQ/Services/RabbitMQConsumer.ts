@@ -33,6 +33,8 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
     }
 
     async start(): Promise<void> {
+        console.log('Iniciando consumidor de RabbitMQ...');
+        console.log('Settings:', JSON.stringify(this._settings));
         this._connection = await client.connect({
             hostname: this._settings.host,
             port: this._settings.port,
@@ -53,7 +55,7 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
 
         if (this._exchangeName) {
             console.log(`Declarando exchange: ${this._exchangeName}`);
-            await this._channel.assertExchange(this._exchangeName, 'fanout', { durable: true });
+            await this._channel.assertExchange(this._exchangeName, 'topic', { durable: true });
         }
 
         if (this._declareQueue && this._exchangeName) {

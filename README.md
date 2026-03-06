@@ -22,3 +22,7 @@ El microvicio al que corresponde este proyecto es al de Produccion/Cocina, debid
 
 ![Diagrama de clases de Produccion/Cocina](./assets/diagrama-produccion.png)
 ![Diagrama de clases de PlanAlimenticio/Receta](./assets/diagrama-recetas.jpg)# ddd-proyect
+
+
+
+docker compose exec ms_kitchen_api npm run seed

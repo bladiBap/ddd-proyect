@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER=${MS_KITCHEN_DB_USER}
       - POSTGRES_PASSWORD=${MS_KITCHEN_DB_PASSWORD}
     ports:
-      - "5433:5432"
+      - "5030:5432"
     volumes:
       - postgres-data-kitchen:/var/lib/postgresql/data
     healthcheck:
@@ -15,8 +15,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    env_file:
+      - .env
+    networks:
+      - shared-network
+
   ms_kitchen_api:
-    image: bladibap/catering_produccion:1.0.7
+    image: bladibap/catering_produccion:1.0.9
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: ms_kitchen_api
     environment:
       - MS_KITCHEN_DB_HOST=ms_kitchen_db
@@ -24,17 +32,22 @@ services:
       - MS_KITCHEN_DB_USER=${MS_KITCHEN_DB_USER}
       - MS_KITCHEN_DB_PASSWORD=${MS_KITCHEN_DB_PASSWORD}
       - MS_KITCHEN_DB_NAME=${MS_KITCHEN_DB_NAME}
-      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
       - RABBITMQ_VIRTUAL_HOST=${RABBITMQ_VIRTUAL_HOST}
+      - TZ=America/La_Paz
+    env_file:
+      - .env
     ports:
-      - "3000:3000"
+      - "5031:3000"
     volumes:
       - code-kitchen:/src
     depends_on:
       ms_kitchen_db:
         condition: service_healthy
+    networks:
+      - shared-network
 
 volumes:
   postgres-data-kitchen:

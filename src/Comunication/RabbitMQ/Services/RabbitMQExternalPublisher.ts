@@ -51,9 +51,9 @@ export class RabbitMQExternalPublisher implements IExternalPublisher {
                 {
                     contentType: 'application/json',
                     persistent: true,
-                    headers: {
-                        'x-type-name': typeName
-                    }
+                    // headers: {
+                    //     'x-type-name': typeName
+                    // }
                 }
             );
 

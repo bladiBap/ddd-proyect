@@ -35,6 +35,6 @@ export class PackageCompletedHandler implements IEventHandler<OutboxMessage<Pack
             domainEvent.createdAt,
             domainEvent.items
         );
-        await this._externalPublisher.publishAsync(packageCompleted, this.eventType, 'order.completed'); 
+        await this._externalPublisher.publishAsync(packageCompleted, this.eventType, 'order.created'); 
     }
 }

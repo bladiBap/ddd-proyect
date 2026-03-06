@@ -32,19 +32,42 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
         this._handlerToken = handlerToken;
     }
 
+    private delay(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async start(): Promise<void> {
+        const RECONNECT_INTERVAL = 5000;
+        let connected = false;
+
         console.log('Iniciando consumidor de RabbitMQ...');
         console.log('Settings:', JSON.stringify(this._settings));
-        this._connection = await client.connect({
-            hostname: this._settings.host,
-            port: this._settings.port,
-            username: this._settings.username,
-            password: this._settings.password,
-            vhost: this._settings.virtualHost
-        });
 
-        this._channel = await this._connection.createChannel();
-        await this._channel.prefetch(1);
+        while (!connected) {
+            try {
+                this._connection = await client.connect({
+                    hostname: this._settings.host,
+                    port: this._settings.port,
+                    username: this._settings.username,
+                    password: this._settings.password,
+                    vhost: this._settings.virtualHost
+                });
+
+                this._connection.on('error', (err) => {
+                    console.error('Error en conexión RabbitMQ:', err.message);
+                });
+
+                this._channel = await this._connection.createChannel();
+                await this._channel.prefetch(1);
+
+                console.log('Conectado a RabbitMQ exitosamente');
+                connected = true;
+
+            } catch (error) {
+                console.error(`Error al conectar a RabbitMQ. Reintentando en ${RECONNECT_INTERVAL / 1000}s...`);
+                await this.delay(RECONNECT_INTERVAL);
+            }
+        }
     }
 
     async consume(): Promise<void> {

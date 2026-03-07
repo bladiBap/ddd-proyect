@@ -1,8 +1,9 @@
-import type {Config} from 'jest';
+// import type {Config} from 'jest';
 import { pathsToModuleNameMapper } from 'ts-jest';
-import { compilerOptions } from './tsconfig.json';
+// import { compilerOptions } from './tsconfig.json' with { type: 'json' };
+import tsconfig from './tsconfig.json' with { type: 'json' };
 
-const config: Config = {
+const config= {
     preset: 'ts-jest',
     testEnvironment: 'node',
     collectCoverage: true,
@@ -33,7 +34,7 @@ const config: Config = {
     //roots: ['<rootDir>/src/Test/Unit'],
     // roots: ['<rootDir>/src/Test/Unit', '<rootDir>/src/Test/Integration'],
     roots: ['<rootDir>/src/Test/Unit'],
-    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
+    moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, { prefix: '<rootDir>/' }),
     verbose: true,
     transform: {
         '^.+\\.ts$': 'ts-jest'

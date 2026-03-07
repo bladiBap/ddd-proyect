@@ -33,6 +33,7 @@ async function bootstrap() {
         'patient.created'
     );
 
+    
     RabbitMQBusConfigurator.start();
 
     const app = express();

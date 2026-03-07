@@ -64,6 +64,7 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
                 connected = true;
 
             } catch (error) {
+                console.error('Error al conectar a RabbitMQ:', error);
                 console.error(`Error al conectar a RabbitMQ. Reintentando en ${RECONNECT_INTERVAL / 1000}s...`);
                 await this.delay(RECONNECT_INTERVAL);
             }
@@ -91,7 +92,7 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
         console.log(`[*] Esperando mensajes en ${this._queueName}. Para salir presiona CTRL+C`);
 
         await this._channel.consume(this._queueName, async (msg: ConsumeMessage | null) => {
-        if (!msg) {
+            if (!msg) {
                 return;
             }
 

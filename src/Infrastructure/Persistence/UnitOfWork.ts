@@ -49,7 +49,11 @@ export class UnitOfWork implements IUnitOfWork, IEntityManagerProvider, IOutboxD
         try {
             await this.queryRunner.commitTransaction();
         } catch (err) {
-            try { await this.queryRunner.rollbackTransaction(); } catch {}
+            try { 
+                await this.queryRunner.rollbackTransaction(); 
+            } catch {
+                console.error('UnitOfWork: failed to rollback transaction after commit failure.', err);
+            }
             throw err;
         } finally {
             await this.safeRelease();

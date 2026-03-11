@@ -8,24 +8,24 @@ import { OrderExeption } from '../Exeptions/OrderExeption';
 @EventHandler(OrderItemCompletedEvent)
 export class OrderItemCompleted {
 
-    constructor(
+	constructor(
         @inject('IOrderRepository') private readonly _orderRepository: IOrderRepository
-    ) {}
+	) {}
 
-    async handle(event: OrderItemCompletedEvent): Promise<void> {
-        try {
-            const orderId = event.orderId;
+	async handle(event: OrderItemCompletedEvent): Promise<void> {
+		try {
+			const orderId = event.orderId;
 
-            const order = await this._orderRepository.getByIdAsync(orderId);
+			const order = await this._orderRepository.getByIdAsync(orderId);
             
-            if (!order) {
-                throw OrderExeption.notFoundById(orderId);
-            }
+			if (!order) {
+				throw OrderExeption.notFoundById(orderId);
+			}
 
-            order.changeToCompleted();
-            await this._orderRepository.updatedAsync(order);
-        } catch (e) {
-            console.error('Error handling OrderItemCompletedEvent:', e);
-        }
-    }
+			order.changeToCompleted();
+			await this._orderRepository.updatedAsync(order);
+		} catch (e) {
+			console.error('Error handling OrderItemCompletedEvent:', e);
+		}
+	}
 }

@@ -9,53 +9,53 @@ import { DateUtils } from '@common/Utils/Date';
 
 export class OrderController {
 
-    async getById (req: Request, res: Response) {
-        const mediator = new Mediator();
-        const orderId = req.params.orderId as string;
-        if (!orderId || isNaN(parseInt(orderId))) {
-            return res.status(400).json({ message: 'Invalid order ID' });
-        }
-        const result = await mediator.send(new GetOrderById(parseInt(orderId)));
-        return handlerResponse(result, res);
-    }
+	async getById (req: Request, res: Response) {
+		const mediator = new Mediator();
+		const orderId = req.params.orderId as string;
+		if (!orderId || isNaN(parseInt(orderId))) {
+			return res.status(400).json({ message: 'Invalid order ID' });
+		}
+		const result = await mediator.send(new GetOrderById(parseInt(orderId)));
+		return handlerResponse(result, res);
+	}
 
-    async getOrderOfTheDay(req: Request, res: Response) {
-        const mediator = new Mediator();
-        const todayDate = new Date();
-        const result = await mediator.send(new GetOrderByDay(todayDate));
-        return handlerResponse(result, res);
-    }
+	async getOrderOfTheDay(req: Request, res: Response) {
+		const mediator = new Mediator();
+		const todayDate = new Date();
+		const result = await mediator.send(new GetOrderByDay(todayDate));
+		return handlerResponse(result, res);
+	}
 
-    async generateOrderReport(req: Request, res: Response) {
-        const mediator = new Mediator();
-        const date = req.body.date as string;
-        const dateObj = DateUtils.formatDate(new Date(date));
-        const result = await mediator.send(new GenerateOrderCommand(dateObj));
-        return handlerResponse(result, res);
-    }
+	async generateOrderReport(req: Request, res: Response) {
+		const mediator = new Mediator();
+		const date = req.body.date as string;
+		const dateObj = DateUtils.formatDate(new Date(date));
+		const result = await mediator.send(new GenerateOrderCommand(dateObj));
+		return handlerResponse(result, res);
+	}
 
-    async markOrderItemComplete(req: Request, res: Response) {
-        const mediator = new Mediator();
-        // Solución para las líneas de error detectadas por Docker
-        const orderItemId = req.params.orderItemId as string;
-        const quantityRaw = req.body?.quantity;
+	async markOrderItemComplete(req: Request, res: Response) {
+		const mediator = new Mediator();
+		// Solución para las líneas de error detectadas por Docker
+		const orderItemId = req.params.orderItemId as string;
+		const quantityRaw = req.body?.quantity;
 
-        if (!orderItemId || isNaN(parseInt(orderItemId))) {
-            return res.status(400).json({ message: 'Invalid order item ID' });
-        }
+		if (!orderItemId || isNaN(parseInt(orderItemId))) {
+			return res.status(400).json({ message: 'Invalid order item ID' });
+		}
 
-        const quantity = quantityRaw !== undefined ? parseInt(quantityRaw as string) : undefined;
+		const quantity = quantityRaw !== undefined ? parseInt(quantityRaw as string) : undefined;
 
-        if (quantityRaw !== undefined && isNaN(quantity!)) {
-            return res.status(400).json({ message: 'Invalid quantity' });
-        }
+		if (quantityRaw !== undefined && isNaN(quantity!)) {
+			return res.status(400).json({ message: 'Invalid quantity' });
+		}
 
-        const result = await mediator.send(
-            new IncreaseQuantityOrderItemCommand(
-                parseInt(orderItemId), 
-                quantity
-            )
-        );
-        return handlerResponse(result, res);
-    }
+		const result = await mediator.send(
+			new IncreaseQuantityOrderItemCommand(
+				parseInt(orderItemId), 
+				quantity
+			)
+		);
+		return handlerResponse(result, res);
+	}
 }

@@ -4,17 +4,17 @@ import { AllocationLine } from './AllocationLine';
 @Entity()
 export class DailyAllocation {
     @PrimaryGeneratedColumn() 
-    id!: number;
+    	id!: number;
 
     @Column({ type: 'date' }) 
-    date!: Date;
+    	date!: Date;
 
     @OneToMany(() => AllocationLine, l => l.allocation, { cascade: true, eager: true }) 
-    lines!: AllocationLine[];
+    	lines!: AllocationLine[];
 
     @CreateDateColumn({ type: 'timestamptz' }) 
-    createdAt!: Date;
+    	createdAt!: Date;
 
     @UpdateDateColumn({ type: 'timestamptz' }) 
-    updatedAt!: Date;
+    	updatedAt!: Date;
 }

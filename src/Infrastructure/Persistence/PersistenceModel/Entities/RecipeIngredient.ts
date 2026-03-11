@@ -5,16 +5,16 @@ import { Recipe } from './Recipe';
 @Entity()
 export class RecipeIngredient {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column()
-    quantity!: number;
+    	quantity!: number;
 
     @ManyToOne(() => Recipe, (recipe) => recipe.ingredients)
     @JoinColumn({ name: 'recipeId' })
-    recipe!: Recipe;
+    	recipe!: Recipe;
 
     @ManyToOne(() => Ingredient, (ingredient) => ingredient.recipes)
     @JoinColumn({ name: 'ingredientId' })
-    ingredient!: Ingredient;
+    	ingredient!: Ingredient;
 }

@@ -6,23 +6,23 @@ import { Recipe } from './Recipe';
 @Entity()
 export class PackageItem {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column()
-    quantity!: number;
+    	quantity!: number;
 
     @ManyToOne(() => Package, packag => packag.packageItems)
     @JoinColumn({ name: 'packageId' })
-    package!: Package;
+    	package!: Package;
 
     @ManyToOne(() => Recipe, recipe => recipe.packageItems)
     @JoinColumn({ name: 'recipeId' })
-    recipe!: Recipe;
+    	recipe!: Recipe;
 
     @Column()
-    recipeId!: number;
+    	recipeId!: number;
 
     @Column()
-    packageId!: number;
+    	packageId!: number;
     
 }

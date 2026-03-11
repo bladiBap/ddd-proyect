@@ -48,22 +48,22 @@ import { ClientCreatedHandler } from '@application/Client/Command/ClientCreatedH
 
 container.registerSingleton(Mediator, Mediator);
 container.registerInstance(RabbitMQSettings, new RabbitMQSettings(
-    5672,
-    false,
-    constants.RABBIT_MQ_SETTINGS.HOST,
-    constants.RABBIT_MQ_SETTINGS.USERNAME,
-    constants.RABBIT_MQ_SETTINGS.PASSWORD,
-    constants.RABBIT_MQ_SETTINGS.VIRTUAL_HOST,
+	5672,
+	false,
+	constants.RABBIT_MQ_SETTINGS.HOST,
+	constants.RABBIT_MQ_SETTINGS.USERNAME,
+	constants.RABBIT_MQ_SETTINGS.PASSWORD,
+	constants.RABBIT_MQ_SETTINGS.VIRTUAL_HOST,
 ));
 
 container.register<IUnitOfWork>('IUnitOfWork', {
-    useClass: UnitOfWork,
+	useClass: UnitOfWork,
 }, {
-    lifecycle: Lifecycle.ContainerScoped,
+	lifecycle: Lifecycle.ContainerScoped,
 });
 
 container.register('IEntityManagerProvider', {
-    useToken: 'IUnitOfWork',
+	useToken: 'IUnitOfWork',
 });
 
 

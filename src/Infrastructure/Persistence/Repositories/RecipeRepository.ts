@@ -7,20 +7,20 @@ import { inject, injectable } from 'tsyringe';
 @injectable()
 export class RecipeRepository implements IRecipeRepository {
 
-    constructor(
+	constructor(
         @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
-    ) {}
+	) {}
 
-    getByIdsAsync(ids: number[], readOnly?: boolean): Promise<Recipe[]> {
-        throw new Error('Method not implemented.');
-    }
+	getByIdsAsync(ids: number[], readOnly?: boolean): Promise<Recipe[]> {
+		throw new Error('Method not implemented.');
+	}
 
-    async getRecipesToPrepare(date: Date): Promise<RecipeRawDTO[]> {
-        const manager = this.emProvider.getManager();
+	async getRecipesToPrepare(date: Date): Promise<RecipeRawDTO[]> {
+		const manager = this.emProvider.getManager();
         
-        date.setHours(0, 0, 0, 0);
+		date.setHours(0, 0, 0, 0);
 
-        const result: RecipeRawDTO[] = await manager.query(`
+		const result: RecipeRawDTO[] = await manager.query(`
             SELECT 
                 ddr."recipeId" AS "recipeId",
                 COUNT(ddr."recipeId") AS "quantity"
@@ -32,17 +32,17 @@ export class RecipeRepository implements IRecipeRepository {
             WHERE a."date" = $1 AND dd."date" = $1
                 AND $1::date BETWEEN mp."startDate" AND mp."endDate"
             GROUP BY ddr."recipeId"; `,
-            [date]
-        );
+		[date]
+		);
 
-        return result;
-    }
+		return result;
+	}
 
-    getByIdAsync(id: number, readOnly?: boolean): Promise<Recipe | null> {
-        throw new Error('Method not implemented.');
-    }
+	getByIdAsync(id: number, readOnly?: boolean): Promise<Recipe | null> {
+		throw new Error('Method not implemented.');
+	}
 
-    addAsync(entity: Recipe): Promise<void> {
-        throw new Error('Method not implemented.');
-    }
+	addAsync(entity: Recipe): Promise<void> {
+		throw new Error('Method not implemented.');
+	}
 }

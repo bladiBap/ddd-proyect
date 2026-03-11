@@ -1,6 +1,6 @@
 import { 
-    Entity, PrimaryGeneratedColumn, Column, 
-    OneToMany, ManyToMany 
+	Entity, PrimaryGeneratedColumn, Column, 
+	OneToMany, ManyToMany 
 } from 'typeorm';
 
 import { RecipeIngredient } from './RecipeIngredient';
@@ -12,27 +12,27 @@ import { AllocationLine } from './AllocationLine';
 @Entity()
 export class Recipe {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column()
-    name!: string;
+    	name!: string;
 
     @Column()
-    instructions!: string;
+    	instructions!: string;
 
     @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.recipe, { cascade: true, eager: true })
-    ingredients!: RecipeIngredient[];
+    	ingredients!: RecipeIngredient[];
 
     @OneToMany(() => PackageItem, (packageItem) => packageItem.recipe)
-    packageItems!: PackageItem[];
+    	packageItems!: PackageItem[];
 
     @OneToMany(() => OrderItem, (orderItem) => orderItem.recipe)
-    orderItems!: OrderItem[];
+    	orderItems!: OrderItem[];
     
     @OneToMany(() => AllocationLine, (allocationLine) => allocationLine.recipe)
-    allocationLines!: AllocationLine[];
+    	allocationLines!: AllocationLine[];
 
     @ManyToMany(() => DayliDiet, (dayliDiet) => dayliDiet.recipes)
-    dayliDiets!: DayliDiet[];
+    	dayliDiets!: DayliDiet[];
 
 }

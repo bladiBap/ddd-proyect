@@ -7,10 +7,10 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class ClientCreatedHandlerConsumer implements IIntegrationMessageConsumer<ClientCreated> {
 
-    constructor(private readonly _mediator: Mediator) {}
+	constructor(private readonly _mediator: Mediator) {}
 
-    async handleAsync(message: ClientCreated, cancellationToken?: AbortSignal): Promise<void> {
-        const command = new ClientCreatedCommand(0, message.FirstName);
-        await this._mediator.send(command);
-    }
+	async handleAsync(message: ClientCreated, cancellationToken?: AbortSignal): Promise<void> {
+		const command = new ClientCreatedCommand(0, message.FirstName);
+		await this._mediator.send(command);
+	}
 }

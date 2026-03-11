@@ -4,18 +4,18 @@ import { RecipeError } from '../Errors/RecipeError';
 
 export class Recipe extends Entity {
     
-    private name : string; 
+	private name : string; 
 
-    constructor(id: number, name: string) {
-        super(id);
-        if (name.trim().length === 0) {
-            throw new DomainException( RecipeError.nameIsRequired() );
-        }
+	constructor(id: number, name: string) {
+		super(id);
+		if (name.trim().length === 0) {
+			throw new DomainException( RecipeError.nameIsRequired() );
+		}
         
-        this.name = name;
-    }
+		this.name = name;
+	}
     
-    public getName() : string {
-        return this.name;
-    }
+	public getName() : string {
+		return this.name;
+	}
 }

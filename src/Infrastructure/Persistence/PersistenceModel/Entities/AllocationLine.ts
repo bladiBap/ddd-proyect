@@ -8,39 +8,39 @@ import { Recipe } from './Recipe';
 export class AllocationLine {
     
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
     
     @ManyToOne(() => DailyAllocation, a => a.lines) 
     @JoinColumn({ name: 'allocationId' }) 
-    allocation!: DailyAllocation;
+    	allocation!: DailyAllocation;
 
     @Column({
-        name: 'allocationId',
+    	name: 'allocationId',
     })
-    allocationId!: number;
+    	allocationId!: number;
 
     
     @ManyToOne(() => Client) 
     @JoinColumn({ name: 'clientId' }) 
-    client!: Client;
+    	client!: Client;
 
     @Column({
-        name: 'clientId',
+    	name: 'clientId',
     })
-    clientId!: number;
+    	clientId!: number;
     
     @ManyToOne(() => Recipe) 
     @JoinColumn({ name: 'recipeId' }) 
-    recipe!: Recipe;
+    	recipe!: Recipe;
 
     @Column({
-        name: 'recipeId',
+    	name: 'recipeId',
     })
-    recipeId!: number;
+    	recipeId!: number;
     
     @Column({ type: 'int' }) 
-    quantityNeeded!: number;
+    	quantityNeeded!: number;
 
     @Column({ type: 'int', default: 0 }) 
-    quantityPackaged!: number;
+    	quantityPackaged!: number;
 }

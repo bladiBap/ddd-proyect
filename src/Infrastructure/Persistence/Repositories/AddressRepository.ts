@@ -11,14 +11,14 @@ import { DateUtils } from '@common/Utils/Date';
 @injectable()
 export class AddressRepository implements IAddressRepository {
 
-    constructor(
+	constructor(
         @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
-    ) {}
+	) {}
 
-    async getPerClientNeeds(date: Date): Promise<RecipeByClientDTO[]> {
-        const manager = this.emProvider.getManager();
-        const formattedDate = DateUtils.formatDate(date);
-        const result = await manager.query(`
+	async getPerClientNeeds(date: Date): Promise<RecipeByClientDTO[]> {
+		const manager = this.emProvider.getManager();
+		const formattedDate = DateUtils.formatDate(date);
+		const result = await manager.query(`
             SELECT 
                 c."id" AS "clientId",
                 c."name" AS "clientName",
@@ -35,25 +35,25 @@ export class AddressRepository implements IAddressRepository {
                 AND mp."endDate" >= $1::date
                 AND dd."date" = $1
             GROUP BY c."id", c."name", ddr."recipeId"; `,
-            [formattedDate]
-        );
-        if (result.length === 0) {
-            return [];
-        }
-        const clientNeeds: RecipeByClientDTO[] = result.map((row: any) => ({
-            clientId: parseInt(row.clientId, 10),
-            recipeId: parseInt(row.recipeId, 10),
-            quantity: parseInt(row.quantity, 10),
-        }));
-        return clientNeeds;
-    }
+		[formattedDate]
+		);
+		if (result.length === 0) {
+			return [];
+		}
+		const clientNeeds: RecipeByClientDTO[] = result.map((row: any) => ({
+			clientId: parseInt(row.clientId, 10),
+			recipeId: parseInt(row.recipeId, 10),
+			quantity: parseInt(row.quantity, 10),
+		}));
+		return clientNeeds;
+	}
 
-    async getClientsForDeliveredInformation(date: Date): Promise<any[]> {
-        const manager = this.emProvider.getManager();
-        const formattedDate = date.toISOString().split('T')[0];
+	async getClientsForDeliveredInformation(date: Date): Promise<any[]> {
+		const manager = this.emProvider.getManager();
+		const formattedDate = date.toISOString().split('T')[0];
 
-        return await manager.query(
-            `
+		return await manager.query(
+			`
             SELECT 
                 c."name" AS "clientName",
                 c."id" AS "clientId",
@@ -76,59 +76,59 @@ export class AddressRepository implements IAddressRepository {
                 AND mp."endDate" >= $1::date
             ORDER BY c."name", r."name";
             `,
-            [formattedDate]
-        );
-    }
+			[formattedDate]
+		);
+	}
 
-    async getAddressByDateAndClientId(clientId: number, date: Date): Promise<Address | null> {
+	async getAddressByDateAndClientId(clientId: number, date: Date): Promise<Address | null> {
         
-        const start = new Date(date);
-        start.setHours(0, 0, 0, 0);
+		const start = new Date(date);
+		start.setHours(0, 0, 0, 0);
 
-        const end = new Date(date);
-        end.setHours(23, 59, 59, 999);
+		const end = new Date(date);
+		end.setHours(23, 59, 59, 999);
 
-        const manager = this.emProvider.getManager();
+		const manager = this.emProvider.getManager();
 
-        const addressRaw = await manager
-            .getRepository(AddressPersis)
-            .createQueryBuilder('a')
-            .innerJoin('a.calendar', 'cal')
-            .innerJoin('cal.mealPlan', 'mp')
-            .where('mp.clientId = :clientId', { clientId })
-            .andWhere('a.date::date >= :start AND a.date::date < :end', { start: start.toISOString(), end: end.toISOString() })
-            .orderBy('a.date', 'DESC')
-            .getOne();
+		const addressRaw = await manager
+			.getRepository(AddressPersis)
+			.createQueryBuilder('a')
+			.innerJoin('a.calendar', 'cal')
+			.innerJoin('cal.mealPlan', 'mp')
+			.where('mp.clientId = :clientId', { clientId })
+			.andWhere('a.date::date >= :start AND a.date::date < :end', { start: start.toISOString(), end: end.toISOString() })
+			.orderBy('a.date', 'DESC')
+			.getOne();
 
-        if (addressRaw === null) {return null;}
+		if (addressRaw === null) {return null;}
 
-        return AddressMapper.toDomain(addressRaw);
-    }
+		return AddressMapper.toDomain(addressRaw);
+	}
 
-    async addAsync(entity: Address): Promise<void> {
-        const manager = this.emProvider.getManager();
-        const addressEntity = AddressMapper.toPersistence(entity);
+	async addAsync(entity: Address): Promise<void> {
+		const manager = this.emProvider.getManager();
+		const addressEntity = AddressMapper.toPersistence(entity);
 
-        await manager.getRepository(AddressPersis).save(addressEntity);
-    }
+		await manager.getRepository(AddressPersis).save(addressEntity);
+	}
 
-    async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
-        const manager = this.emProvider.getManager();
-        const address = await manager.getRepository(AddressPersis).findOne(
-            { where: { id: id }}
-        );
-        if (!address) {return null;}
-        return AddressMapper.toDomain(address);
-    }
+	async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
+		const manager = this.emProvider.getManager();
+		const address = await manager.getRepository(AddressPersis).findOne(
+			{ where: { id: id }}
+		);
+		if (!address) {return null;}
+		return AddressMapper.toDomain(address);
+	}
 
-    async updateAsync(address: Address): Promise<void> {
-        const manager = this.emProvider.getManager();
-        const addressEntity = AddressMapper.toPersistence(address);
-        await manager.getRepository(AddressPersis).save(addressEntity);
-    }
+	async updateAsync(address: Address): Promise<void> {
+		const manager = this.emProvider.getManager();
+		const addressEntity = AddressMapper.toPersistence(address);
+		await manager.getRepository(AddressPersis).save(addressEntity);
+	}
 
-    async deleteAsync(id: number): Promise<void> {
-        const manager = this.emProvider.getManager();
-        await manager.getRepository(AddressPersis).delete({ id });
-    }
+	async deleteAsync(id: number): Promise<void> {
+		const manager = this.emProvider.getManager();
+		await manager.getRepository(AddressPersis).delete({ id });
+	}
 }

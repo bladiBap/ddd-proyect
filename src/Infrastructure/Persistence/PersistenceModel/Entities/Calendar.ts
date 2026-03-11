@@ -1,5 +1,5 @@
 import { 
-    Entity, PrimaryGeneratedColumn, OneToMany, OneToOne
+	Entity, PrimaryGeneratedColumn, OneToMany, OneToOne
 } from 'typeorm';
 import { MealPlan } from './MealPlan';
 import { Address } from './Address';
@@ -7,11 +7,11 @@ import { Address } from './Address';
 @Entity()
 export class Calendar{
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @OneToOne(() => MealPlan, (mealPlan) => mealPlan.calendar)
-    mealPlan!: MealPlan;
+    	mealPlan!: MealPlan;
 
     @OneToMany(() => Address, (address) => address.calendar)
-    addresses!: Address[];
+    	addresses!: Address[];
 }

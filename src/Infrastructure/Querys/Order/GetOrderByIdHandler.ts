@@ -14,30 +14,30 @@ import { Order } from '@infrastructure/Persistence/PersistenceModel/Entities/Ord
 @QueryHandler(GetOrderById)
 export class GetOrderByIdHandler {
 
-    constructor(
+	constructor(
         @inject('DataSource') private readonly dataSource: DataSource
-    ) {}
+	) {}
 
-    async execute(query: GetOrderById): Promise< ResultWithValue<OrderDTO>> {
+	async execute(query: GetOrderById): Promise< ResultWithValue<OrderDTO>> {
         
-        const orderTable = this.dataSource.getRepository(Order);
-        const orderId = query.id;
+		const orderTable = this.dataSource.getRepository(Order);
+		const orderId = query.id;
 
-        const order = await orderTable.findOne({
-            where: { id: orderId },
-            relations: [
-                'orderItems',
-                'orderItems.recipe',
-                'orderItems.recipe.ingredients',
-                'orderItems.recipe.ingredients.ingredient',
-                'orderItems.recipe.ingredients.ingredient.measurementUnit'
-            ]
-        });
+		const order = await orderTable.findOne({
+			where: { id: orderId },
+			relations: [
+				'orderItems',
+				'orderItems.recipe',
+				'orderItems.recipe.ingredients',
+				'orderItems.recipe.ingredients.ingredient',
+				'orderItems.recipe.ingredients.ingredient.measurementUnit'
+			]
+		});
 
-        if (!order) {
-            return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);
-        }
+		if (!order) {
+			return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);
+		}
 
-        return ResultWithValue.fromValue<OrderDTO>(OrderDTOMapper.toDTO(order));
-    }
+		return ResultWithValue.fromValue<OrderDTO>(OrderDTOMapper.toDTO(order));
+	}
 }

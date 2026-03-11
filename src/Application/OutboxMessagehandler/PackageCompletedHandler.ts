@@ -7,34 +7,34 @@ import { PackageCompletedIntegration } from '@/Integration/Paquete/PackageCreate
 import { IEventHandler } from '@common/Mediator/Mediator';
 
 export class PackageCompletedOutbox extends OutboxMessage<PackageCompleted> {
-    constructor(content: PackageCompleted) {
-        super(content);
-    }
+	constructor(content: PackageCompleted) {
+		super(content);
+	}
 }
 
 @injectable()
 @EventHandlerOutbox(PackageCompletedOutbox, PackageCompleted)
 export class PackageCompletedHandler implements IEventHandler<OutboxMessage<PackageCompleted>> {
 
-    private readonly eventType = 'orders';
-    private readonly _externalPublisher: IExternalPublisher;
+	private readonly eventType = 'orders';
+	private readonly _externalPublisher: IExternalPublisher;
 
-    constructor(
+	constructor(
         @inject('IExternalPublisher') externalPublisher: IExternalPublisher
-    ) {
-        this._externalPublisher = externalPublisher;
-    }
+	) {
+		this._externalPublisher = externalPublisher;
+	}
 
-    async handle(message: OutboxMessage<PackageCompleted>): Promise<void> {
+	async handle(message: OutboxMessage<PackageCompleted>): Promise<void> {
 
-        const domainEvent = message.content;
-        const packageCompleted : PackageCompletedIntegration = new PackageCompletedIntegration(
-            domainEvent.customerId,
-            domainEvent.deliveryDate,
-            domainEvent.deliveryLocation,
-            domainEvent.createdAt,
-            domainEvent.items
-        );
-        await this._externalPublisher.publishAsync(packageCompleted, this.eventType, 'order.created'); 
-    }
+		const domainEvent = message.content;
+		const packageCompleted : PackageCompletedIntegration = new PackageCompletedIntegration(
+			domainEvent.customerId,
+			domainEvent.deliveryDate,
+			domainEvent.deliveryLocation,
+			domainEvent.createdAt,
+			domainEvent.items
+		);
+		await this._externalPublisher.publishAsync(packageCompleted, this.eventType, 'order.created'); 
+	}
 }

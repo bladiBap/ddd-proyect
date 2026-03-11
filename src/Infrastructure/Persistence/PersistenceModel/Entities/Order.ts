@@ -6,21 +6,21 @@ import { OrderItem } from './OrderItem';
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column({ type: 'date' })
-    dateOrdered!: Date;
+    	dateOrdered!: Date;
 
     @Column({ type: 'date' })
-    dateCreatedOn!: Date;
+    	dateCreatedOn!: Date;
 
     @Column({
-        type: 'enum',
-        enum: StatusOrder,
-        default: StatusOrder.CREATED
+    	type: 'enum',
+    	enum: StatusOrder,
+    	default: StatusOrder.CREATED
     })
-    status!: StatusOrder;
+    	status!: StatusOrder;
 
     @OneToMany(() => OrderItem, orderItem => orderItem.order, { cascade: true, eager: true })
-    orderItems!: OrderItem[];
+    	orderItems!: OrderItem[];
 }

@@ -1,6 +1,6 @@
 import { 
-    Entity, PrimaryGeneratedColumn, Column, ManyToOne, 
-    ManyToMany, JoinTable, JoinColumn
+	Entity, PrimaryGeneratedColumn, Column, ManyToOne, 
+	ManyToMany, JoinTable, JoinColumn
 } from 'typeorm';
 
 import { Recipe } from './Recipe';
@@ -9,24 +9,24 @@ import { MealPlan } from './MealPlan';
 @Entity()
 export class DayliDiet {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column({ type: 'date' })
-    date!: Date;
+    	date!: Date;
 
     @Column()
-    nDayPlan!: number;
+    	nDayPlan!: number;
 
     @ManyToOne(() => MealPlan, (mealPlan) => mealPlan.dayliDiets)
     @JoinColumn({ name: 'mealPlanId' })
-    mealPlan!: MealPlan;
+    	mealPlan!: MealPlan;
 
 
     @ManyToMany(() => Recipe, (recipe) => recipe.dayliDiets, { cascade: true, eager: true })
     @JoinTable({
-        name: 'dayli_diet_recipes',
-        joinColumn: { name: 'dayliDietId', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'recipeId', referencedColumnName: 'id' }
+    	name: 'dayli_diet_recipes',
+    	joinColumn: { name: 'dayliDietId', referencedColumnName: 'id' },
+    	inverseJoinColumn: { name: 'recipeId', referencedColumnName: 'id' }
     })
-    recipes!: Recipe[];
+    	recipes!: Recipe[];
 }

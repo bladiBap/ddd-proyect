@@ -13,40 +13,40 @@ import { Coordinates } from '@domain/Address/ValuesObjects/Coordinates';
 @injectable()
 @CommandHandler(UpdateAddressCommand)
 export class UpdateAddressHandler {
-    constructor(
+	constructor(
         @inject('IUnitOfWork') private readonly _unitOfWork: IUnitOfWork,
         @inject('IAddressRepository') private readonly _addressRepository: IAddressRepository
-    ) {}
+	) {}
 
-    async execute( request: UpdateAddressCommand): Promise<Result> {
-        await this._unitOfWork.startTransaction();
-        try {
+	async execute( request: UpdateAddressCommand): Promise<Result> {
+		await this._unitOfWork.startTransaction();
+		try {
             
-            const addressToUpdate = await this._addressRepository.getByIdAsync(request.id);
-            if (!addressToUpdate) {
-                await this._unitOfWork.rollback();
-                return Result.failure(
-                    Exception.NotFound('Address.NotFound', `Address with id ${request.id} not found`)
-                );
-            }
-            const location = new Coordinates(
-                request.latitude,
-                request.longitude
-            );
-            const address = new Address(
-                request.id,
-                request.calendarId,
-                request.date,
-                request.address,
-                request.reference,
-                location
-            );
-            await this._addressRepository.updateAsync(address);
-            await this._unitOfWork.commit();
-            return Result.success();
-        } catch (error) {
-            await this._unitOfWork.rollback();
-            return Result.failure(Exception.Problem('Address.UpdateFailed', 'Failed to update address due to an internal error'));
-        }
-    }
+			const addressToUpdate = await this._addressRepository.getByIdAsync(request.id);
+			if (!addressToUpdate) {
+				await this._unitOfWork.rollback();
+				return Result.failure(
+					Exception.NotFound('Address.NotFound', `Address with id ${request.id} not found`)
+				);
+			}
+			const location = new Coordinates(
+				request.latitude,
+				request.longitude
+			);
+			const address = new Address(
+				request.id,
+				request.calendarId,
+				request.date,
+				request.address,
+				request.reference,
+				location
+			);
+			await this._addressRepository.updateAsync(address);
+			await this._unitOfWork.commit();
+			return Result.success();
+		} catch (error) {
+			await this._unitOfWork.rollback();
+			return Result.failure(Exception.Problem('Address.UpdateFailed', 'Failed to update address due to an internal error'));
+		}
+	}
 }

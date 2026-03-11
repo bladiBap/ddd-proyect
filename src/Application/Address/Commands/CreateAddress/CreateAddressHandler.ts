@@ -13,32 +13,32 @@ import { Coordinates } from '@domain/Address/ValuesObjects/Coordinates';
 @injectable()
 @CommandHandler(CreateAddressCommand)
 export class CreateAddressHandler {
-    constructor(
+	constructor(
         @inject('IUnitOfWork') private readonly _unitOfWork: IUnitOfWork,
-        @inject('IAddressRepository') private readonly _addressRepository: IAddressRepository
-    ) {}
+        @inject('IAddressRepository') private readonly _addressRepository: IAddressRepository,
+	) {}
 
-    async execute( createAddressCommand: CreateAddressCommand): Promise<Result> {
-        await this._unitOfWork.startTransaction();
-        try {
-            const location = new Coordinates(
-                createAddressCommand.latitude,
-                createAddressCommand.longitude
-            );
-            const address = new Address(
-                0,
-                createAddressCommand.calendarId,
-                createAddressCommand.date,
-                createAddressCommand.address,
-                createAddressCommand.reference,
-                location
-            );
-            await this._addressRepository.addAsync(address);
-            await this._unitOfWork.commit();
-            return Result.success();
-        } catch (error) {
-            await this._unitOfWork.rollback();
-            return Result.failure(Exception.Problem('Address.CreationFailed', 'Failed to create address due to an internal error'));
-        }
-    }
+	async execute( createAddressCommand: CreateAddressCommand): Promise<Result> {
+		await this._unitOfWork.startTransaction();
+		try {
+			const location = new Coordinates(
+				createAddressCommand.latitude,
+				createAddressCommand.longitude
+			);
+			const address = new Address(
+				0,
+				createAddressCommand.calendarId,
+				createAddressCommand.date,
+				createAddressCommand.address,
+				createAddressCommand.reference,
+				location
+			);
+			await this._addressRepository.addAsync(address);
+			await this._unitOfWork.commit();
+			return Result.success();
+		} catch (error) {
+			await this._unitOfWork.rollback();
+			return Result.failure(Exception.Problem('Address.CreationFailed', 'Failed to create address due to an internal error'));
+		}
+	}
 }

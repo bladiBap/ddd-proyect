@@ -14,50 +14,50 @@ import { DateUtils } from '@/Common/Utils/Date';
 @injectable()
 export class DailyAllocationRepository implements IDailyAllocationRepository {
 
-    constructor(
+	constructor(
         @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
-    ) {}
+	) {}
 
-    async findByDateAsync(date: Date): Promise<DailyAllocation> {
-        throw new Error('Method not implemented.');
-    }
-    async getByIdAsync(id: number, readOnly?: boolean): Promise<DailyAllocation | null> {
-        throw new Error('Method not implemented.');
-    }
+	async findByDateAsync(date: Date): Promise<DailyAllocation> {
+		throw new Error('Method not implemented.');
+	}
+	async getByIdAsync(id: number, readOnly?: boolean): Promise<DailyAllocation | null> {
+		throw new Error('Method not implemented.');
+	}
 
-    async addAsync(entity: DailyAllocation): Promise<void> {
-        const manager = this.emProvider.getManager();
-        const persistenceEntity = DailyAllocationMapper.toPersistence(entity);
-        await manager.getRepository(DailyAllocationEntity).save(persistenceEntity);
-        return;
-    }
+	async addAsync(entity: DailyAllocation): Promise<void> {
+		const manager = this.emProvider.getManager();
+		const persistenceEntity = DailyAllocationMapper.toPersistence(entity);
+		await manager.getRepository(DailyAllocationEntity).save(persistenceEntity);
+		return;
+	}
 
-    async getDailyAllocation(clientId: number, date: Date): Promise<DailyAllocation | null> {
+	async getDailyAllocation(clientId: number, date: Date): Promise<DailyAllocation | null> {
         
-        const formattedDate = DateUtils.formatDate(date);
+		const formattedDate = DateUtils.formatDate(date);
 
-        const manager = this.emProvider.getManager();
+		const manager = this.emProvider.getManager();
 
-        const dailyAllocationEntity = await manager.getRepository(DailyAllocationEntity).findOne({
-            where: { 
-                date: formattedDate,
-                lines: { 
-                    clientId: clientId
-                }
-            },
-            relations: ['lines'],
-        });
+		const dailyAllocationEntity = await manager.getRepository(DailyAllocationEntity).findOne({
+			where: { 
+				date: formattedDate,
+				lines: { 
+					clientId: clientId
+				}
+			},
+			relations: ['lines'],
+		});
         
-        if (!dailyAllocationEntity) {
-            return null;
-        }
-        return DailyAllocationMapper.toDomain(dailyAllocationEntity);
-    }
+		if (!dailyAllocationEntity) {
+			return null;
+		}
+		return DailyAllocationMapper.toDomain(dailyAllocationEntity);
+	}
     
-    async updatedLines(lines: AllocationLine[]): Promise<void> {
-        const allocationLineEntities = lines.map(line => AllocationLineMapper.toPersistence(line));
-        const manager = this.emProvider.getManager();
-        await manager.getRepository(AllocationLineEntity).save(allocationLineEntities);
-        return;
-    }
+	async updatedLines(lines: AllocationLine[]): Promise<void> {
+		const allocationLineEntities = lines.map(line => AllocationLineMapper.toPersistence(line));
+		const manager = this.emProvider.getManager();
+		await manager.getRepository(AllocationLineEntity).save(allocationLineEntities);
+		return;
+	}
 }

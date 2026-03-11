@@ -18,58 +18,58 @@ import { ClientCreatedHandlerConsumer } from '@infrastructure/RabbitMQ/ClientCre
 import { validateToken } from '@common/Middleware/AuthMiddleware';
 
 async function bootstrap() {
-    const ds = await AppDataSource.initialize();
-    console.log('DB conectada');
-    container.registerInstance<DataSource>('DataSource', ds);
+	const ds = await AppDataSource.initialize();
+	console.log('DB conectada');
+	container.registerInstance<DataSource>('DataSource', ds);
 
-    const outboxWorker = container.resolve(OutboxWorker);
-    outboxWorker.start();
+	const outboxWorker = container.resolve(OutboxWorker);
+	outboxWorker.start();
 
-    RabbitMQBusConfigurator.addConsumer(
-        'ClientCreated', 
-        ClientCreatedHandlerConsumer,
-        'ms-kitchen-queue',
-        'patients',
-        'patient.created'
-    );
+	RabbitMQBusConfigurator.addConsumer(
+		'ClientCreated', 
+		ClientCreatedHandlerConsumer,
+		'ms-kitchen-queue',
+		'patients',
+		'patient.created'
+	);
 
     
-    RabbitMQBusConfigurator.start();
+	RabbitMQBusConfigurator.start();
 
-    const app = express();
-    app.use(express.json());
-    app.use(morgan('dev'));
+	const app = express();
+	app.use(express.json());
+	app.use(morgan('dev'));
 
-    const kitchenRouter = express.Router();
-    kitchenRouter.use(validateToken);
+	const kitchenRouter = express.Router();
+	kitchenRouter.use(validateToken);
 
-    const orderController = new OrderController();
-    const addressController = new AddressController();
-    const clientController = new ClientController();
-    const packageController = new PackageController();
-    const helloWorldController = new HelloWorldController();
+	const orderController = new OrderController();
+	const addressController = new AddressController();
+	const clientController = new ClientController();
+	const packageController = new PackageController();
+	const helloWorldController = new HelloWorldController();
 
-    //hello world
-    kitchenRouter.get('/hello-world', (req, res) => helloWorldController.getHelloWorld(req, res));
-    //order
-    kitchenRouter.get('/order/:orderId', (req, res) => orderController.getById(req, res));
-    kitchenRouter.get('/order-today/details', (req, res) => orderController.getOrderOfTheDay(req, res));
-    kitchenRouter.post('/order/generate', (req, res) => orderController.generateOrderReport(req, res));
-    //address
-    kitchenRouter.post('/address', (req, res) => addressController.create(req, res));
-    kitchenRouter.put('/address', (req, res) => addressController.update(req, res));
-    kitchenRouter.delete('/address/:id', (req, res) => addressController.delete(req, res));
-    kitchenRouter.get('/address/:id', (req, res) => addressController.getById(req, res));
+	//hello world
+	kitchenRouter.get('/hello-world', (req, res) => helloWorldController.getHelloWorld(req, res));
+	//order
+	kitchenRouter.get('/order/:orderId', (req, res) => orderController.getById(req, res));
+	kitchenRouter.get('/order-today/details', (req, res) => orderController.getOrderOfTheDay(req, res));
+	kitchenRouter.post('/order/generate', (req, res) => orderController.generateOrderReport(req, res));
+	//address
+	kitchenRouter.post('/address', (req, res) => addressController.create(req, res));
+	kitchenRouter.put('/address', (req, res) => addressController.update(req, res));
+	kitchenRouter.delete('/address/:id', (req, res) => addressController.delete(req, res));
+	kitchenRouter.get('/address/:id', (req, res) => addressController.getById(req, res));
 
-    kitchenRouter.patch('/order-item/:orderItemId/complete', (req, res) => orderController.markOrderItemComplete(req, res));
-    kitchenRouter.get('/clients/delivery-info', (req, res) => clientController.getClientsForDeliveredInformation(req, res));
-    kitchenRouter.post('/package', (req, res) => packageController.create(req, res));
+	kitchenRouter.patch('/order-item/:orderItemId/complete', (req, res) => orderController.markOrderItemComplete(req, res));
+	kitchenRouter.get('/clients/delivery-info', (req, res) => clientController.getClientsForDeliveredInformation(req, res));
+	kitchenRouter.post('/package', (req, res) => packageController.create(req, res));
 
-    app.use('/api/kitchen', kitchenRouter);
-    const PORT = Number(process.env.PORT) || 3000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+	app.use('/api/kitchen', kitchenRouter);
+	const PORT = Number(process.env.PORT) || 3000;
+	app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
 bootstrap().catch((err) => {
-    console.error('Error al iniciar la app:', err);
+	console.error('Error al iniciar la app:', err);
 });

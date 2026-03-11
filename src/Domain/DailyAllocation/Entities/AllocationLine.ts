@@ -1,56 +1,56 @@
 import { Entity } from '@common/Core/Abstractions/Entity';
 import { AllocationLineError } from '../Errors/AllocationLineError';
 export class AllocationLine extends Entity {
-    private allocationId : number;
-    private clientId : number;
-    private recipeId : number;
-    private quantityNeeded : number;
-    private quantityPackaged : number;
+	private allocationId : number;
+	private clientId : number;
+	private recipeId : number;
+	private quantityNeeded : number;
+	private quantityPackaged : number;
 
-    constructor(id: number, allocationId: number, clientId: number, recipeId: number,  quantityNeeded: number, quantityPackaged: number = 0) {
-        super(id);
-        this.allocationId = allocationId;
-        this.clientId = clientId;
-        this.recipeId = recipeId;
-        if (quantityNeeded <= 0) {
-            throw AllocationLineError.quantityNeededMustBeGreaterThanZero(quantityNeeded);
-        }
+	constructor(id: number, allocationId: number, clientId: number, recipeId: number,  quantityNeeded: number, quantityPackaged: number = 0) {
+		super(id);
+		this.allocationId = allocationId;
+		this.clientId = clientId;
+		this.recipeId = recipeId;
+		if (quantityNeeded <= 0) {
+			throw AllocationLineError.quantityNeededMustBeGreaterThanZero(quantityNeeded);
+		}
 
-        if (quantityPackaged > quantityNeeded) {
-            throw AllocationLineError.quantityPackagedExceedsNeeded(quantityPackaged, quantityNeeded);
-        }
-        this.quantityNeeded = quantityNeeded;
-        this.quantityPackaged = quantityPackaged;
-    }
+		if (quantityPackaged > quantityNeeded) {
+			throw AllocationLineError.quantityPackagedExceedsNeeded(quantityPackaged, quantityNeeded);
+		}
+		this.quantityNeeded = quantityNeeded;
+		this.quantityPackaged = quantityPackaged;
+	}
 
-    public updateQuantityPackaged(newQuantityPackaged: number) : void {
-        if (newQuantityPackaged > this.quantityNeeded) {
-            throw AllocationLineError.quantityPackagedExceedsNeeded(newQuantityPackaged, this.quantityNeeded);
-        }
-        this.quantityPackaged = newQuantityPackaged;
-    }
+	public updateQuantityPackaged(newQuantityPackaged: number) : void {
+		if (newQuantityPackaged > this.quantityNeeded) {
+			throw AllocationLineError.quantityPackagedExceedsNeeded(newQuantityPackaged, this.quantityNeeded);
+		}
+		this.quantityPackaged = newQuantityPackaged;
+	}
 
-    public remainingQuantityToPackage() : number {
-        return this.quantityNeeded - this.quantityPackaged;
-    }
+	public remainingQuantityToPackage() : number {
+		return this.quantityNeeded - this.quantityPackaged;
+	}
 
-    public getClientId() : number {
-        return this.clientId;
-    }
+	public getClientId() : number {
+		return this.clientId;
+	}
 
-    public getRecipeId() : number {
-        return this.recipeId;
-    }
+	public getRecipeId() : number {
+		return this.recipeId;
+	}
 
-    public getQuantityNeeded() : number {
-        return this.quantityNeeded;
-    }
+	public getQuantityNeeded() : number {
+		return this.quantityNeeded;
+	}
 
-    public getQuantityPackaged() : number {
-        return this.quantityPackaged;
-    }
+	public getQuantityPackaged() : number {
+		return this.quantityPackaged;
+	}
 
-    public getAllocationId() : number {
-        return this.allocationId;
-    }
+	public getAllocationId() : number {
+		return this.allocationId;
+	}
 }

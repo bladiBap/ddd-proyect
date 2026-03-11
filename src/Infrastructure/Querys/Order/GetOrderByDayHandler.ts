@@ -15,30 +15,30 @@ import { DateUtils } from '@/Common/Utils/Date';
 @QueryHandler(GetOrderByDay)
 export class GetOrderByDayHandler {
 
-    constructor(
+	constructor(
         @inject('DataSource') private readonly dataSource: DataSource
-    ) {}
+	) {}
 
-    async execute(query: GetOrderByDay): Promise< ResultWithValue<OrderDTO>> {
+	async execute(query: GetOrderByDay): Promise< ResultWithValue<OrderDTO>> {
         
-        const orderTable = this.dataSource.getRepository(Order);
-        const date = DateUtils.formatDate(query.date);
+		const orderTable = this.dataSource.getRepository(Order);
+		const date = DateUtils.formatDate(query.date);
 
-        const order = await orderTable.findOne({
-            where: { dateOrdered: date },
-            relations: [
-                'orderItems',
-                'orderItems.recipe',
-                'orderItems.recipe.ingredients',
-                'orderItems.recipe.ingredients.ingredient',
-                'orderItems.recipe.ingredients.ingredient.measurementUnit'
-            ]
-        });
+		const order = await orderTable.findOne({
+			where: { dateOrdered: date },
+			relations: [
+				'orderItems',
+				'orderItems.recipe',
+				'orderItems.recipe.ingredients',
+				'orderItems.recipe.ingredients.ingredient',
+				'orderItems.recipe.ingredients.ingredient.measurementUnit'
+			]
+		});
 
-        if (!order) {
-            return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);
-        }
+		if (!order) {
+			return ResultWithValue.fromValue<OrderDTO>({} as OrderDTO);
+		}
 
-        return ResultWithValue.fromValue<OrderDTO>(OrderDTOMapper.toDTO(order));
-    }
+		return ResultWithValue.fromValue<OrderDTO>(OrderDTOMapper.toDTO(order));
+	}
 }

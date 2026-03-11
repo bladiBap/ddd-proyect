@@ -4,14 +4,14 @@ import { Ingredient } from './Ingredient';
 @Entity()
 export class MeasurementUnit {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column()
-    name!: string;
+    	name!: string;
 
     @Column()
-    simbol!: string;
+    	simbol!: string;
 
     @OneToMany(() => Ingredient, ingredient => ingredient.measurementUnit)
-    ingredients!: Ingredient[];
+    	ingredients!: Ingredient[];
 }

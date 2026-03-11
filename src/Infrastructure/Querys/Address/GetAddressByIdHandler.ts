@@ -13,22 +13,22 @@ import { AddressDTOMapper } from '@application/Address/Query/Mappers/AddressMapp
 @QueryHandler(GetAddressById)
 export class GetAddressByIdHandler {
 
-    constructor(
+	constructor(
         @inject('DataSource') private readonly dataSource: DataSource
-    ) {}
+	) {}
 
-    async execute(request: GetAddressById): Promise<ResultWithValue<AddressDTO>> {
-        const addressTable = this.dataSource.getRepository(Address);
+	async execute(request: GetAddressById): Promise<ResultWithValue<AddressDTO>> {
+		const addressTable = this.dataSource.getRepository(Address);
 
-        const address =  await addressTable.findOneBy({ id: request.id });
+		const address =  await addressTable.findOneBy({ id: request.id });
 
-        if (!address) {
-            return ResultWithValue.failureWith<AddressDTO>(
-                Exception.NotFound('address_not_found', `Address with id ${request.id} not found`)
-            )
-        }
+		if (!address) {
+			return ResultWithValue.failureWith<AddressDTO>(
+				Exception.NotFound('address_not_found', `Address with id ${request.id} not found`)
+			)
+		}
         
-        const addressDTO= AddressDTOMapper.toDTO(address);
-        return ResultWithValue.successWith<AddressDTO>(addressDTO);
-    }
+		const addressDTO= AddressDTOMapper.toDTO(address);
+		return ResultWithValue.successWith<AddressDTO>(addressDTO);
+	}
 }

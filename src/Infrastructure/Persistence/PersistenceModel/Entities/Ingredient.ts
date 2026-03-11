@@ -6,15 +6,15 @@ import { RecipeIngredient } from './RecipeIngredient';
 @Entity()
 export class Ingredient {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column()
-    name!: string;
+    	name!: string;
 
     @ManyToOne(() => MeasurementUnit, (measurementUnit) => measurementUnit.ingredients, { eager: true })
     @JoinColumn({ name: 'measurementUnitId' })
-    measurementUnit!: MeasurementUnit;
+    	measurementUnit!: MeasurementUnit;
 
     @OneToMany(() => RecipeIngredient, (recipeIngredient) => recipeIngredient.ingredient)
-    recipes!: RecipeIngredient[];
+    	recipes!: RecipeIngredient[];
 }

@@ -3,29 +3,29 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class OutboxMessage {
     @PrimaryGeneratedColumn('uuid')
-    id!: string;
+    	id!: string;
 
     @Column({ type: 'jsonb' })
-    content!: Record<string, unknown>;
+    	content!: Record<string, unknown>;
 
     @Column()
-    type!: string;
+    	type!: string;
 
     @Column({ type: 'timestamp' })
-    created!: Date;
+    	created!: Date;
 
     @Column({ default: false })
-    processed!: boolean;
+    	processed!: boolean;
 
     @Column({ type: 'timestamp', nullable: true })
-    processedOn?: Date;
+    	processedOn?: Date;
 
     @Column({ nullable: true })
-    correlationId?: string;
+    	correlationId?: string;
 
     @Column({ nullable: true })
-    traceId?: string;
+    	traceId?: string;
 
     @Column({ nullable: true })
-    spanId?: string;
+    	spanId?: string;
 }

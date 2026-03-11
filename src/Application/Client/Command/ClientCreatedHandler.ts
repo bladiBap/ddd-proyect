@@ -8,24 +8,24 @@ import { Client } from '@domain/Client/Entities/Client';
 @injectable()
 @CommandHandler(ClientCreatedCommand)
 export class ClientCreatedHandler {
-    constructor(
+	constructor(
         @inject('IUnitOfWork') private readonly _unitOfWork: IUnitOfWork,
         @inject('IClientRepository') private readonly _clientRepository: IClientRepository,
-    ) {}
+	) {}
 
-    async execute( clientCreatedCommand: ClientCreatedCommand): Promise<void> {
-        try {
-            await this._unitOfWork.startTransaction();
-            const cliente: Client = new Client(clientCreatedCommand.id, clientCreatedCommand.name);
-            const existingClient = await this._clientRepository.getByIdAsync(cliente.getId());
-            if (existingClient) {
-                throw new Error('Client already exists with the same ID ' + cliente.getId());
-            }
-            await this._clientRepository.addAsync(cliente);
-            await this._unitOfWork.commit();
-        } catch (error) {
-            await this._unitOfWork.rollback();
-            console.error('Error creating client:', error);
-        }
-    }
+	async execute( clientCreatedCommand: ClientCreatedCommand): Promise<void> {
+		try {
+			await this._unitOfWork.startTransaction();
+			const cliente: Client = new Client(clientCreatedCommand.id, clientCreatedCommand.name);
+			const existingClient = await this._clientRepository.getByIdAsync(cliente.getId());
+			if (existingClient) {
+				throw new Error('Client already exists with the same ID ' + cliente.getId());
+			}
+			await this._clientRepository.addAsync(cliente);
+			await this._unitOfWork.commit();
+		} catch (error) {
+			await this._unitOfWork.rollback();
+			console.error('Error creating client:', error);
+		}
+	}
 }

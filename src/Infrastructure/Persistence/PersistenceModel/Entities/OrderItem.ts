@@ -7,43 +7,43 @@ import { Recipe } from './Recipe';
 @Entity()
 export class OrderItem {
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
 
     @Column({
-        type: 'enum',
-        enum: StatusOrder,
-        default: StatusOrder.CREATED
+    	type: 'enum',
+    	enum: StatusOrder,
+    	default: StatusOrder.CREATED
     })
-    status!: StatusOrder;
+    	status!: StatusOrder;
 
     @Column({
-        type: 'int'
+    	type: 'int'
     })
-    quantityPlanned!: number;
+    	quantityPlanned!: number;
 
     @Column({
-        type: 'int',
-        default: 0
+    	type: 'int',
+    	default: 0
     })
-    quantityPrepared!: number;
+    	quantityPrepared!: number;
 
     @Column({
-        type: 'int',
-        default: 0
+    	type: 'int',
+    	default: 0
     })
-    quantityDelivered!: number;
+    	quantityDelivered!: number;
 
     @ManyToOne(() => Recipe, recipe => recipe.orderItems)
     @JoinColumn({ name: 'recipeId' })
-    recipe!: Recipe;
+    	recipe!: Recipe;
 
     @ManyToOne(() => Order, order => order.orderItems)
     @JoinColumn({ name: 'orderId' })
-    order!: Order;
+    	order!: Order;
 
     @Column()
-    recipeId!: number;
+    	recipeId!: number;
 
     @Column()
-    orderId!: number;
+    	orderId!: number;
 }

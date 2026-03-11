@@ -13,25 +13,25 @@ import { ClientDeliveredDTOMapper } from '@application/Client/GetClientsForDeliv
 @QueryHandler(GetClientsForDelivered)
 export class GetClientsForDeliveredHandler {
 
-    constructor(
+	constructor(
         @inject('DataSource') private readonly dataSource: DataSource
-    ) {}
+	) {}
 
-    async execute(request: GetClientsForDelivered): Promise<ResultWithValue<IClientDeliveredDTO[]>> {
-        const addressTable = this.dataSource.getRepository(Address);
+	async execute(request: GetClientsForDelivered): Promise<ResultWithValue<IClientDeliveredDTO[]>> {
+		const addressTable = this.dataSource.getRepository(Address);
 
-        const date = DateUtils.formatDate(request.date);
-        const clientsToDelivered = await addressTable.find({
-            where: { date: date },
-            relations: [
-                'calendar',
-                'calendar.mealPlan',
-                'calendar.mealPlan.client',
-                'calendar.mealPlan.dayliDiets',
-                'calendar.mealPlan.dayliDiets.recipes'
-            ]
-        });
-        const listclientsToDeliveredList = ClientDeliveredDTOMapper.toDTO(clientsToDelivered);
-        return ResultWithValue.successWith<IClientDeliveredDTO[]>(listclientsToDeliveredList);
-    }
+		const date = DateUtils.formatDate(request.date);
+		const clientsToDelivered = await addressTable.find({
+			where: { date: date },
+			relations: [
+				'calendar',
+				'calendar.mealPlan',
+				'calendar.mealPlan.client',
+				'calendar.mealPlan.dayliDiets',
+				'calendar.mealPlan.dayliDiets.recipes'
+			]
+		});
+		const listclientsToDeliveredList = ClientDeliveredDTOMapper.toDTO(clientsToDelivered);
+		return ResultWithValue.successWith<IClientDeliveredDTO[]>(listclientsToDeliveredList);
+	}
 }

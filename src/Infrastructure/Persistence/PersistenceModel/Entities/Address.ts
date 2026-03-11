@@ -1,6 +1,6 @@
 import { 
-    Entity, PrimaryGeneratedColumn, Column, 
-    ManyToOne, JoinColumn, OneToOne
+	Entity, PrimaryGeneratedColumn, Column, 
+	ManyToOne, JoinColumn, OneToOne
 } from 'typeorm';
 import { Calendar } from './Calendar';
 import { Package } from './Package';
@@ -8,30 +8,30 @@ import { Package } from './Package';
 @Entity()
 export class Address{
     @PrimaryGeneratedColumn()
-    id!: number;
+    	id!: number;
     
     @Column({ type: 'date' })
-    date!: Date;
+    	date!: Date;
 
     @Column()
-    address!: string;
+    	address!: string;
 
     @Column()
-    reference!: string;
+    	reference!: string;
 
     @Column({ type: 'float' })
-    latitude!: number;
+    	latitude!: number;
 
     @Column({ type: 'float' })
-    longitude!: number;
+    	longitude!: number;
 
     @ManyToOne(() => Calendar, (calendar) => calendar.addresses)
     @JoinColumn({ name: 'calendarId' })
-    calendar!: Calendar;
+    	calendar!: Calendar;
 
     @Column()
-    calendarId!: number;
+    	calendarId!: number;
 
     @OneToOne(() => Package, (packag) => packag.address)
-    package!: Package;
+    	package!: Package;
 }

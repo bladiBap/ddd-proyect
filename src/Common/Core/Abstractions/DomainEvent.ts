@@ -1,3 +1,3 @@
 export abstract class DomainEvent {
-    public readonly occurredOn: Date = new Date();
+	public readonly occurredOn: Date = new Date();
 }

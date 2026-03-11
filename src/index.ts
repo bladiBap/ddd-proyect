@@ -26,14 +26,14 @@ async function bootstrap() {
 	outboxWorker.start();
 
 	RabbitMQBusConfigurator.addConsumer(
-		'ClientCreated', 
+		'ClientCreated',
 		ClientCreatedHandlerConsumer,
 		'ms-kitchen-queue',
 		'patients',
 		'patient.created'
 	);
 
-    
+
 	RabbitMQBusConfigurator.start();
 
 	const app = express();

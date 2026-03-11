@@ -19,7 +19,8 @@
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test-contract": "mocha --node-option \"import=tsx\" --require tsconfig-paths/register src/Test/Contract/Tests/**/*.spec.ts"
+		"test-contract": "mocha --node-option \"import=tsx\" --require tsconfig-paths/register src/Test/Contract/Tests/**/*.spec.ts",
+		"prepare": "husky"
 	},
 	"keywords": [],
 	"author": "",
@@ -66,5 +67,8 @@
 		"typeorm": "^0.3.27",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.50.1"
+	},
+	"lint-staged": {
+		"src/**/*.{ts,js}": ["eslint --fix"]
 	}
 }

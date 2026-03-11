@@ -12,7 +12,7 @@ import { MealPlan } from './PersistenceModel/Entities/MealPlan';
 import { DayliDiet } from './PersistenceModel/Entities/DayliDiet';
 import { DateUtils } from '@/Common/Utils/Date';
 
-async function seed() {     
+async function seed() {
 	await AppDataSource.initialize();
 	const appConection = AppDataSource.getInstance();
 

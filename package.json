@@ -22,6 +22,9 @@
 		"test-contract": "mocha --node-option \"import=tsx\" --require tsconfig-paths/register src/Test/Contract/Tests/**/*.spec.ts",
 		"prepare": "husky"
 	},
+	"lint-staged": {
+		"src/**/*.{ts,js}": ["eslint --fix"]
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
@@ -67,8 +70,5 @@
 		"typeorm": "^0.3.27",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.50.1"
-	},
-	"lint-staged": {
-		"src/**/*.{ts,js}": ["eslint --fix"]
 	}
 }

@@ -4,10 +4,10 @@ import jwt from 'jsonwebtoken';
 
 export function validateToken (req: Request, res: Response, next: NextFunction) {
 	const authHeader = req.headers['authorization'];
-    
+
 	if (!authHeader || !authHeader.startsWith('Bearer ')) {
-		return res.status(401).json({ 
-			message: 'Acceso denegado. No se proporcionó un token Bearer.' 
+		return res.status(401).json({
+			message: 'Acceso denegado. No se proporcionó un token Bearer.'
 		});
 	}
 
@@ -20,10 +20,10 @@ export function validateToken (req: Request, res: Response, next: NextFunction) 
 		});
 
 		(req as any).user = decoded;
-        
-		next();
+
+		return next();
 	} catch (error) {
-		return res.status(403).json({ 
+		return res.status(403).json({
 			message: 'Token inválido o expirado.',
 			error: error instanceof Error ? error.message : 'Unknown error'
 		});

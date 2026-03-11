@@ -21,7 +21,7 @@ export class UpdateAddressHandler {
 	async execute( request: UpdateAddressCommand): Promise<Result> {
 		await this._unitOfWork.startTransaction();
 		try {
-            
+
 			const addressToUpdate = await this._addressRepository.getByIdAsync(request.id);
 			if (!addressToUpdate) {
 				await this._unitOfWork.rollback();
@@ -45,6 +45,7 @@ export class UpdateAddressHandler {
 			await this._unitOfWork.commit();
 			return Result.success();
 		} catch (error) {
+			console.error('Error updating address:', error);
 			await this._unitOfWork.rollback();
 			return Result.failure(Exception.Problem('Address.UpdateFailed', 'Failed to update address due to an internal error'));
 		}

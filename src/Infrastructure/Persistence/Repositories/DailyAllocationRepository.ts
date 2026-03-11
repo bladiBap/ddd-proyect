@@ -19,9 +19,11 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
 	) {}
 
 	async findByDateAsync(date: Date): Promise<DailyAllocation> {
+		console.log(`Finding daily allocation for date: ${date}`);
 		throw new Error('Method not implemented.');
 	}
 	async getByIdAsync(id: number, readOnly?: boolean): Promise<DailyAllocation | null> {
+		console.log(`Fetching daily allocation with id: ${id} (readOnly: ${readOnly})`);
 		throw new Error('Method not implemented.');
 	}
 
@@ -33,27 +35,27 @@ export class DailyAllocationRepository implements IDailyAllocationRepository {
 	}
 
 	async getDailyAllocation(clientId: number, date: Date): Promise<DailyAllocation | null> {
-        
+
 		const formattedDate = DateUtils.formatDate(date);
 
 		const manager = this.emProvider.getManager();
 
 		const dailyAllocationEntity = await manager.getRepository(DailyAllocationEntity).findOne({
-			where: { 
+			where: {
 				date: formattedDate,
-				lines: { 
+				lines: {
 					clientId: clientId
 				}
 			},
 			relations: ['lines'],
 		});
-        
+
 		if (!dailyAllocationEntity) {
 			return null;
 		}
 		return DailyAllocationMapper.toDomain(dailyAllocationEntity);
 	}
-    
+
 	async updatedLines(lines: AllocationLine[]): Promise<void> {
 		const allocationLineEntities = lines.map(line => AllocationLineMapper.toPersistence(line));
 		const manager = this.emProvider.getManager();

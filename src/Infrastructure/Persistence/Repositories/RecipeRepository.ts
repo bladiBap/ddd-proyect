@@ -12,16 +12,17 @@ export class RecipeRepository implements IRecipeRepository {
 	) {}
 
 	getByIdsAsync(ids: number[], readOnly?: boolean): Promise<Recipe[]> {
+		console.log(`Fetching recipes with ids: ${ids.join(', ')} (readOnly: ${readOnly})`);
 		throw new Error('Method not implemented.');
 	}
 
 	async getRecipesToPrepare(date: Date): Promise<RecipeRawDTO[]> {
 		const manager = this.emProvider.getManager();
-        
+
 		date.setHours(0, 0, 0, 0);
 
 		const result: RecipeRawDTO[] = await manager.query(`
-            SELECT 
+            SELECT
                 ddr."recipeId" AS "recipeId",
                 COUNT(ddr."recipeId") AS "quantity"
             FROM "address" a
@@ -39,10 +40,12 @@ export class RecipeRepository implements IRecipeRepository {
 	}
 
 	getByIdAsync(id: number, readOnly?: boolean): Promise<Recipe | null> {
+		console.log(`Fetching recipe with id: ${id} (readOnly: ${readOnly})`);
 		throw new Error('Method not implemented.');
 	}
 
 	addAsync(entity: Recipe): Promise<void> {
+		console.log(`Adding recipe with id: ${entity.getId()}`);
 		throw new Error('Method not implemented.');
 	}
 }

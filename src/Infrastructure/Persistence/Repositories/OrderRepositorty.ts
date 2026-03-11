@@ -18,15 +18,15 @@ export class OrderRepository implements IOrderRepository {
 	async findByDateAsync(date: Date): Promise<Order | null> {
 		const manager = this.emProvider.getManager();
 		const formattedDate = DateUtils.formatDate(date);
-        
+
 		const order = await manager.getRepository(OrderEntity).findOne({
 			where: { dateOrdered: formattedDate }
 		});
-        
+
 		if (!order) {
 			return null;
 		}
-        
+
 		return OrderMapper.toDomain(order);
 	}
 
@@ -48,6 +48,7 @@ export class OrderRepository implements IOrderRepository {
 	}
 
 	async getByIdTodayAsync(id: number, readOnly: boolean = false): Promise<Order | null> {
+		console.log(`Fetching order with id: ${id} (readOnly: ${readOnly})`);
 		const manager = this.emProvider.getManager();
 		const today = DateUtils.formatDate(new Date());
 

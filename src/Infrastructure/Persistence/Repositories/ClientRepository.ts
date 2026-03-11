@@ -14,7 +14,7 @@ export class ClientRepository implements IClientRepository {
 	constructor(
         @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
 	) {}
-        
+
 	async deleteAsync(id: number): Promise<void> {
 		const manager = this.emProvider.getManager();
 		const repo = manager.getRepository(ClientEntity);
@@ -22,6 +22,7 @@ export class ClientRepository implements IClientRepository {
 	}
 
 	async getByIdAsync(id: number, readOnly?: boolean): Promise<ClientDomain | null> {
+		console	.log(`Fetching client with id: ${id} (readOnly: ${readOnly})`);
 		const manager = this.emProvider.getManager();
 		const entity = await manager.getRepository(ClientEntity).findOne({
 			where: { id },

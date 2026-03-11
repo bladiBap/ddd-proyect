@@ -19,7 +19,7 @@ export class AddressRepository implements IAddressRepository {
 		const manager = this.emProvider.getManager();
 		const formattedDate = DateUtils.formatDate(date);
 		const result = await manager.query(`
-            SELECT 
+            SELECT
                 c."id" AS "clientId",
                 c."name" AS "clientName",
                 ddr."recipeId" AS "recipeId",
@@ -54,7 +54,7 @@ export class AddressRepository implements IAddressRepository {
 
 		return await manager.query(
 			`
-            SELECT 
+            SELECT
                 c."name" AS "clientName",
                 c."id" AS "clientId",
                 a."address" AS "clientAddress",
@@ -81,7 +81,7 @@ export class AddressRepository implements IAddressRepository {
 	}
 
 	async getAddressByDateAndClientId(clientId: number, date: Date): Promise<Address | null> {
-        
+
 		const start = new Date(date);
 		start.setHours(0, 0, 0, 0);
 
@@ -113,6 +113,7 @@ export class AddressRepository implements IAddressRepository {
 	}
 
 	async getByIdAsync(id: number, readOnly?: boolean): Promise<Address | null> {
+		console	.log(`Fetching address with id: ${id} (readOnly: ${readOnly})`);
 		const manager = this.emProvider.getManager();
 		const address = await manager.getRepository(AddressPersis).findOne(
 			{ where: { id: id }}

@@ -21,6 +21,7 @@ export class OrderItemRepository implements IOrderItemRepository {
 	}
 
 	async getByIdAsync(id: number, readOnly = true): Promise<DomainOrderItem | null> {
+		console.log(`Fetching order item with id: ${id} (readOnly: ${readOnly})`);
 		const manager = this.emProvider.getManager();
 		const item = await manager.getRepository(OrderItem).findOne({
 			where: { id },

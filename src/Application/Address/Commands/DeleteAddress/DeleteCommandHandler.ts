@@ -29,6 +29,7 @@ export class DeleteAddressHandler {
 			await this._unitOfWork.commit();
 			return Result.success();
 		} catch (error) {
+			console.error('Error deleting address:', error);
 			await this._unitOfWork.rollback();
 			return Result.failure(Exception.Problem('Address.DeletionFailed', 'Failed to delete address due to an internal error'));
 		}

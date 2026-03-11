@@ -10,6 +10,7 @@ export class ClientCreatedHandlerConsumer implements IIntegrationMessageConsumer
 	constructor(private readonly _mediator: Mediator) {}
 
 	async handleAsync(message: ClientCreated, cancellationToken?: AbortSignal): Promise<void> {
+		console.log(`Received ClientCreated message for client: ${message.FirstName}`, cancellationToken);
 		const command = new ClientCreatedCommand(0, message.FirstName);
 		await this._mediator.send(command);
 	}

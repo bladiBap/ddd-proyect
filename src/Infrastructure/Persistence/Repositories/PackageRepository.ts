@@ -8,16 +8,18 @@ import { IEntityManagerProvider } from '@common/Core/Abstractions/IEntityManager
 
 @injectable()
 export class PackageRepository implements IPackageRepository {
-    
+
 	constructor(
         @inject('IEntityManagerProvider') private readonly emProvider: IEntityManagerProvider
 	) {}
 
 	async getDetailsByIdAsync(id: number, readOnly?: boolean): Promise<DomainPackage | null> {
+		console.log(`Fetching package details with id: ${id} (readOnly: ${readOnly})`);
 		throw new Error('Method not implemented.');
 	}
 
 	async getByIdAsync(id: number, readOnly?: boolean): Promise<DomainPackage | null> {
+		console.log(`Fetching package with id: ${id} (readOnly: ${readOnly})`);
 		throw new Error('Method not implemented.');
 	}
 

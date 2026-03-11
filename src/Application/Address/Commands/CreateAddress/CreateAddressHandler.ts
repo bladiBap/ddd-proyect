@@ -37,6 +37,7 @@ export class CreateAddressHandler {
 			await this._unitOfWork.commit();
 			return Result.success();
 		} catch (error) {
+			console.error('Error creating address:', error);
 			await this._unitOfWork.rollback();
 			return Result.failure(Exception.Problem('Address.CreationFailed', 'Failed to create address due to an internal error'));
 		}

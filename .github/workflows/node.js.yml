@@ -27,6 +27,18 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     # - run: npm ci
-    - run: npm install
-    - run: npm run build
-    - run: npm test
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build source code
+      run: npm run build
+
+    - name: Test the code and generate coverage report
+      run: npm test:ci
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

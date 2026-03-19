@@ -3,7 +3,7 @@ import { StatusOrder } from '@domain/Order/Types/StatusOrderEnum';
 import { DomainException } from '@common/Core/Results/DomainExeption';
 
 describe('OrderItem Entity', () => {
-	const createItem = (planned = 10, prepared = 0, status = StatusOrder.CREATED) => 
+	const createItem = (planned = 10, prepared = 0, status = StatusOrder.CREATED) =>
 		new OrderItem(1, 100, planned, prepared, 0, 50, status);
 
 	describe('Constructor', () => {
@@ -27,7 +27,7 @@ describe('OrderItem Entity', () => {
 			expect(item.getStatus()).toBe(StatusOrder.COMPLETED);
 			// Verificamos que se haya registrado el evento de dominio
 			expect(item.getDomainEvents()).toHaveLength(1);
-			expect(item.getDomainEvents()[0].constructor.name).toBe('OrderItemCompletedEvent');
+			expect(item.getDomainEvents()[0]!.constructor.name).toBe('OrderItemCompletedEvent');
 		});
 
 		it('should throw if amount to increase is 0 or negative', () => {

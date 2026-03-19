@@ -290,103 +290,103 @@ import { OrderItemCompletedEvent } from '../Events/OrderItemCompletedEvent';
 &nbsp;
 export class OrderItem extends Entity{
 &nbsp;
-    private orderId : number;
-    private recipeId : number;
-    private quantityPlanned : number;
-    private quantityPrepared : number;
-    private quantityDelivered : number;
-    private status : StatusOrder;
+	private orderId : number;
+	private recipeId : number;
+	private quantityPlanned : number;
+	private quantityPrepared : number;
+	private quantityDelivered : number;
+	private status : StatusOrder;
 &nbsp;
-    constructor(id: number, orderId: number, quantityPlanned: number, quantityPrepared: number, quantityDelivered: number, recipeId: number, status: StatusOrder) {
-        super(id);
-        if (quantityPlanned &lt;= 0) {
-            throw new DomainException( OrderItemError.quantityMustBeGreaterThanZero(quantityPlanned) );
-        }
-        this.quantityPlanned = quantityPlanned;
-        this.quantityPrepared = quantityPrepared;
-        this.quantityDelivered = quantityDelivered;
-        this.recipeId = recipeId;
-        this.status = status;
-        this.orderId = orderId;
-    }
+	constructor(id: number, orderId: number, quantityPlanned: number, quantityPrepared: number, quantityDelivered: number, recipeId: number, status: StatusOrder) {
+		super(id);
+		if (quantityPlanned &lt;= 0) {
+			throw new DomainException( OrderItemError.quantityMustBeGreaterThanZero(quantityPlanned) );
+		}
+		this.quantityPlanned = quantityPlanned;
+		this.quantityPrepared = quantityPrepared;
+		this.quantityDelivered = quantityDelivered;
+		this.recipeId = recipeId;
+		this.status = status;
+		this.orderId = orderId;
+	}
 &nbsp;
-    private changeStatusToCompleted() : void {
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.status === StatusOrder.COMPLETED) {
-<span class="cstat-no" title="statement not covered" >            throw new DomainException( OrderItemError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );</span>
-        }
+	private changeStatusToCompleted() : void {
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (this.status === StatusOrder.COMPLETED) {
+<span class="cstat-no" title="statement not covered" >			throw new DomainException( OrderItemError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );</span>
+		}
         
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.status !== StatusOrder.CREATED) {
-<span class="cstat-no" title="statement not covered" >            throw new DomainException( OrderItemError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );</span>
-        }
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (this.status !== StatusOrder.CREATED) {
+<span class="cstat-no" title="statement not covered" >			throw new DomainException( OrderItemError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );</span>
+		}
 &nbsp;
-        this.status = StatusOrder.COMPLETED;
-        this.addDomainEvent(new OrderItemCompletedEvent(this.orderId));
-    }
+		this.status = StatusOrder.COMPLETED;
+		this.addDomainEvent(new OrderItemCompletedEvent(this.orderId));
+	}
 &nbsp;
-    public increaseQuantityPrepared(amount: number) : void {
+	public increaseQuantityPrepared(amount: number) : void {
         
-        if (this.quantityPlanned === this.quantityPrepared) {
-            return;
-        }
+		if (this.quantityPlanned === this.quantityPrepared) {
+			return;
+		}
 &nbsp;
-        if (amount &lt;= 0) {
-            throw new DomainException( OrderItemError.quantityMustBeGreaterThanZero(amount) );
-        }
+		if (amount &lt;= 0) {
+			throw new DomainException( OrderItemError.quantityMustBeGreaterThanZero(amount) );
+		}
 &nbsp;
-        const newQuantityPrepared = this.quantityPrepared + amount;
-        if (newQuantityPrepared &gt; this.quantityPlanned) {
-            throw new DomainException( OrderItemError.quantityPreparedExceedsPlanned(newQuantityPrepared, this.quantityPlanned) );
-        }
+		const newQuantityPrepared = this.quantityPrepared + amount;
+		if (newQuantityPrepared &gt; this.quantityPlanned) {
+			throw new DomainException( OrderItemError.quantityPreparedExceedsPlanned(newQuantityPrepared, this.quantityPlanned) );
+		}
 &nbsp;
-        if (newQuantityPrepared === this.quantityPlanned) {
-            this.changeStatusToCompleted()
-        };
+		if (newQuantityPrepared === this.quantityPlanned) {
+			this.changeStatusToCompleted()
+		};
 &nbsp;
-        this.quantityPrepared = newQuantityPrepared;
-    }
+		this.quantityPrepared = newQuantityPrepared;
+	}
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >updateQuantityDelivered(</span>newQuantityDelivered: number) : void {
-<span class="cstat-no" title="statement not covered" >        if (newQuantityDelivered &gt; this.quantityPrepared) {</span>
-<span class="cstat-no" title="statement not covered" >            throw new DomainException( OrderItemError.quantityPreparedExceedsPlanned(newQuantityDelivered, this.quantityPrepared) );</span>
-        }
-<span class="cstat-no" title="statement not covered" >        this.quantityDelivered = newQuantityDelivered;</span>
-    }
+	public <span class="fstat-no" title="function not covered" >updateQuantityDelivered(</span>newQuantityDelivered: number) : void {
+<span class="cstat-no" title="statement not covered" >		if (newQuantityDelivered &gt; this.quantityPrepared) {</span>
+<span class="cstat-no" title="statement not covered" >			throw new DomainException( OrderItemError.quantityPreparedExceedsPlanned(newQuantityDelivered, this.quantityPrepared) );</span>
+		}
+<span class="cstat-no" title="statement not covered" >		this.quantityDelivered = newQuantityDelivered;</span>
+	}
 &nbsp;
-    public remainingQuantityToPrepare() : number {
-        return this.quantityPlanned - this.quantityPrepared;
-    }
+	public remainingQuantityToPrepare() : number {
+		return this.quantityPlanned - this.quantityPrepared;
+	}
 &nbsp;
-    public remainingQuantityToDeliver() : number {
-        return this.quantityPrepared - this.quantityDelivered;
-    }
+	public remainingQuantityToDeliver() : number {
+		return this.quantityPrepared - this.quantityDelivered;
+	}
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >isStatusCompleted(</span>) : boolean {
-<span class="cstat-no" title="statement not covered" >        return this.status === StatusOrder.COMPLETED;</span>
-    }
+	public <span class="fstat-no" title="function not covered" >isStatusCompleted(</span>) : boolean {
+<span class="cstat-no" title="statement not covered" >		return this.status === StatusOrder.COMPLETED;</span>
+	}
 &nbsp;
-    public getRecipeId() : number {
-        return this.recipeId;
-    }
+	public getRecipeId() : number {
+		return this.recipeId;
+	}
 &nbsp;
-    public getStatus() : StatusOrder {
-        return this.status;
-    }
+	public getStatus() : StatusOrder {
+		return this.status;
+	}
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >getOrderId(</span>) : number {
-<span class="cstat-no" title="statement not covered" >        return this.orderId;</span>
-    }
+	public <span class="fstat-no" title="function not covered" >getOrderId(</span>) : number {
+<span class="cstat-no" title="statement not covered" >		return this.orderId;</span>
+	}
 &nbsp;
-    public getQuantityPrepared() : number {
-        return this.quantityPrepared;
-    }
+	public getQuantityPrepared() : number {
+		return this.quantityPrepared;
+	}
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >getQuantityDelivered(</span>) : number {
-<span class="cstat-no" title="statement not covered" >        return this.quantityDelivered;</span>
-    }
+	public <span class="fstat-no" title="function not covered" >getQuantityDelivered(</span>) : number {
+<span class="cstat-no" title="statement not covered" >		return this.quantityDelivered;</span>
+	}
 &nbsp;
-    public <span class="fstat-no" title="function not covered" >getQuantityPlanned(</span>) : number {
-<span class="cstat-no" title="statement not covered" >        return this.quantityPlanned;</span>
-    }
+	public <span class="fstat-no" title="function not covered" >getQuantityPlanned(</span>) : number {
+<span class="cstat-no" title="statement not covered" >		return this.quantityPlanned;</span>
+	}
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -394,7 +394,7 @@ export class OrderItem extends Entity{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-07T14:09:30.869Z
+                at 2026-03-19T03:14:06.996Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -15,7 +15,7 @@ describe('Order Aggregate Root', () => {
 		it('should add a new OrderItem to the list', () => {
 			order.addItem(50, 10, 0, 0, StatusOrder.CREATED);
 			expect(order.getListOrderItems()).toHaveLength(1);
-			expect(order.getListOrderItems()[0].getRecipeId()).toBe(50);
+			expect(order.getListOrderItems()[0]!.getRecipeId()).toBe(50);
 		});
 	});
 
@@ -29,9 +29,9 @@ describe('Order Aggregate Root', () => {
 			// Un item cmpletado y otro creado
 			const item1 = new OrderItem(1, 1, 10, 10, 0, 50, StatusOrder.COMPLETED);
 			const item2 = new OrderItem(2, 1, 10, 0, 0, 51, StatusOrder.CREATED);
-            
+
 			const myOrder = new Order(1, now, now, StatusOrder.CREATED, [item1, item2]);
-            
+
 			expect(() => myOrder.changeToCompleted()).toThrow(DomainException);
 		});
 

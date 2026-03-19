@@ -34,7 +34,7 @@ const config= {
     //roots: ['<rootDir>/src/Test/Unit'],
     // roots: ['<rootDir>/src/Test/Unit', '<rootDir>/src/Test/Integration'],
     roots: ['<rootDir>/src/Test/Unit'],
-    moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, { prefix: '<rootDir>/' }),
+    moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, { prefix: '<rootDir>/src/' }),
     verbose: true,
     transform: {
         '^.+\\.ts$': 'ts-jest'

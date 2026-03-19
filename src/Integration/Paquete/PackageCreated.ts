@@ -20,15 +20,15 @@ class Item {
 	}
 }
 
-export class PackageCompletedIntegration extends IntegrationMessage {    
+export class PackageCompletedIntegration extends IntegrationMessage {
 	customerId: string;
 
 	deliveryDate: Date;
-    
+
 	deliveryAddress: DeliveryAddress;
-    
-	createdAt: Date;
-    
+
+	override createdAt: Date;
+
 	items: Item[];
 
 	constructor(customerId: string, deliveryDate: Date, deliveryAddress: DeliveryAddress, createdAt: Date, items: Item[]) {

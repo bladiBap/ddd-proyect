@@ -15,22 +15,22 @@ export interface IEventHandler<TEvent> {
 }
 
 export class Mediator implements IMediator {
-    
+
 	async send<TResponse>(request: IRequest<TResponse>): Promise<TResponse> {
 		const requestType = request.constructor;
 		const handlerType = HandlerRegistry.resolveSingle(requestType);
-        
+
 		if (!handlerType) {
 			throw new Error(`No handler found for ${requestType.name}`);
 		}
 
 		const handler = container.resolve<IHandler<IRequest<TResponse>, TResponse>>(handlerType);
-        
+
 		return handler.execute(request);
 	}
 
 	async publish(event: DomainEvent): Promise<void> {
-        
+
 		const handlerTypes = HandlerRegistry.resolveMany(event.constructor);
 		if (handlerTypes.length === 0) {return;}
 
@@ -41,10 +41,10 @@ export class Mediator implements IMediator {
 
 		results.forEach((r, i) => {
 			if (r.status === 'rejected') {
-				throw new Error(`Error in event handler ${handlerTypes[i].name}: ${r.reason}`);
+				throw new Error(`Error in event handler ${handlerTypes[i]?.name}: ${r.reason}`);
 			}
 		});
-        
+
 	}
 
 	// En Mediator.ts
@@ -79,7 +79,7 @@ export class Mediator implements IMediator {
 		}
 
 		const handlers = handlerTypes.map(t => container.resolve<IEventHandler<any>>(t));
-        
+
 		// Ejecución y manejo de resultados
 		const tasks = handlers.map(h => h.handle(eventToPublish));
 		const results = await Promise.allSettled(tasks);
@@ -92,7 +92,7 @@ export class Mediator implements IMediator {
 			if (r.status === 'rejected') {
 				console.error(`[Outbox Error] en ${types[i].name}:`, r.reason);
 				// Aquí podrías lanzar el error si quieres que el OutboxProcessor haga rollback
-				throw r.reason; 
+				throw r.reason;
 			}
 		});
 	}

@@ -13,6 +13,12 @@ export function validateToken (req: Request, res: Response, next: NextFunction) 
 
 	const token = authHeader.split(' ')[1];
 
+	if (!token) {
+		return res.status(401).json({
+			message: 'Acceso denegado. Token Bearer no encontrado.'
+		});
+	}
+
 	try {
 		const decoded = jwt.verify(token, constants.JWT.SECRET, {
 			issuer: constants.JWT.ISSUER,

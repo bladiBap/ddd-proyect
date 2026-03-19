@@ -1,5 +1,5 @@
-import { 
-	Entity, PrimaryGeneratedColumn, Column, ManyToOne, 
+import {
+	Entity, PrimaryGeneratedColumn, Column, ManyToOne,
 	ManyToMany, JoinTable, JoinColumn
 } from 'typeorm';
 

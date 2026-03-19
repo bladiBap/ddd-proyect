@@ -154,13 +154,13 @@ async function seed() {
 		nDayPlan: 3,
 		mealPlan: mealPlan1,
 		recipes: [recipe1, recipe2],
-	});
+	} as DayliDiet);
 	const diet2 = dayliDietRepo.create({
 		date: today,
 		nDayPlan: 3,
 		mealPlan: mealPlan2,
 		recipes: [recipe2],
-	});
+	} as DayliDiet);
 
 	const dietTomorrow1 = dayliDietRepo.create({
 		date: tomorrow,
@@ -181,14 +181,14 @@ async function seed() {
 		nDayPlan: 5,
 		mealPlan: mealPlan1,
 		recipes: [recipe1],
-	});
+	} as DayliDiet);
 
 	const dietDayAfterTomorrow2 = dayliDietRepo.create({
 		date: dayAfterTomorrow,
 		nDayPlan: 5,
 		mealPlan: mealPlan2,
 		recipes: [recipe2],
-	});
+	} as DayliDiet);
 
 	await dayliDietRepo.save([diet1, diet2, dietTomorrow1, dietTomorrow2, dietDayAfterTomorrow1, dietDayAfterTomorrow2]);
 

@@ -1,33 +1,89 @@
 {
-	"compilerOptions": {
-		"baseUrl": "./",
-		"outDir": "./dist",
-		"rootDir": "./src",
-		"paths": {
-			"@domain/*": ["src/Domain/*"],
-			"@application/*": ["src/Application/*"],
-			"@infrastructure/*": ["src/Infrastructure/*"],
-			"@presentation/*": ["src/Presentation/*"],
-			"@common/*": ["src/Common/*"],
-			"@utils/*": ["src/Common/Utils/*"],
-			"@test/*": ["src/Test/*"],
-			"@outbox/*": ["src/Outbox/*"],
-			"@comunication/*": ["src/Comunication/*"],
-			"@/*": ["src/*"]
-		},
-		"target": "es6",
-		"module": "commonjs",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"sourceMap": true,
-		"resolveJsonModule": true,
-		"moduleResolution": "node",
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"strictPropertyInitialization": false
-	},
-	"include": ["src/**/*"],
-	"lib": ["es2015"]
+    "compilerOptions": {
+        /* Configuración de Lenguaje y Compilación */
+        "target": "ESNext", // Define la versión de JavaScript a la que se traduce tu código. ESNext usa las características más modernas disponibles.
+        "lib": ["ES2022"], // Especifica qué librerías de tipos están disponibles (como APIs de promesas, arrays modernos, etc.).
+        "experimentalDecorators": true, // Necesario para usar decoradores (común en NestJS, TypeORM).
+        "emitDecoratorMetadata": true, // Permite que librerías lean tipos de datos en tiempo de ejecución mediante reflexión.
+
+        /* Sistema de Módulos */
+        "module": "commonjs", // Define cómo se generan los módulos. CommonJS es el estándar tradicional de Node.js (require/module.exports).
+        "moduleResolution": "node", // Indica a TS cómo buscar archivos: "node" busca en carpetas y archivos como lo hace Node.js.
+        "moduleDetection": "force", // Obliga a TS a tratar todos los archivos como módulos, evitando conflictos de variables globales.
+        "resolveJsonModule": true, // Permite importar archivos .json directamente en tu código TS.
+
+        /* Estructura de Archivos */
+        "rootDir": "src", // Indica dónde está el código fuente original para mantener la estructura de carpetas al compilar.
+        "outDir": "dist", // Carpeta donde se guardarán los archivos JavaScript resultantes (.js).
+        "noEmit": true, // No genera archivos .js al compilar. Útil si usas ts-node o un bundler que maneje la transpilación.
+        "sourceMap": true, // Genera archivos .map. Permite que, al debuguear, el editor te muestre el código TS original y no el JS compilado.
+        "declaration": true, // Genera archivos .d.ts (definiciones de tipos), necesario si creas una librería para otros.
+
+        /* Interoperabilidad y Consistencia */
+        "esModuleInterop": true, // Facilita la importación de librerías CommonJS como si fueran módulos ES6 (corrige problemas con import React).
+        "allowSyntheticDefaultImports": true, // Permite importar módulos que no tienen un "default export" usando la sintaxis de exportación por defecto.
+        "forceConsistentCasingInFileNames": true, // Evita errores si importas un archivo con mayúsculas/minúsculas distintas a las del disco (vital para Linux/Windows).
+        "verbatimModuleSyntax": false, // Si fuera true, obligaría a usar sintaxis de importación de tipos específica para evitar que TS elimine imports innecesarios.
+
+        /* Resolución de Rutas (Alias) */
+        "baseUrl": "./src", // Carpeta base para resolver los alias que definas abajo.
+        "paths": { // Define "apodos" para las carpetas para evitar rutas relativas largas como ../../../Domain.
+            "@domain/*": ["Domain/*"],
+            "@application/*": ["Application/*"],
+            "@infrastructure/*": ["Infrastructure/*"],
+            "@presentation/*": ["Presentation/*"],
+            "@common/*": ["Common/*"],
+            "@utils/*": ["Common/Utils/*"],
+            "@test/*": ["Test/*"],
+            "@outbox/*": ["Outbox/*"],
+            "@comunication/*": ["Comunication/*"],
+            "@/*": ["*"]
+        },
+
+        /* Reglas de Estrictez (Calidad de Código) */
+        "strict": true, // Activa todas las comprobaciones estrictas de tipos (es la base para un código seguro).
+        "noImplicitAny": true, // Error si una variable no tiene tipo definido y TS no puede inferirlo (prohíbe el tipo 'any' oculto).
+        "noUncheckedIndexedAccess": true, // Obliga a revisar si un valor existe al acceder a un objeto o array por una llave/índice.
+        "noImplicitOverride": true, // Garantiza que si sobreescribes un método en una clase hija, uses explícitamente la palabra 'override'.
+        "skipLibCheck": true, // Ahorra tiempo saltándose la revisión de tipos de las librerías dentro de node_modules.
+
+        /* Otras Restricciones */
+        "allowImportingTsExtensions": false // Prohíbe importar archivos usando la extensión .ts explícitamente (ej: import {x} from './file.ts').
+    },
+    "include": ["src"], // Indica qué carpetas debe procesar TypeScript.
+    "exclude": ["node_modules", "dist"] // Indica qué carpetas debe ignorar completamente.
 }
+
+// {
+// 	"compilerOptions": {
+// 		"baseUrl": "./",
+// 		"outDir": "./dist",
+// 		"rootDir": "./src",
+// 		"paths": {
+// 			"@domain/*": ["src/Domain/*"],
+// 			"@application/*": ["src/Application/*"],
+// 			"@infrastructure/*": ["src/Infrastructure/*"],
+// 			"@presentation/*": ["src/Presentation/*"],
+// 			"@common/*": ["src/Common/*"],
+// 			"@utils/*": ["src/Common/Utils/*"],
+// 			"@test/*": ["src/Test/*"],
+// 			"@outbox/*": ["src/Outbox/*"],
+// 			"@comunication/*": ["src/Comunication/*"],
+// 			"@/*": ["src/*"]
+// 		},
+// 		"target": "es6",
+// 		"module": "commonjs",
+// 		"strict": true,
+// 		"esModuleInterop": true,
+// 		"skipLibCheck": true,
+// 		"forceConsistentCasingInFileNames": true,
+// 		"sourceMap": true,
+// 		"resolveJsonModule": true,
+// 		"moduleResolution": "node",
+// 		"experimentalDecorators": true,
+// 		"emitDecoratorMetadata": true,
+// 		"strictPropertyInitialization": false
+// 	},
+// 	"include": ["src/**/*"],
+// 	"lib": ["es2015"]
+// }

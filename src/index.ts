@@ -12,9 +12,9 @@ import { PackageController } from '@presentation/Controllers/PackageController';
 import { HelloWorldController } from '@presentation/Controllers/HelloWorldController';
 import { AddressController } from '@presentation/Controllers/AddressController';
 
-import { OutboxWorker } from '@outbox/Processor/OutboxWorker';
-import { RabbitMQBusConfigurator } from '@comunication/RabbitMQ/RabbitMQBusConfigurator';
-import { ClientCreatedHandlerConsumer } from '@infrastructure/RabbitMQ/ClientCreatedHandlerConsumer';
+// import { OutboxWorker } from '@outbox/Processor/OutboxWorker';
+// import { RabbitMQBusConfigurator } from '@comunication/RabbitMQ/RabbitMQBusConfigurator';
+// import { ClientCreatedHandlerConsumer } from '@infrastructure/RabbitMQ/ClientCreatedHandlerConsumer';
 import { validateToken } from '@common/Middleware/AuthMiddleware';
 
 async function bootstrap() {
@@ -22,19 +22,19 @@ async function bootstrap() {
 	console.log('DB conectada');
 	container.registerInstance<DataSource>('DataSource', ds);
 
-	const outboxWorker = container.resolve(OutboxWorker);
-	outboxWorker.start();
+	// const outboxWorker = container.resolve(OutboxWorker);
+	// outboxWorker.start();
 
-	RabbitMQBusConfigurator.addConsumer(
-		'ClientCreated',
-		ClientCreatedHandlerConsumer,
-		'ms-kitchen-queue',
-		'patients',
-		'patient.created'
-	);
+	// RabbitMQBusConfigurator.addConsumer(
+	// 	'ClientCreated',
+	// 	ClientCreatedHandlerConsumer,
+	// 	'ms-kitchen-queue',
+	// 	'patients',
+	// 	'patient.created'
+	// );
 
 
-	RabbitMQBusConfigurator.start();
+	// RabbitMQBusConfigurator.start();
 
 	const app = express();
 	app.use(express.json());

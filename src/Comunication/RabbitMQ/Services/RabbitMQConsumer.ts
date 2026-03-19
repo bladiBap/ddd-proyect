@@ -11,17 +11,17 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
 	private _exchangeName: string;
 	private _settings: RabbitMQSettings;
 	private _declareQueue: boolean;
-	private _connection: ChannelModel;
-	private _channel: Channel;
+	private _connection!: ChannelModel;
+	private _channel!: Channel;
 	private _routingKey: string;
 	private _handlerToken: InjectionToken<IIntegrationMessageConsumer<T>>;
 
 	constructor(
-		queueName: string, 
-		settings: RabbitMQSettings, 
-		declareQueue: boolean, 
-		exchangeName: string, 
-		routingKey: string, 
+		queueName: string,
+		settings: RabbitMQSettings,
+		declareQueue: boolean,
+		exchangeName: string,
+		routingKey: string,
 		handlerToken: InjectionToken<IIntegrationMessageConsumer<T>>
 	) {
 		this._queueName = queueName;
@@ -97,14 +97,14 @@ export class RabbitMQConsumer<T extends IntegrationMessage> {
 			}
 
 			try {
-                
+
 				const handler = container.resolve(this._handlerToken);
 
 				const content = this.deserializeMessage(msg.content);
 
 				if (content) {
 					await handler.handleAsync(content);
-                    
+
 					this._channel.ack(msg);
 				}
 			} catch (error: unknown) {

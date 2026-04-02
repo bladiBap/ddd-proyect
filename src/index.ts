@@ -66,6 +66,8 @@ async function bootstrap() {
 	kitchenRouter.post('/package', (req, res) => packageController.create(req, res));
 
 	app.use('/api/kitchen', kitchenRouter);
+	// its a live
+	app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 	const PORT = Number(process.env.PORT) || 3000;
 	app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }

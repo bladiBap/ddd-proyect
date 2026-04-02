@@ -25,7 +25,7 @@ services:
         #     - shared-network
 
     ms_kitchen_api:
-        image: bladibap/catering_produccion:1.0.14
+        image: bladibap/catering_produccion:stage-v1.0.21
         # build:
         #   context: .
         #   dockerfile: Dockerfile

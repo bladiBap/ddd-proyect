@@ -12,14 +12,14 @@ COPY package.json package.json
 RUN npm install
 COPY . .
 RUN npm run build
+RUN ls -R dist
 
 FROM node:22.21.1-alpine3.21
 WORKDIR /app
 
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist ./
 COPY --from=builder /app/package*.json ./
-
-RUN npm install --only=production
+RUN npm install --production
 
 EXPOSE 3000
 

@@ -1,9 +1,9 @@
-name: Deploy to digitalocean
+name: Staging to digitalocean
 
 on:
   push:
-	tags:
-	  - stage-*
+    tags:
+    - stage-*
 
 jobs:
   build:

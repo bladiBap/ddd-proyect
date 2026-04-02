@@ -1,4 +1,4 @@
-FROM node:22.21.1-alpine3.21
+FROM node:22.21.1-alpine3.21 as builder
 
 LABEL OWNER="Bladimir Baptista Gonzales"
 LABEL PROJECT="Catering Produccion"

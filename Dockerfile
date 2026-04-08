@@ -1,4 +1,4 @@
-FROM node:22.21.1-alpine3.21 as builder
+FROM node:22.21.1-alpine3.21
 
 LABEL OWNER="Bladimir Baptista Gonzales"
 LABEL PROJECT="Catering Produccion"
@@ -10,19 +10,14 @@ WORKDIR /app
 COPY package.json package.json
 
 RUN npm install
+
 COPY . .
+
 RUN npm run build
-RUN ls -R dist
-
-FROM node:22.21.1-alpine3.21
-WORKDIR /app
-
-COPY --from=builder /app/dist ./
-COPY --from=builder /app/package*.json ./
-RUN npm install --production
 
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s CMD curl http://localhost:3000/hello-world || exit 1
 
-CMD ["node", "dist/index.js"]
+WORKDIR /app/dist
+CMD ["node", "index.js"]

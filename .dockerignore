@@ -1,5 +1,4 @@
 Dockerfile
-dist
 assets
 node_modules
 .dockerignore

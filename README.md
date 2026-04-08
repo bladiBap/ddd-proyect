@@ -24,5 +24,14 @@ El microvicio al que corresponde este proyecto es al de Produccion/Cocina, debid
 ![Diagrama de clases de PlanAlimenticio/Receta](./assets/diagrama-recetas.jpg)# ddd-proyect
 
 
+Comando de Docker
+docker compose up -d
+docker compose down -v
+
+docker build -t bladibap/catering_produccion:2.0.0 .
+docker push bladibap/catering_produccion:2.0.0
+
+docker build -t test-api .
+docker run -d -p 3000:3000 --name catering-app test-api
 
 docker compose exec ms_kitchen_api npm run seed

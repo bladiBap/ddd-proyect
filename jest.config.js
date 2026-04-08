@@ -16,7 +16,7 @@ const config= {
 		'!src/Infrastructure/Persistence/Migrations/**'
     ],
     coverageDirectory: 'coverage',
-    coverageReporters: ['text', 'lcov', 'html'],
+    coverageReporters: ['text', 'lcov', 'html', 'clover', 'json'],
     coverageThreshold: {
         global: {
             branches: 10,

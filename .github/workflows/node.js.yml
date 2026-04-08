@@ -37,6 +37,14 @@ jobs:
 
     - name: Test the code and generate coverage report
       run: npm run test:ci
+      
+    - name: Debug - Show lcov.info paths
+      run: |
+        echo "=== First 30 lines of lcov.info ==="
+        head -30 coverage/lcov.info
+        echo ""
+        echo "=== All SF (Source File) paths in lcov.info ==="
+        grep "^SF:" coverage/lcov.info | head -20
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarqube-scan-action@v7

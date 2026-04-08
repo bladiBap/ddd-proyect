@@ -13,6 +13,7 @@ const config= {
         '!src/**/index.ts',
         '!src/**/*.test.ts',
         '!src/**/*.spec.ts',
+		'!src/Test/**/*', 
 		'!src/Infrastructure/Persistence/Migrations/**'
     ],
     coverageDirectory: 'coverage',

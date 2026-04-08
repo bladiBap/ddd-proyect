@@ -12,7 +12,8 @@ const config= {
         '!src/**/*.d.ts',
         '!src/**/index.ts',
         '!src/**/*.test.ts',
-        '!src/**/*.spec.ts'
+        '!src/**/*.spec.ts',
+		'!src/Infrastructure/Persistence/Migrations/**'
     ],
     coverageDirectory: 'coverage',
     coverageReporters: ['text', 'lcov', 'html'],

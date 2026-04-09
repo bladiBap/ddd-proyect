@@ -21,7 +21,7 @@ export class Order extends AggregateRoot {
 	}
 
 	public changeToCompleted() {
-		throw new DomainException( OrderError.orderItemsNotCompleted(this.id) );
+		throw new Error('Method not implemented.');
 		if (this.status === StatusOrder.COMPLETED){
 			throw new DomainException( OrderError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );
 		}

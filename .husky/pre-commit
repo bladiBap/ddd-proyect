@@ -1,1 +1,3 @@
+npm test -- --bail
+
 npx lint-staged

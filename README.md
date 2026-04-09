@@ -34,5 +34,5 @@ docker push bladibap/catering_produccion:2.0.0
 docker build -t test-api .
 docker run -d -p 3000:3000 --name catering-app test-api
 
-docker compose exec ms_kitchen_api npm run seed
+docker compose exec ms_kitchen_api npm run seed --
 

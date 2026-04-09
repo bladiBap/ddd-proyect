@@ -24,7 +24,7 @@ export class Order extends AggregateRoot {
 		if (this.status === StatusOrder.COMPLETED){
 			throw new DomainException( OrderError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );
 		}
-        
+
 		if (!this.verifyIfAllItemsCompleted()) {
 			throw new DomainException( OrderError.orderItemsNotCompleted(this.id) );
 		}
@@ -39,7 +39,7 @@ export class Order extends AggregateRoot {
 	private verifyIfAllItemsCompleted (): boolean {
 		return this.listOrderItems.every(item => item.getStatus() === StatusOrder.COMPLETED);
 	}
-    
+
 	public isStatusCompleted (): boolean{
 		return this.status === StatusOrder.COMPLETED;
 	}

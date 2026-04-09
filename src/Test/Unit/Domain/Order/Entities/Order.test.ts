@@ -40,6 +40,7 @@ describe('Order Aggregate Root', () => {
 			const myOrder = new Order(1, now, now, StatusOrder.CREATED, [item1]);
 
 			myOrder.changeToCompleted();
+			//throw new Error('Status should be COMPLETED');
 
 			expect(myOrder.getStatus()).toBe(StatusOrder.COMPLETED);
 			expect(myOrder.isStatusCompleted()).toBe(true);

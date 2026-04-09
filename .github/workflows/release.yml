@@ -1,0 +1,106 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Release
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build source code
+      run: npm run build
+
+    - name: Test the code and generate coverage report
+      run: npm run test:ci
+    
+  release-production:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            bladibap/catering_produccion:latest
+            bladibap/catering_produccion:${{ github.sha }}
+
+      - name: Create .env file
+        run: |
+          echo "MS_KITCHEN_DB_HOST=${{ secrets.MS_KITCHEN_DB_HOST }}" >> .env
+          echo "MS_KITCHEN_DB_PORT=${{ secrets.MS_KITCHEN_DB_PORT }}" >> .env
+          echo "MS_KITCHEN_DB_USER=${{ secrets.MS_KITCHEN_DB_USER }}" >> .env
+          echo "MS_KITCHEN_DB_PASSWORD=${{ secrets.MS_KITCHEN_DB_PASSWORD }}" >> .env
+          echo "MS_KITCHEN_DB_NAME=${{ secrets.MS_KITCHEN_DB_NAME }}" >> .env
+          echo "RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}" >> .env
+          echo "RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}" >> .env
+          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> .env
+          echo "RABBITMQ_VIRTUAL_HOST=${{ secrets.RABBITMQ_VIRTUAL_HOST }}" >> .env
+          echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" >> .env
+          echo "JWT_AUDIENCE=${{ secrets.JWT_AUDIENCE }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+
+      - name: Copy config files via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          timeout: 5m
+          command_timeout: 10m
+          source: "docker-compose.yaml,.env"
+          target: "/var/www/ddd-proyect"
+          overwrite: true
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/ddd-proyect
+            
+            echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+            
+            export IMAGE_TAG=${{ github.sha }}
+            
+            docker pull bladibap/catering_produccion:$IMAGE_TAG
+            
+            IMAGE_TAG=$IMAGE_TAG docker-compose up -d
+            
+            docker image prune -f
+            docker ps

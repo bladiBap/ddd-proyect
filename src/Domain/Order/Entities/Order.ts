@@ -21,7 +21,6 @@ export class Order extends AggregateRoot {
 	}
 
 	public changeToCompleted() {
-		return
 		if (this.status === StatusOrder.COMPLETED){
 			throw new DomainException( OrderError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );
 		}

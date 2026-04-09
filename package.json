@@ -23,7 +23,7 @@
 		"prepare": "husky"
 	},
 	"lint-staged": {
-		"src/**/*.{ts,js}": ["eslint --fix", "jest --bail --watchAll=false --passWithNoTests"]
+		"src/**/*.{ts,js}": ["eslint --fix", "jest --bail"]
 	},
 	"keywords": [],
 	"author": "",

@@ -24,7 +24,6 @@ export class Order extends AggregateRoot {
 		if (this.status === StatusOrder.COMPLETED){
 			throw new DomainException( OrderError.canNotChangeStatus(this.status, StatusOrder.COMPLETED) );
 		}
-        console.log('Verificando');
 		if (!this.verifyIfAllItemsCompleted()) {
 			throw new DomainException( OrderError.orderItemsNotCompleted(this.id) );
 		}

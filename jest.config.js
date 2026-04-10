@@ -13,7 +13,7 @@ const config= {
         '!src/**/index.ts',
         '!src/**/*.test.ts',
         '!src/**/*.spec.ts',
-		'!src/Test/**/*', 
+		'!src/Test/**/*',
 		'!src/Infrastructure/Persistence/Migrations/**'
     ],
     coverageDirectory: 'coverage',
@@ -29,12 +29,9 @@ const config= {
     testMatch: [
         '<rootDir>/src/Test/Unit/**/*.test.ts',
         '<rootDir>/src/Test/Unit/**/*.spec.ts',
-        // '<rootDir>/src/Test/Integration/**/*.test.ts',
-        // '<rootDir>/src/Test/Integration/**/*.spec.ts'
     ],
     moduleFileExtensions: ['ts', 'js', 'json'],
-    //roots: ['<rootDir>/src/Test/Unit'],
-    // roots: ['<rootDir>/src/Test/Unit', '<rootDir>/src/Test/Integration'],
+
     roots: ['<rootDir>/src/Test/Unit'],
     moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, { prefix: '<rootDir>/src/' }),
     verbose: true,

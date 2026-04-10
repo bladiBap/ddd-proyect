@@ -49,7 +49,7 @@ async function bootstrap() {
 	const packageController = new PackageController();
 	const helloWorldController = new HelloWorldController();
 
-	//hello world
+	//hello world endpoint
 	kitchenRouter.get('/hello-world', (req, res) => helloWorldController.getHelloWorld(req, res));
 	//order
 	kitchenRouter.get('/order/:orderId', (req, res) => orderController.getById(req, res));

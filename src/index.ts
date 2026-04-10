@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { AppDataSource } from '@infrastructure/Persistence/PersistenceModel/DataSource';
 import { container } from '@infrastructure/Container';
 import { DataSource } from 'typeorm';
+import logger from '@common/Utils/logger';
 
 import { OrderController } from '@presentation/Controllers/OrderController';
 import { ClientController } from '@presentation/Controllers/ClientController';
@@ -67,9 +68,15 @@ async function bootstrap() {
 
 	app.use('/api/kitchen', kitchenRouter);
 	// live endpoint
-	app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
+	app.get('/health', (req, res) => {
+		logger.info('Health check endpoint called');
+		res.status(200).json({ status: 'ok' })
+	});
 	const PORT = Number(process.env.PORT) || 3000;
-	app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+	app.listen(PORT, () => {
+		logger.info(`Server running on port ${PORT}`);
+		console.log(`Serverr running on port ${PORT}`)
+	});
 }
 
 bootstrap().catch((err) => {

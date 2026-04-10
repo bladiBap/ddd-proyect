@@ -19,7 +19,7 @@ services:
       - .env
 
   ms_kitchen_api:
-	  image: bladibap/catering_produccion:${IMAGE_TAG:-latest}
+    image: bladibap/catering_produccion:${IMAGE_TAG:-latest}
     # build:
     #   context: .
     #   dockerfile: Dockerfile

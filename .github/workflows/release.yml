@@ -59,18 +59,18 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "MS_KITCHEN_DB_HOST=${{ secrets.MS_KITCHEN_DB_HOST }}" > .env
-          echo "MS_KITCHEN_DB_PORT=${{ secrets.MS_KITCHEN_DB_PORT }}" > .env
-          echo "MS_KITCHEN_DB_USER=${{ secrets.MS_KITCHEN_DB_USER }}" > .env
-          echo "MS_KITCHEN_DB_PASSWORD=${{ secrets.MS_KITCHEN_DB_PASSWORD }}" > .env
-          echo "MS_KITCHEN_DB_NAME=${{ secrets.MS_KITCHEN_DB_NAME }}" > .env
-          echo "RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}" > .env
-          echo "RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}" > .env
-          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" > .env
-          echo "RABBITMQ_VIRTUAL_HOST=${{ secrets.RABBITMQ_VIRTUAL_HOST }}" > .env
-          echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" > .env
-          echo "JWT_AUDIENCE=${{ secrets.JWT_AUDIENCE }}" > .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" > .env
+          echo "MS_KITCHEN_DB_HOST=${{ secrets.MS_KITCHEN_DB_HOST }}" >> .env
+          echo "MS_KITCHEN_DB_PORT=${{ secrets.MS_KITCHEN_DB_PORT }}" >> .env
+          echo "MS_KITCHEN_DB_USER=${{ secrets.MS_KITCHEN_DB_USER }}" >> .env
+          echo "MS_KITCHEN_DB_PASSWORD=${{ secrets.MS_KITCHEN_DB_PASSWORD }}" >> .env
+          echo "MS_KITCHEN_DB_NAME=${{ secrets.MS_KITCHEN_DB_NAME }}" >> .env
+          echo "RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}" >> .env
+          echo "RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}" >> .env
+          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> .env
+          echo "RABBITMQ_VIRTUAL_HOST=${{ secrets.RABBITMQ_VIRTUAL_HOST }}" >> .env
+          echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" >> .env
+          echo "JWT_AUDIENCE=${{ secrets.JWT_AUDIENCE }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Copy config files via SCP
         uses: appleboy/scp-action@v0.1.7

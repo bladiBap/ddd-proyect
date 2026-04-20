@@ -37,6 +37,9 @@ services:
       - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
       - RABBITMQ_VIRTUAL_HOST=${RABBITMQ_VIRTUAL_HOST}
+      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME}
+      - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL}
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT}
       - TZ=America/La_Paz
     env_file:
       - .env
@@ -47,6 +50,27 @@ services:
     depends_on:
       ms_kitchen_db:
         condition: service_healthy
+      otel-collector:
+        condition: service_started
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.128.0
+    container_name: ms_kitchen_otel_collector
+    command:
+      - --config=/etc/otelcol-contrib/config.yaml
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    depends_on:
+      - jaeger
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.70.0
+    container_name: ms_kitchen_jaeger
+    ports:
+      - "16686:16686"
 
   loki:
     image: grafana/loki:2.9.0
